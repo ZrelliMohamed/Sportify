@@ -15,24 +15,13 @@ CREATE SCHEMA IF NOT EXISTS `Spotify` DEFAULT CHARACTER SET utf8 ;
 USE `Spotify` ;
 
 -- -----------------------------------------------------
--- Table `Spotify`.`programes`
+-- Table `Spotify`.`Users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`programes` (
-  `prg_id` INT NOT NULL AUTO_INCREMENT,
-  `prg_img` LONGTEXT NOT NULL,
-  `prg_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`prg_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Spotify`.`User`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`User` (
+CREATE TABLE IF NOT EXISTS `Spotify`.`Users` (
   `User_Id` INT NOT NULL AUTO_INCREMENT,
   `user_name` VARCHAR(45) NOT NULL,
   `user_email` VARCHAR(100) NOT NULL,
-  `user_password` VARCHAR(45) NOT NULL,
+  `user_password` LONGTEXT NOT NULL,
   `user_img` LONGTEXT NULL,
   `user_type` VARCHAR(45) NOT NULL,
   `user_heigth` INT NULL,
@@ -40,15 +29,8 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`User` (
   `user_weight` VARCHAR(45) NULL,
   `user_goal` VARCHAR(45) NULL,
   `user_preference` VARCHAR(45) NULL,
-  `prg_id` INT NOT NULL,
   `User_preview` FLOAT NULL,
-  PRIMARY KEY (`User_Id`, `prg_id`),
-  INDEX `fk_User_programes_idx` (`prg_id` ASC) VISIBLE,
-  CONSTRAINT `fk_User_programes`
-    FOREIGN KEY (`prg_id`)
-    REFERENCES `Spotify`.`programes` (`prg_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
+  PRIMARY KEY (`User_Id`))
 ENGINE = InnoDB;
 
 
@@ -63,8 +45,8 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Commandes` (
   PRIMARY KEY (`commande_id`, `User_Id`, `prg_id`),
   INDEX `fk_Commandes_User1_idx` (`User_Id` ASC, `prg_id` ASC) VISIBLE,
   CONSTRAINT `fk_Commandes_User1`
-    FOREIGN KEY (`User_Id` , `prg_id`)
-    REFERENCES `Spotify`.`User` (`User_Id` , `prg_id`)
+    FOREIGN KEY (`User_Id`)
+    REFERENCES `Spotify`.`Users` (`User_Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
@@ -114,24 +96,44 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `Spotify`.`programes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Spotify`.`programes` (
+  `prg_id` INT NOT NULL AUTO_INCREMENT,
+  `prg_img` LONGTEXT NOT NULL,
+  `prg_name` VARCHAR(45) NOT NULL,
+  `User_Id` INT NOT NULL,
+  PRIMARY KEY (`prg_id`, `User_Id`),
+  INDEX `fk_programes_User1_idx` (`User_Id` ASC) VISIBLE,
+  UNIQUE INDEX `prg_id_UNIQUE` (`prg_id` ASC) VISIBLE,
+  CONSTRAINT `fk_programes_User1`
+    FOREIGN KEY (`User_Id`)
+    REFERENCES `Spotify`.`Users` (`User_Id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Spotify`.`programes_has_exercices`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Spotify`.`programes_has_exercices` (
   `prg_id` INT NOT NULL,
+  `User_Id` INT NOT NULL,
   `exercice_id` INT NOT NULL,
-  PRIMARY KEY (`prg_id`, `exercice_id`),
+  PRIMARY KEY (`prg_id`, `User_Id`, `exercice_id`),
   INDEX `fk_programes_has_exercices_exercices1_idx` (`exercice_id` ASC) VISIBLE,
-  INDEX `fk_programes_has_exercices_programes1_idx` (`prg_id` ASC) VISIBLE,
+  INDEX `fk_programes_has_exercices_programes1_idx` (`prg_id` ASC, `User_Id` ASC) VISIBLE,
   CONSTRAINT `fk_programes_has_exercices_programes1`
-    FOREIGN KEY (`prg_id`)
-    REFERENCES `Spotify`.`programes` (`prg_id`)
+    FOREIGN KEY (`prg_id` , `User_Id`)
+    REFERENCES `Spotify`.`programes` (`prg_id` , `User_Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_programes_has_exercices_exercices1`
     FOREIGN KEY (`exercice_id`)
     REFERENCES `Spotify`.`exercices` (`exercice_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
