@@ -42,7 +42,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import axios from 'axios';
 
-const SettingsScreen = ({ user, setUser }) => {
+const SettingsScreen = () => {
+  const [user, setUser] = useState({
+    id: 1,
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    phone: '123-456-7890',
+  });
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
