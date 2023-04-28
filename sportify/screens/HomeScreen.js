@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 const HomeScreen = () => {
@@ -11,6 +11,8 @@ const HomeScreen = () => {
             <Text>Slide 1</Text>
           </View>
           <View style={styles.slide}>
+          <Image 
+           source={require('../assets/1.jpg')}/>
             <Text>Slide 2</Text>
           </View>
           <View style={styles.slide}>
