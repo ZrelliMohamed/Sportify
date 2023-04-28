@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Appbar, useTheme } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from 'react-native-paper';
+import { Ionicons,FontAwesome,MaterialIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 // Import your components or screens here
 import HomeScreen from './screens/HomeScreen';
@@ -16,7 +16,7 @@ const BottomTabNavigator = () => {
     <>
       <Tab.Navigator
         tabBarOptions={{
-          activeTintColor: '#D0FD3E',
+          activeTintColor: '#7e9e1e',
           inactiveTintColor: 'black',
           style: {
             backgroundColor: 'white',
@@ -38,7 +38,7 @@ const BottomTabNavigator = () => {
           component={HomeScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons name="home-outline" size={24} color={color} />
+              <Ionicons name="home" size={24} color="black" />
             ),
             tabBarLabel: 'Home',
           }}
@@ -48,7 +48,7 @@ const BottomTabNavigator = () => {
           component={WorkoutScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons name="fitness-outline" size={24} color={color} />
+              <MaterialIcons name="fitness-center" size={24} color="black" />
             ),
             tabBarLabel: 'Workouts',
           }}
@@ -58,7 +58,7 @@ const BottomTabNavigator = () => {
           component={NewRoutineScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons name="add-circle-outline" size={32} color='#D0FD3E' />
+              <Ionicons name="add-circle-outline" size={32} color='Black' />
             ),
             tabBarLabel: '',
             tabBarButton: ({ accessibilityRole, onPress, onLongPress }) => (
@@ -75,32 +75,32 @@ const BottomTabNavigator = () => {
                   height: 50,
                   borderRadius: 25,
                   borderWidth: 5,
-                  borderColor: 'white',
+                  borderColor: '#ffffff',
                 }}
               >
-                <Ionicons name="add" size={24} color='white' />
+                <MaterialIcons name="create" size={24} color="black" />
               </TouchableOpacity>
             ),
           }}
         />
         <Tab.Screen
-          name="Progress"
+          name="Coachs"
           component={ProgressScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons name="stats-chart-outline" size={24} color={color} />
+              <FontAwesome name="users" size={24} color="black" />
             ),
-            tabBarLabel: 'Progress',
+            tabBarLabel:"Coachs",
           }}
         />
         <Tab.Screen
-          name="Settings"
+          name="profile"
           component={SettingsScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons name="settings-outline" size={24} color={color} />
+              <FontAwesome name="user" size={24} color="black" />
             ),
-            tabBarLabel: 'Settings',
+            tabBarLabel: 'Profile',
           }}
         />
       </Tab.Navigator>
