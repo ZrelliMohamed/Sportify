@@ -1,13 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import LoginPage from './screneens/LoginPage';
+import LoginPage from "./LoginPage"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import Sign from './screneens/Sign';
+import Sign from './Sign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import ForgetPassword from './screneens/ForgotPassword';
-import BottomNavigation from './screneens/BottomNavigation';
+import ForgetPassword from './ForgotPassword';
 
 function Login() {
   return (
@@ -25,12 +24,27 @@ function SignUp() {
 }
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+export default function BottomNavigation() {
   
  
       
   return (
-  <BottomNavigation/>
+ <NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen name="Login" component={LoginPage} 
+       options={{
+                tabBarIcon: ({ color, size }) => (
+                   <Ionicons name="log-in" color={color} size={size} />
+                ),
+              }} />
+      <Tab.Screen name="sign" component={Sign} 
+       options={{
+                 tabBarIcon: ({ color, size }) => (
+                   <Entypo name="add-user" color={color} size={size} />
+                ),
+              }} />
+    </Tab.Navigator>
+  </NavigationContainer> 
   );
 }
 
