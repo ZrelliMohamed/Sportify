@@ -99,6 +99,25 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`programes` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 -- -----------------------------------------------------
+-- Table `Spotify`.`programes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Spotify`.`programes` (
+  `prg_id` INT NOT NULL AUTO_INCREMENT,
+  `prg_img` LONGTEXT NOT NULL,
+  `prg_name` VARCHAR(45) NOT NULL,
+  `User_Id` INT NOT NULL,
+  PRIMARY KEY (`prg_id`, `User_Id`),
+  INDEX `fk_programes_User1_idx` (`User_Id` ASC) VISIBLE,
+  UNIQUE INDEX `prg_id_UNIQUE` (`prg_id` ASC) VISIBLE,
+  CONSTRAINT `fk_programes_User1`
+    FOREIGN KEY (`User_Id`)
+    REFERENCES `Spotify`.`Users` (`User_Id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `Spotify`.`programes_has_exercices`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Spotify`.`programes_has_exercices` (
