@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet,Image } from 'react-native';
 import Swiper from 'react-native-swiper';
-
+import { Icon, Select } from 'native-base';
 const HomeScreen = () => {
+  const [language, setLanguage] = React.useState('key0');
   return (
     <View style={styles.container}>
       <View style={styles.swiperContainer}>
@@ -21,7 +22,20 @@ const HomeScreen = () => {
         </Swiper>
       </View>
       <View style={styles.contentContainer}>
-        <Text>b9iyet il 5edma</Text>
+      <Select
+      placeholder="Mode of payment"
+      selectedValue={language}
+      width={150}
+      onValueChange={(itemValue) => setLanguage(itemValue)}
+    >
+      <Select.Item label="Wallet" value="key0" />
+      <Select.Item label="ATM Card" value="key1" />
+      <Select.Item label="Debit Card" value="key2" />
+      <Select.Item label="Credit Card" value="key3" />
+      <Select.Item label="Net Banking" value="key4" />
+    </Select>
+
+    
       </View>
     </View>
   );
