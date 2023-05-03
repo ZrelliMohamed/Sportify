@@ -2,8 +2,9 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Box, Button, Center } from 'native-base'
 import { FontAwesome } from '@expo/vector-icons'
-
+import { useNavigation } from '@react-navigation/native';
 const CartEmpty = () => {
+  const navigation = useNavigation()
   return (
     <Box flex={1} px={4}>
         <Center h='90%'>
@@ -12,7 +13,12 @@ const CartEmpty = () => {
             </Center>
       <Text  style={{color:"#7e9e1e"}}  bold mt={5}>CART IS EMPTY</Text>
         </Center>
-        <Button bg={"#7e9e1e"} color={'white'} borderRadius={100}>
+        <Button bg={"#7e9e1e"} color={'white'} borderRadius={100}
+           onPress={()=>{
+            navigation.navigate('Store')
+          }}
+        >
+       
             START SHOPPING
         </Button>
     </Box>
