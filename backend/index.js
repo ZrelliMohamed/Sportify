@@ -6,94 +6,172 @@ const mysql = require('mysql2');
 const  uuid = require('uuid');
 const nodemailer = require("nodemailer");
 const { google } = require('googleapis');
-
 const OAuth2 = google.auth.OAuth2;
-
 const app = express()
-
 const Port = 3000
 app.use(cors())
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
-const connection = require('./database/index')
+const connection = require('./database/index');
+const { getAll, add } = require('./controllers/user');
 
-app.post('/register', (req, res) => {
-  const { username, password, email, type } = req.body;
-
-  // Hash the password using bcrypt
-  bcrypt.hash(password, 10, (err, hash) => {
-    if (err) {
-      console.error('Error hashing password: ' + err);
-      res.sendStatus(500);
-      return;
-    }
-
-    // Insert the user's information into the MySQL database
-    const query = 'INSERT INTO users (user_name, user_password, user_email,user_type) VALUES (?, ?, ?, ?)';
-    connection.query(query, [username, hash, email, type], (err, result) => {
-      if (err) {
-        console.error('Error inserting user into database: ' + err);
-        res.sendStatus(500);
-      } else {
-        res.sendStatus(200);
+app.get('/api/users/getAll',(req,res)=>{
+  getAll((err,result)=>{
+      if(err){
+          res.status(500).json(err)
       }
-    });
-  });
+      else {
+          res.status(200).json(result)
+      }
+  })
 })
 
+app.post('/updateHeight', (req, res) => {
+  const { email, height } = req.body;
+  const updateQuery = 'UPDATE Users SET user_heigth = ? WHERE user_email = ?';
+  connection.query(updateQuery, [height, email], (err, result) => {
+    if (err) {
+      console.error('Error updating user height: ' + err);
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+app.post('/gender', (req, res) => {
+  const { email, gender } = req.body;
+  const updateQuery = 'UPDATE Users SET user_gender = ? WHERE user_email = ?';
+  connection.query(updateQuery, [gender, email], (err, result) => {
+    if (err) {
+      console.error('Error updating user height: ' + err);
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+app.post('/weight', (req, res) => {
+  const { email, weight } = req.body;
+  const updateQuery = 'UPDATE Users SET user_weight = ? WHERE user_email = ?';
+  connection.query(updateQuery, [weight, email], (err, result) => {
+    if (err) {
+      console.error('Error updating user height: ' + err);
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+app.post('/goal', (req, res) => {
+  const { email, goal } = req.body;
+  const updateQuery = 'UPDATE Users SET user_goal = ? WHERE user_email = ?';
+  connection.query(updateQuery, [goal, email], (err, result) => {
+    if (err) {
+      console.error('Error updating user height: ' + err);
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
 
-// app.post('/login', (req, res) => {
-//   const { username, password } = req.body;
-
-//   // Verify the username and password against the MySQL database
-//   const query = 'SELECT * FROM Users WHERE User_Id = ?';
-//   connection.query(query, [username], (err, result) => {
+// app.post('/register', (req, res) => {
+//   const { username, password, email, type } = req.body;
+//   const query = 'SELECT * FROM users WHERE user_email = ?';
+//   connection.query(query, [email], (err, rows) => {
 //     if (err) {
-//       console.error('Error verifying username and password: ' + err);
+//       console.error('Error checking for existing email: ' + err);
 //       res.sendStatus(500);
 //       return;
 //     }
-
-//     if (result.length == 0) {
-//       res.sendStatus(401);
+//     if (rows.length > 0) {
+//       res.status(400).send('Email address already in use');
 //       return;
 //     }
-
-//     const user = result[0];
-
-//     // Compare the password hash using bcrypt
-//     bcrypt.compare(password, user.user_password, (err, result) => {
+//     if (!password) {
+//       res.status(400).send('Password is required');
+//       return;
+//     }
+//     bcrypt.genSalt(10, (err, salt) => {
 //       if (err) {
-//         console.error('Error verifying username and passwords: ' + err);
+//         console.error('Error generating salt: ' + err);
 //         res.sendStatus(500);
 //         return;
 //       }
-
-//       if (!result) {
-//         res.sendStatus(401);
-//         return;
-//       }
-
-//       // Generate a JWT token
-//       const token = jwt.sign({ username: user.User_Id }, 'my_secret_key');
-
-//       res.json({ token });
+//       bcrypt.hash(password, salt, (err, hash) => {
+//         if (err) {
+//           console.error('Error hashing password: ' + err);
+//           res.sendStatus(500);
+//           return;
+//         }
+//         const insertQuery = 'INSERT INTO Users (user_name, user_password, user_email, user_type) VALUES (?, ?, ?, "user")';
+//         connection.query(insertQuery, [username, hash, email], (err, result) => {
+//           if (err) {
+//             console.error('Error inserting user into database: ' + err);
+//             res.sendStatus(500);
+//           } else {
+//             res.sendStatus(200);
+//           }
+//         });
+//       });
 //     });
 //   });
 // });
+app.post('/register', (req, res) => {
+  const { username, password, email, type } = req.body;
+  const query = 'SELECT * FROM users WHERE user_email = ?';
+  connection.query(query, [email], (err, rows) => {
+    if (err) {
+      console.error('Error checking for existing email: ' + err);
+      res.sendStatus(500);
+      return;
+    }
+    if (rows.length > 0) {
+      res.status(400).send('Email address already in use');
+      return;
+    }
+    if (!password) {
+      res.status(400).send('Password is required');
+      return;
+    }
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) {
+        console.error('Error generating salt: ' + err);
+        res.sendStatus(500);
+        return;
+      }
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) {
+          console.error('Error hashing password: ' + err);
+          res.sendStatus(500);
+          return;
+        }
+        const insertQuery = 'INSERT INTO Users (user_name, user_password, user_email, user_type) VALUES (?, ?, ?, "user")';
+        connection.query(insertQuery, [username, hash, email], (err, result) => {
+          if (err) {
+            console.error('Error inserting user into database: ' + err);
+            res.sendStatus(500);
+          } else {
+            res.sendStatus(200);
+      
+          }
+        });
+      });
+    });
+  });
+});
 
 
-  // Create an API that requires authentication
+
+
+
 app.get('/protected', (req, res) => {
-  // Get the JWT token from the Authorization header
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
     res.sendStatus(401);
     return;
   }
-
-  // Verify the JWT token
   jwt.verify(token, 'my_secret_key', (err, decoded) => {
     if (err) {
       console.error('Error verifying JWT token: ' + err);
@@ -109,8 +187,6 @@ const secretKey = 'mysecretkey';
 
 app.post('/loginn', (req, res) => {
   const { email, password } = req.body;
-
-  // Retrieve the user from the database based on the email
   const query = 'SELECT * FROM Users WHERE user_email = ?';
   connection.query(query, [email], (err, results) => {
     if (err) {
@@ -118,8 +194,6 @@ app.post('/loginn', (req, res) => {
       res.sendStatus(500);
       return;
     }
-
-    // Check if the user exists and if the password is correct
     if (results.length === 0) {
       res.status(401).send({ message: 'Invalid email or password' });
       return;
@@ -137,8 +211,6 @@ app.post('/loginn', (req, res) => {
         res.status(401).send({ message: 'Invalid email or password' });
         return;
       }
-
-      // If the email and password are valid, generate a JWT and send it to the client
       const token = jwt.sign({ userId: user.User_Id }, secretKey, { expiresIn: '1h' });
       res.send({ token });
     });
@@ -168,24 +240,67 @@ const transporter = nodemailer.createTransport({
     accessToken: oAuth2Client.getAccessToken(),
   },
 });
+const verificationCodeMap = new Map();
+
+// app.post("/forget-password-email", async (req, res) => {
+//   const { email } = req.body;
+//   const verificationCode = Math.floor(100000 + Math.random() * 900000);
+
+//   const mailOptions = {
+//     from: "medb0748@gmail.com",
+//     to: email,
+//     subject: "Reset Password Code",
+//     text: `Your reset password code is ${verificationCode}`,
+//   };
+
+//   transporter.sendMail(mailOptions, (error, info) => {
+//     if (error) {
+//       console.log(error);
+//       res.status(500).send("Could not send email");
+//     } else {
+//       console.log("Email sent: " + info.response);
+//       res.status(200).send("Email sent successfully");
+//       verificationCodeMap.set(email, verificationCode);
+//       console.log("Verification code for", email, "is", verificationCode);
+
+//     }
+//   });
+// });
 app.post("/forget-password-email", async (req, res) => {
   const { email } = req.body;
-  const randomCode = Math.floor(100000 + Math.random() * 900000);
 
-  const mailOptions = {
-    from: "medb0748@gmail.com",
-    to: email,
-    subject: "Reset Password Code",
-    text: `Your reset password code is ${randomCode}`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-      res.status(500).send("Could not send email");
+  // Retrieve all users from the database
+  getAll((err, users) => {
+    if (err) {
+      res.status(500).json(err);
     } else {
-      console.log("Email sent: " + info.response);
-      res.status(200).send("Email sent successfully");
+      // Check if the requested email is present in the list of users
+      const user = users.find((user) => user.user_email === email);
+      if (!user) {
+        res.status(400).send("Email not found");
+        return;
+      }
+
+      // Generate verification code and send email
+      const verificationCode = Math.floor(100000 + Math.random() * 900000);
+      const mailOptions = {
+        from: "medb0748@gmail.com",
+        to: email,
+        subject: "Reset Password Code",
+        text: `Your reset password code is ${verificationCode}`,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          res.status(500).send("Could not send email");
+        } else {
+          console.log("Email sent: " + info.response);
+          res.status(200).send("Email sent successfully");
+          verificationCodeMap.set(email, verificationCode);
+          console.log("Verification code for", email, "is", verificationCode);
+        }
+      });
     }
   });
 });
@@ -193,9 +308,41 @@ app.post("/forget-password-email", async (req, res) => {
 
 
 
+app.post("/verify-code", (req, res) => {
+  const { email, code } = req.body;
+  console.log("email:", email);
+  console.log("code:", code);
+  const verificationCode = verificationCodeMap.get(email);
+  console.log("verificationCode:", verificationCode);
+  if (verificationCode == code) {
+    res.status(200).send("Code verified successfully");
+  } else {
+    res.status(400).send("Invalid code");
+  }
+});
 
 
 
+
+
+app.put('/change-password', (req, res) => {
+  const { email, password } = req.body
+  const salt = bcrypt.genSaltSync(10)
+  const hash = bcrypt.hashSync(password, salt)
+
+  const sql = 'UPDATE Users SET user_password = ? WHERE user_email = ?'
+
+  connection.query(sql, [hash, email], (err, result) => {
+    if (err) {
+      console.error(err)
+      res.status(500).send('Could not update password');
+    } else if (result.affectedRows === 0) {
+      res.status(404).send('User not found')
+    } else {
+      res.send('Password updated successfully')
+    }
+  });
+});
 
 
             
