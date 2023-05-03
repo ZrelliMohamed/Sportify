@@ -14,9 +14,9 @@ const CarteScreen = () => {
             </Text>
         </Center>
       {/* If Carte is Empty display this component */}
-      {/* <CartEmpty/> */}
+      <CartEmpty/>
       {/* else display  Cart Items */}
-      <ScrollView showsVerticalScrollIndicator={false}>
+      {/* <ScrollView showsVerticalScrollIndicator={false}>
       <CarteItems/>
       <Center mt={5}>
             <HStack style={{borderRadius:50,justifyContent:"space-between",backgroundColor:"white",shadowOffset:2}} w='90%' pl={5} h={45} alignItems={"center"}>
@@ -25,7 +25,7 @@ const CarteScreen = () => {
             </HStack>
         </Center>
         <Button borderRadius={100} mt={15} bg='black' m={50} h={70}> CHECKOUT</Button>
-      </ScrollView>
+      </ScrollView> */}
 
     </Box>
   )

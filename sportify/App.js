@@ -18,14 +18,16 @@ import SportGoalSelector from './screneens/SportGoalSelector.js';
 import HomeScreen from './screens/HomeScreen.js';
 import SingleProduct from './screens/store/SingleProduct.js';
 import CarteScreen from './screens/store/CarteScreen.js';
-
+import Store from './screens/store/Store.js';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LoginPage">
+
+        <Stack.Navigator initialRouteName="BottomTabNavigator">
+          <Stack.Screen name="Store" component={Store} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
         <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} />
