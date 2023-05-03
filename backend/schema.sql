@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Users` (
   `user_heigth` INT NULL,
   `user_gender` VARCHAR(45) NULL,
   `user_weight` VARCHAR(45) NULL,
-  `user_goal` VARCHAR(45) NULL,
+  `user_goal` LONGTEXT NULL,
   `user_preference` VARCHAR(45) NULL,
   `User_preview` FLOAT NULL,
   PRIMARY KEY (`User_Id`))

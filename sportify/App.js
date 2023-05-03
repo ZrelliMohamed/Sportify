@@ -7,6 +7,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import { NativeBaseProvider } from 'native-base';
 import SingleProduct from './screens/store/SingleProduct.js';
 import CarteScreen from './screens/store/CarteScreen.js';
+import Store from './screens/store/Store.js';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
     <NativeBaseProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="BottomTabNavigator">
+          <Stack.Screen name="Store" component={Store} />
           <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
