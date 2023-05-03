@@ -27,7 +27,7 @@ const HEIGHT_VALUES = [
   { label: '2.9 m', value: '2.9' },
   { label: '3.0 m', value: '3.0' }
 ];
-
+import API_URL from './var'
 const HeightPicker = () => {
   const [selectedHeight, setSelectedHeight] = useState(null);
   const navigation = useNavigation();
@@ -37,19 +37,40 @@ const HeightPicker = () => {
   const handleHeightChange = (value) => {
     setSelectedHeight(value);
   };
-console.log(email)
-  const handleNextButtonPress = () => {
-    axios.post('http://10.0.2.2:3000/updateHeight', {
+console.log(selectedHeight)
+const handleNextButtonPress = () => {
+  fetch(`${API_URL}/updateHeight`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
       email: email,
       height: selectedHeight
     })
-      .then(() => {
-        navigation.navigate('GenderPicker',{email:email});
-      })
-      .catch((error) => {
-        console.error('Error updating user height: ' + error);
-      });
-  };
+  })
+  .then(response => {
+    console.log(response);
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Error updating user height');
+    }
+  })
+  .then(data => {
+  
+    if (data.error) {
+      throw new Error(data.error);
+    } else {
+      navigation.navigate('GenderPicker', { email: email });
+    }
+  })
+  .catch(error => {
+    console.error('here',error);
+  });
+};
+
+
 
   return (
     <View style={styles.container}>

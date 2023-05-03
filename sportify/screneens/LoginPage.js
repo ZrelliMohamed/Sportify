@@ -4,8 +4,7 @@ import ForgetPassword from './ForgotPassword';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Sign from './Sign'
-import axios from 'axios';
-
+import API_URL from './var'
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [data,setData] = useState([])
@@ -17,13 +16,21 @@ const LoginScreen = () => {
     navigation.navigate('Sign');
   };
   const handleLogin = () => {
-    axios.post('http://10.0.2.2:3000/loginn', { email, password }, { headers: { 'Content-Type': 'application/json' } })
-      .then(response => {
-       setData(response.data)
-        navigation.navigate('HomeScreen');
-      })
-      .catch(error => console.error('Error logging in: ' + error));
+    fetch(`${API_URL}/loginn`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+      setData(data);
+      navigation.navigate('HomeScreen');
+    })
+    .catch(error => console.error('Error logging in: ' + error));
   };
+  
 
   return (
     <View style={styles.container}>
