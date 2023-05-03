@@ -1,19 +1,15 @@
 -- MySQL Workbench Forward Engineering
-
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHfECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
 -- -----------------------------------------------------
 -- Schema Spotify
 -- -----------------------------------------------------
-
 -- -----------------------------------------------------
 -- Schema Spotify
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `Spotify` DEFAULT CHARACTER SET utf8 ;
 USE `Spotify` ;
-
 -- -----------------------------------------------------
 -- Table `Spotify`.`Users`
 -- -----------------------------------------------------
@@ -32,8 +28,6 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Users` (
   `User_preview` FLOAT NULL,
   PRIMARY KEY (`User_Id`))
 ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `Spotify`.`Commandes`
 -- -----------------------------------------------------
@@ -50,8 +44,6 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Commandes` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `Spotify`.`Product`
 -- -----------------------------------------------------
@@ -69,8 +61,6 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Product` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `Spotify`.`user`
 -- -----------------------------------------------------
@@ -79,8 +69,6 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`user` (
   `email` VARCHAR(255) NULL,
   `password` VARCHAR(32) NOT NULL,
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP);
-
-
 -- -----------------------------------------------------
 -- Table `Spotify`.`exercices`
 -- -----------------------------------------------------
@@ -93,8 +81,23 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`exercices` (
   `exercice_calories` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`exercice_id`))
 ENGINE = InnoDB;
-
-
+-- -----------------------------------------------------
+-- Table `Spotify`.`programes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Spotify`.`programes` (
+  `prg_id` INT NOT NULL AUTO_INCREMENT,
+  `prg_img` LONGTEXT NOT NULL,
+  `prg_name` VARCHAR(45) NOT NULL,
+  `User_Id` INT NOT NULL,
+  PRIMARY KEY (`prg_id`, `User_Id`),
+  INDEX `fk_programes_User1_idx` (`User_Id` ASC) VISIBLE,
+  UNIQUE INDEX `prg_id_UNIQUE` (`prg_id` ASC) VISIBLE,
+  CONSTRAINT `fk_programes_User1`
+    FOREIGN KEY (`User_Id`)
+    REFERENCES `Spotify`.`Users` (`User_Id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Spotify`.`programes`
 -- -----------------------------------------------------
@@ -135,8 +138,6 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`programes_has_exercices` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
