@@ -16,6 +16,9 @@ import GenderPicker from './screneens/GenderPicker.js'
 import WeightPicker from './screneens/WeightPicker.js'
 import SportGoalSelector from './screneens/SportGoalSelector.js';
 import HomeScreen from './screens/HomeScreen.js';
+import SingleProduct from './screens/store/SingleProduct.js';
+import CarteScreen from './screens/store/CarteScreen.js';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -36,6 +39,9 @@ const App = () => {
           <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+          <Stack.Screen name="SingleProduct" component={SingleProduct}  options={{ headerShown: false }}  />
+          <Stack.Screen name="CarteScreen" component={CarteScreen}  options={{ headerShown: false }}  />
+        
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
