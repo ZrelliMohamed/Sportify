@@ -1,16 +1,18 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import BottomTabNavigator from './BottomTabNavigator.js';
-import ProfileScreen from './screens/ProfileScreen.js';
-import SettingsScreen from './screens/SettingsScreen';
+import LoginPage from './screneens/LoginPage.js';
+import ForgetPassword from './screneens/ForgotPassword.js';
+import VerifyCodeForm from './screneens/VerifyCodeForm.js';
+import ResetPasswordForm from './screneens/ResetPasswordForm.js';
+import Sign from './screneens/Sign.js';
 import { NativeBaseProvider } from 'native-base';
 import WorkoutScreen from './screens/WorkoutScreen.js';
 import ProgramScreen from './screens/ProgramScreen.js';
 import ExerciceScreen from './screens/ExerciceScreen.js';
 import FitScreen from './screens/FitScreen.js';
 import RestScreen from './screens/RestScreen.js';
-
+import MainStackNavigator from './MainStackNavigator.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,18 +20,17 @@ const App = () => {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="BottomTabNavigator">
-          <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="WorkoutScreen" component={WorkoutScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="ProgramScreen" component={ProgramScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="ExerciceScreen" component={ExerciceScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="Fit" component={FitScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="Rest" component={RestScreen} options={{headerShown:false}}/>
+        <Stack.Navigator initialRouteName="LoginPage">
+          <Stack.Screen name="LoginPage" component={LoginPage} />
+          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+          <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} />
+          <Stack.Screen name="ResetPasswordForm" component={ResetPasswordForm} />
+          <Stack.Screen name="Sign" component={Sign} />
+          <Stack.Screen name="MainStackNavigator" component={MainStackNavigator} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
   );
 };
+
 export default App;
