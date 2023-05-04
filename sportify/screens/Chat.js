@@ -1,12 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const NewRoutineScreen = () => {
+export default function Chat() {
   return (
     <View>
-      <Text>NewRoutineScreen</Text>
+      <Text>Chat</Text>
     </View>
   )
 }
-
-export default NewRoutineScreen

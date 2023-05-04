@@ -1,18 +1,6 @@
--- MySQL Workbench Forward Engineering
-
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
 -- -----------------------------------------------------
 -- Schema Spotify
 -- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema Spotify
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `Spotify` DEFAULT CHARACTER SET utf8 ;
-USE `Spotify` ;
 
 -- -----------------------------------------------------
 -- Table `Spotify`.`Users`
@@ -30,9 +18,9 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Users` (
   `user_goal` VARCHAR(45) NULL,
   `user_preference` VARCHAR(45) NULL,
   `User_preview` FLOAT NULL,
-  PRIMARY KEY (`User_Id`))
-ENGINE = InnoDB;
-
+  `last_active` TIMESTAMP NULL,
+  PRIMARY KEY (`User_Id`)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `Spotify`.`Commandes`
@@ -48,9 +36,8 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Commandes` (
     FOREIGN KEY (`User_Id`)
     REFERENCES `Spotify`.`Users` (`User_Id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
+    ON UPDATE CASCADE
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `Spotify`.`Product`
@@ -67,9 +54,8 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Product` (
     FOREIGN KEY (`commande_id`)
     REFERENCES `Spotify`.`Commandes` (`commande_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
+    ON UPDATE CASCADE
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `Spotify`.`user`
@@ -78,8 +64,8 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`user` (
   `username` VARCHAR(16) NOT NULL,
   `email` VARCHAR(255) NULL,
   `password` VARCHAR(32) NOT NULL,
-  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP);
-
+  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `Spotify`.`exercices`
@@ -91,9 +77,8 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`exercices` (
   `exercice_description` VARCHAR(45) NOT NULL,
   `exercice_sets` INT NOT NULL,
   `exercice_calories` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`exercice_id`))
-ENGINE = InnoDB;
-
+  PRIMARY KEY (`exercice_id`)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `Spotify`.`programes`
@@ -110,33 +95,55 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`programes` (
     FOREIGN KEY (`User_Id`)
     REFERENCES `Spotify`.`Users` (`User_Id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
+    ON UPDATE CASCADE
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `Spotify`.`programes_has_exercices`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Spotify`.`programes_has_exercices` (
-  `prg_id` INT NOT NULL,
-  `User_Id` INT NOT NULL,
-  `exercice_id` INT NOT NULL,
-  PRIMARY KEY (`prg_id`, `User_Id`, `exercice_id`),
-  INDEX `fk_programes_has_exercices_exercices1_idx` (`exercice_id` ASC) VISIBLE,
-  INDEX `fk_programes_has_exercices_programes1_idx` (`prg_id` ASC, `User_Id` ASC) VISIBLE,
+  `programes_prg_id` INT NOT NULL,
+  `exercices_exercice_id` INT NOT NULL,
+  PRIMARY KEY (`programes_prg_id`, `exercices_exercice_id`),
+  INDEX `fk_programes_has_exercices_exercices1_idx` (`exercices_exercice_id` ASC) VISIBLE,
+  INDEX `fk_programes_has_exercices_programes1_idx` (`programes_prg_id` ASC) VISIBLE,
   CONSTRAINT `fk_programes_has_exercices_programes1`
-    FOREIGN KEY (`prg_id` , `User_Id`)
-    REFERENCES `Spotify`.`programes` (`prg_id` , `User_Id`)
+    FOREIGN KEY (`programes_prg_id`)
+    REFERENCES `Spotify`.`programes` (`prg_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_programes_has_exercices_exercices1`
-    FOREIGN KEY (`exercice_id`)
+    FOREIGN KEY (`exercices_exercice_id`)
     REFERENCES `Spotify`.`exercices` (`exercice_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+    ON UPDATE CASCADE
+) ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `Spotify`.`chat_rooms`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Spotify`.`chat_rooms` (
+  `room_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `description` LONGTEXT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`room_id`)
+) ENGINE = InnoDB;
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- -----------------------------------------------------
+-- Table `Spotify`.`chat_messages`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Spotify`.`chat_messages` (
+  `message_id` INT NOT NULL AUTO_INCREMENT,
+  `content` LONGTEXT NOT NULL,
+  `sent_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sender` VARCHAR(255) NOT NULL,
+  `room_id` INT NOT NULL,
+  PRIMARY KEY (`message_id`),
+  INDEX `fk_chat_messages_chat_rooms1_idx` (`room_id` ASC) VISIBLE,
+  CONSTRAINT `fk_chat_messages_chat_rooms1`
+    FOREIGN KEY (`room_id`)
+    REFERENCES `Spotify`.`chat_rooms` (`room_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE = InnoDB;

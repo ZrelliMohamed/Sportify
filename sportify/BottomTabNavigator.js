@@ -8,7 +8,7 @@ import HomeScreen from './screens/HomeScreen';
 import WorkoutScreen from './screens/WorkoutScreen';
 import ProgressScreen from './screens/ProgressScreen';
 import SettingsScreen from './screens/ProfileScreen';
-import NewRoutineScreen from './screens/NewRoutineScreen.js';
+import NewRoutineScreen from './screens/Chat.js';
 const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
   const { colors } = useTheme();
@@ -58,7 +58,7 @@ const BottomTabNavigator = () => {
           component={NewRoutineScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons name="add-circle-outline" size={32} color='Black' />
+              <Ionicons name="chat-outline" size={32} color='Black' />
             ),
             tabBarLabel: '',
             tabBarButton: ({ accessibilityRole, onPress, onLongPress }) => (
@@ -103,6 +103,7 @@ const BottomTabNavigator = () => {
             tabBarLabel: 'Profile',
           }}
         />
+        
       </Tab.Navigator>
     </>
   );

@@ -99,7 +99,7 @@ const ProfileScreen = () => {
           </View>
           <View style={styles.cardBody}>
             <TouchableOpacity style={styles.favorite}>
-              <Icon name="dumbbell" size={24} color="#4286f4" />
+              <Icon name="fitness-center" size={24} color="#4286f4" />
               <Text style={styles.favoriteText}>Full Body Workout</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.favorite}>
