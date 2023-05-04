@@ -39,7 +39,7 @@ const HeightPicker = () => {
   };
 console.log(email)
   const handleNextButtonPress = () => {
-    axios.post('http://10.0.2.2:3000/updateHeight', {
+    axios.post('http://192.168.103.15:3000/updateHeight', {
       email: email,
       height: selectedHeight
     })

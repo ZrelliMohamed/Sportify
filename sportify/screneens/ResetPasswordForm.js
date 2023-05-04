@@ -23,7 +23,7 @@ console.log(email)
       return;
     }
     try {
-      const response = await axios.put('http://10.0.2.2:3000/change-password', {
+      const response = await axios.put('http://192.168.103.15:3000/change-password', {
         email,
         password: newPassword,
         

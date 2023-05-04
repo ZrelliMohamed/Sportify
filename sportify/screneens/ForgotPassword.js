@@ -10,7 +10,7 @@ const ForgetPassword = () => {
 
   const handleSendEmail = async () => {
     try {
-      const response = await axios.post('http://10.0.2.2:3000/forget-password-email', { email });
+      const response = await axios.post('http://192.168.103.15:3000/forget-password-email', { email });
       setMessage(response.data);
       setShowVerifyCodeForm(true); 
     } catch (error) {

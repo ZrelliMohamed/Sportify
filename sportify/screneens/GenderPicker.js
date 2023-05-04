@@ -22,7 +22,7 @@ const GenderPicker = () => {
     }
   };
   const handleNextButtonPress = () => {
-    axios.post('http://10.0.2.2:3000/gender', {
+    axios.post('http://192.168.103.15:3000/gender', {
       email: email,
       gender:selectedGender
     })

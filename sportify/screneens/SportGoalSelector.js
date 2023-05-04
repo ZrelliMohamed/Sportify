@@ -22,7 +22,7 @@ const SportGoalSelector = () => {
   //   onNextPress(selectedGoal);
   // }
   const handleNextButtonPress = () => {
-    axios.post('http://10.0.2.2:3000/goal', {
+    axios.post('http://192.168.103.15:3000/goal', {
       email: email,
       goal:selectedGoal
     })

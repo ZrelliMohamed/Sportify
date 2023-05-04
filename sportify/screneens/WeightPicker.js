@@ -20,7 +20,7 @@ const WeightPicker = () => {
     setSelectedWeight(value);
   };
   const handleNextButtonPress = () => {
-    axios.post('http://10.0.2.2:3000/weight', {
+    axios.post('http://192.168.103.15:3000/weight', {
       email: email,
       weight:selectedWeight 
     })

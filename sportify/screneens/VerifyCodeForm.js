@@ -12,7 +12,7 @@ const VerifyCodeForm = ({ email }) => {
 
   const handleVerifyCode = async () => {
     try {
-      const response = await axios.post('http://10.0.2.2:3000/verify-code', {
+      const response = await axios.post('http://192.168.103.15:3000/verify-code', {
         email,
         code
       });

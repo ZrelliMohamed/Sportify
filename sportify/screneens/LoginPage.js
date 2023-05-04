@@ -17,7 +17,7 @@ const LoginScreen = () => {
     navigation.navigate('Sign');
   };
   const handleLogin = () => {
-    axios.post('http://10.0.2.2:3000/loginn', { email, password }, { headers: { 'Content-Type': 'application/json' } })
+    axios.post('http://192.168.103.15:3000/loginn', { email, password }, { headers: { 'Content-Type': 'application/json' } })
       .then(response => {
        setData(response.data)
         navigation.navigate('HomeScreen');
