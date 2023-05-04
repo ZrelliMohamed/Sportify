@@ -4,7 +4,7 @@ import ForgetPassword from './ForgotPassword';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Sign from './Sign'
-import API_URL from './var'
+import API_URL from './var';
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [data,setData] = useState([])
@@ -16,6 +16,7 @@ const LoginScreen = () => {
     navigation.navigate('Sign');
   };
   const handleLogin = () => {
+    console.log('enter');
     fetch(`${API_URL}/loginn`, {
       method: 'POST',
       headers: {
@@ -25,8 +26,9 @@ const LoginScreen = () => {
     })
     .then(response => response.json())
     .then(data => {
+      console.log(data);
       setData(data);
-      navigation.navigate('HomeScreen');
+      navigation.navigate('MainStackNavigator');
     })
     .catch(error => console.error('Error logging in: ' + error));
   };
