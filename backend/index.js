@@ -148,6 +148,37 @@ app.get('/protected', (req, res) => {
 
 const secretKey = 'mysecretkey';
 
+// app.post('/loginn', (req, res) => {
+//   const { email, password } = req.body;
+//   const query = 'SELECT * FROM Users WHERE user_email = ?';
+//   connection.query(query, [email], (err, results) => {
+//     if (err) {
+//       console.error('Error retrieving user from database: ' + err);
+//       res.sendStatus(500);
+//       return;
+//     }
+//     if (results.length === 0) {
+//       res.status(401).send({ message: 'Invalid email or password' });
+//     }
+
+//     const user = results[0];
+//     console.log(results,'the user');
+//     bcrypt.compare(password, user.user_password, (err, isMatch) => {
+//       if (err) {
+//         console.error('Error comparing passwords: ' + err);
+//         res.sendStatus(500);
+//         return;
+//       }
+
+//       if (!isMatch) {
+//         res.status(401).send({ message: 'Invalid email or password' });
+//         return;
+//       }
+//       const token = jwt.sign({ userId: user.User_Id }, secretKey, { expiresIn: '1h' });
+//       res.send({ token });
+//     });
+//   });
+// });
 app.post('/loginn', (req, res) => {
   const { email, password } = req.body;
   const query = 'SELECT * FROM Users WHERE user_email = ?';
@@ -159,10 +190,11 @@ app.post('/loginn', (req, res) => {
     }
     if (results.length === 0) {
       res.status(401).send({ message: 'Invalid email or password' });
-      return;
+      return; // Add this line to return from the function
     }
 
     const user = results[0];
+    console.log(results,'the user');
     bcrypt.compare(password, user.user_password, (err, isMatch) => {
       if (err) {
         console.error('Error comparing passwords: ' + err);
@@ -179,6 +211,7 @@ app.post('/loginn', (req, res) => {
     });
   });
 });
+
 
 const CLIENT_ID = "258481515920-rvekh1dpr2hp2tjq9qamjcr6ui2t63r7.apps.googleusercontent.com"
 const CLIENT_SECRET = "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";

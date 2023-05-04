@@ -8,7 +8,11 @@ import ResetPasswordForm from './screneens/ResetPasswordForm.js';
 import Sign from './screneens/Sign.js';
 import { NativeBaseProvider } from 'native-base';
 import MainStackNavigator from './MainStackNavigator.js';
-
+import HeightPicker from './screneens/HeightPicker.js'
+import GenderPicker from './screneens/GenderPicker.js'
+import WeightPicker from './screneens/WeightPicker.js'
+import SportGoalSelector from './screneens/SportGoalSelector.js'
+import HomeScreen from './screens/HomeScreen.js'
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -21,6 +25,11 @@ const App = () => {
           <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} />
           <Stack.Screen name="ResetPasswordForm" component={ResetPasswordForm} />
           <Stack.Screen name="Sign" component={Sign} />
+          <Stack.Screen name="HeightPicker" component={HeightPicker} />
+          <Stack.Screen name="GenderPicker" component={GenderPicker} />
+          <Stack.Screen name="WeightPicker" component={WeightPicker} />
+          <Stack.Screen name="SportGoalSelector" component={SportGoalSelector} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="MainStackNavigator" component={MainStackNavigator} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

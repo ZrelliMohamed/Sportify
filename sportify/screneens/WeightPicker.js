@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity , onNext} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import axios from 'axios';
+
 
 const WEIGHT_VALUES = Array.from({ length: 171 }, (_, i) => {
   const weight = (i + 30) * 0.5;
@@ -63,7 +63,7 @@ const WeightPicker = () => {
       </Picker>
       <TouchableOpacity
         style={[styles.button, !selectedWeight && styles.disabledButton]}
-        // onPress={() => onNext(selectedWeight)}
+        onPress={() => onNext(selectedWeight)}
         disabled={!selectedWeight}
       >
         <Text style={styles.buttonText} onPress={handleNextButtonPress}>Next</Text>
