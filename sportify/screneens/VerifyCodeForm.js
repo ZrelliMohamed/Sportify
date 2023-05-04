@@ -5,29 +5,36 @@ import ResetPasswordForm from './ResetPasswordForm';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-
+import API_URL from './var'
 const VerifyCodeForm = ({ email }) => {
   const [code, setCode] = useState('');
   const navigation = useNavigation();
 
   const handleVerifyCode = async () => {
     try {
-      const response = await axios.post('http://192.168.103.15:3000/verify-code', {
-        email,
-        code
+      const response = await fetch(`${API_URL}/verify-code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          code
+        })
       });
-      if (response.status === 200) {
+      const data = await response.json();
+      if (response.ok) {
         Alert.alert('Success', 'Code verified successfully');
         navigation.navigate('ResetPasswordForm', { email:email });
-
       } else {
-        Alert.alert('Error', response.data.message);
+        Alert.alert('Error', data.message);
       }
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Could not verify code. Please try again later.');
     }
   };
+  
   
 
   return (

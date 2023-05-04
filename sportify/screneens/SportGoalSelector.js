@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
-
+import API_URL from './var'
 const SportGoalSelector = () => {
   const [selectedGoal, setSelectedGoal] = useState(null);
   const navigation = useNavigation();
@@ -22,21 +22,33 @@ const SportGoalSelector = () => {
   //   onNextPress(selectedGoal);
   // }
   const handleNextButtonPress = () => {
-    axios.post('http://192.168.103.15:3000/goal', {
-      email: email,
-      goal:selectedGoal
-    })
-      .then(() => {
-       alert ('cong')
-        navigation.navigate('HomeScreen',{email:email});
+    fetch(`${API_URL}/goal`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        goal: selectedGoal
       })
-      .catch((error) => {
-        console.error('Error updating user height: ' + error);
-      });
+    })
+    .then(response => {
+      if (response.status === 200) {
+        alert('cong');
+        navigation.navigate('HomeScreen',{email: email});
+      } else {
+        console.error('Error updating user goal: ' + response.statusText);
+      }
+    })
+    .catch(error => {
+      console.error('Error updating user goal: ' + error);
+    });
   };
-
+  
   return (
     <View style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Select your sport goal:</Text>
       <View style={styles.iconsContainer}>
         <TouchableOpacity onPress={() => handleGoalPress('gaining')} style={[styles.iconButton, selectedGoal === 'gaining' && styles.selectedIcon]}>
@@ -63,6 +75,7 @@ const SportGoalSelector = () => {
       <TouchableOpacity disabled={!selectedGoal}  style={[styles.nextButton, !selectedGoal && styles.disabledButton]}>
         <Text style={styles.nextButtonText} onPress={handleNextButtonPress}>Next</Text>
       </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 }

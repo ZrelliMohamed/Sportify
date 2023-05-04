@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import axios from 'axios';
 import VerifyCodeForm from './VerifyCodeForm';
-
+import API_URL from './var'
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -10,14 +9,24 @@ const ForgetPassword = () => {
 
   const handleSendEmail = async () => {
     try {
-      const response = await axios.post('http://192.168.103.15:3000/forget-password-email', { email });
-      setMessage(response.data);
-      setShowVerifyCodeForm(true); 
+      const response = await fetch(`${API_URL}/forget-password-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email
+        })
+      });
+      const data = await response.json();
+      setMessage(data);
+      setShowVerifyCodeForm(true);
     } catch (error) {
       console.log(error);
       setMessage('Could not send email');
     }
   };
+  
 
   return (
     <View style={styles.container}>
