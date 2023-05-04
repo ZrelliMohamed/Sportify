@@ -37,7 +37,7 @@ app.post('/updateHeight', (req, res) => {
   const updateQuery = 'UPDATE Users SET user_heigth = ? WHERE user_email = ?';
   connection.query(updateQuery, [height, email], (err, result) => {
     if (err) {
-      console.error('Error updating user height: ' + err);
+      
       res.status(500).json({ error: 'Error updating user height' });
     } else {
       res.json(result);
@@ -49,8 +49,8 @@ app.post('/gender', (req, res) => {
   const updateQuery = 'UPDATE Users SET user_gender = ? WHERE user_email = ?';
   connection.query(updateQuery, [gender, email], (err, result) => {
     if (err) {
-      console.error('Error updating user height: ' + err);
-      res.sendStatus(500);
+    
+      res.sendStatus(err);
     } else {
       res.json(result);
     }
@@ -61,8 +61,7 @@ app.post('/weight', (req, res) => {
   const updateQuery = 'UPDATE Users SET user_weight = ? WHERE user_email = ?';
   connection.query(updateQuery, [weight, email], (err, result) => {
     if (err) {
-      console.error('Error updating user height: ' + err);
-      res.sendStatus(500);
+      res.sendStatus(err);
     } else {
       res.json(result);
     }
@@ -73,8 +72,7 @@ app.post('/goal', (req, res) => {
   const updateQuery = 'UPDATE Users SET user_goal = ? WHERE user_email = ?';
   connection.query(updateQuery, [goal, email], (err, result) => {
     if (err) {
-      console.error('Error updating user height: ' + err);
-      res.sendStatus(500);
+      res.sendStatus(err);
     } else {
       res.json(result);
     }
@@ -85,8 +83,7 @@ app.post('/register', (req, res) => {
   const query = 'SELECT * FROM users WHERE user_email = ?';
   connection.query(query, [email], (err, rows) => {
     if (err) {
-      console.error('Error checking for existing email: ' + err);
-      res.sendStatus(500);
+      res.sendStatus(err);
       return;
     }
     if (rows.length > 0) {
@@ -99,21 +96,19 @@ app.post('/register', (req, res) => {
     }
     bcrypt.genSalt(10, (err, salt) => {
       if (err) {
-        console.error('Error generating salt: ' + err);
-        res.sendStatus(500);
+        res.sendStatus(err);
         return;
       }
       bcrypt.hash(password, salt, (err, hash) => {
         if (err) {
-          console.error('Error hashing password: ' + err);
-          res.sendStatus(500);
+    
+          res.sendStatus(err);
           return;
         }
         const insertQuery = 'INSERT INTO Users (user_name, user_password, user_email, user_type) VALUES (?, ?, ?, "user")';
         connection.query(insertQuery, [username, hash, email], (err, result) => {
           if (err) {
-            console.error('Error inserting user into database: ' + err);
-            res.sendStatus(500);
+            res.sendStatus(err);
           } else {
             res.sendStatus(200);
       
