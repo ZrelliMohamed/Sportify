@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity , onNext} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import axios from 'axios';
+
 
 const WEIGHT_VALUES = Array.from({ length: 171 }, (_, i) => {
   const weight = (i + 30) * 0.5;
   return { label: `${weight} kg`, value: weight };
 });
-
+import API_URL from './var'
 const WeightPicker = () => {
   const [selectedWeight, setSelectedWeight] = useState(null);
   const navigation = useNavigation();
@@ -20,18 +20,32 @@ const WeightPicker = () => {
     setSelectedWeight(value);
   };
   const handleNextButtonPress = () => {
-    axios.post('http://10.0.2.2:3000/weight', {
-      email: email,
-      weight:selectedWeight 
+    fetch(`${API_URL}/weight`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        weight: selectedWeight
+      }),
     })
-      .then(() => {
-        
-        navigation.navigate('SportGoalSelector',{email:email});
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error updating user weight');
+        }
       })
-      .catch((error) => {
-        console.error('Error updating user height: ' + error);
+      .then(() => {
+        navigation.navigate('SportGoalSelector', { email: email });
+      })
+      .catch(error => {
+        console.error(error);
       });
   };
+  
 
   return (
     <View style={styles.container}>
@@ -49,7 +63,7 @@ const WeightPicker = () => {
       </Picker>
       <TouchableOpacity
         style={[styles.button, !selectedWeight && styles.disabledButton]}
-        // onPress={() => onNext(selectedWeight)}
+        onPress={() => onNext(selectedWeight)}
         disabled={!selectedWeight}
       >
         <Text style={styles.buttonText} onPress={handleNextButtonPress}>Next</Text>

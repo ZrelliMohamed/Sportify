@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet , onNext} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios'
-
+import API_URL from './var'
 const GenderPicker = () => {
   const [selectedGender, setSelectedGender] = useState(null);
   const navigation = useNavigation();
@@ -22,17 +22,31 @@ const GenderPicker = () => {
     }
   };
   const handleNextButtonPress = () => {
-    axios.post('http://10.0.2.2:3000/gender', {
-      email: email,
-      gender:selectedGender
-    })
-      .then(() => {
-        navigation.navigate('WeightPicker',{email:email});
+    fetch(`${API_URL}/gender`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        gender: selectedGender
       })
-      .catch((error) => {
-        console.error('Error updating user height: ' + error);
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error updating user gender');
+        }
+      })
+      .then(() => {
+        navigation.navigate('WeightPicker', { email: email });
+      })
+      .catch(error => {
+        console.error(error);
       });
   };
+  
 
   return (
     <View style={styles.container}>

@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const mysql = require('mysql2');
 const  uuid = require('uuid');
@@ -12,6 +13,7 @@ const Port = 3000
 app.use(cors())
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
+app.use(bodyParser.json());
 const connection = require('./database/index');
 const { getAll, add } = require('./controllers/user');
 
@@ -27,14 +29,18 @@ app.get('/api/users/getAll',(req,res)=>{
 })
 
 app.post('/updateHeight', (req, res) => {
-  const { email, height } = req.body;
+  console.log(req.body);
+  const email = req.body.email;
+  const height = req.body.height;
+  console.log(email,height);
+
   const updateQuery = 'UPDATE Users SET user_heigth = ? WHERE user_email = ?';
   connection.query(updateQuery, [height, email], (err, result) => {
     if (err) {
-      console.error('Error updating user height: ' + err);
-      res.sendStatus(500);
+      
+      res.status(500).json({ error: 'Error updating user height' });
     } else {
-      res.sendStatus(200);
+      res.json(result);
     }
   });
 });
@@ -43,10 +49,10 @@ app.post('/gender', (req, res) => {
   const updateQuery = 'UPDATE Users SET user_gender = ? WHERE user_email = ?';
   connection.query(updateQuery, [gender, email], (err, result) => {
     if (err) {
-      console.error('Error updating user height: ' + err);
-      res.sendStatus(500);
+    
+      res.sendStatus(err);
     } else {
-      res.sendStatus(200);
+      res.json(result);
     }
   });
 });
@@ -55,10 +61,9 @@ app.post('/weight', (req, res) => {
   const updateQuery = 'UPDATE Users SET user_weight = ? WHERE user_email = ?';
   connection.query(updateQuery, [weight, email], (err, result) => {
     if (err) {
-      console.error('Error updating user height: ' + err);
-      res.sendStatus(500);
+      res.sendStatus(err);
     } else {
-      res.sendStatus(200);
+      res.json(result);
     }
   });
 });
@@ -67,63 +72,18 @@ app.post('/goal', (req, res) => {
   const updateQuery = 'UPDATE Users SET user_goal = ? WHERE user_email = ?';
   connection.query(updateQuery, [goal, email], (err, result) => {
     if (err) {
-      console.error('Error updating user height: ' + err);
-      res.sendStatus(500);
+      res.sendStatus(err);
     } else {
-      res.sendStatus(200);
+      res.json(result);
     }
   });
 });
-
-// app.post('/register', (req, res) => {
-//   const { username, password, email, type } = req.body;
-//   const query = 'SELECT * FROM users WHERE user_email = ?';
-//   connection.query(query, [email], (err, rows) => {
-//     if (err) {
-//       console.error('Error checking for existing email: ' + err);
-//       res.sendStatus(500);
-//       return;
-//     }
-//     if (rows.length > 0) {
-//       res.status(400).send('Email address already in use');
-//       return;
-//     }
-//     if (!password) {
-//       res.status(400).send('Password is required');
-//       return;
-//     }
-//     bcrypt.genSalt(10, (err, salt) => {
-//       if (err) {
-//         console.error('Error generating salt: ' + err);
-//         res.sendStatus(500);
-//         return;
-//       }
-//       bcrypt.hash(password, salt, (err, hash) => {
-//         if (err) {
-//           console.error('Error hashing password: ' + err);
-//           res.sendStatus(500);
-//           return;
-//         }
-//         const insertQuery = 'INSERT INTO Users (user_name, user_password, user_email, user_type) VALUES (?, ?, ?, "user")';
-//         connection.query(insertQuery, [username, hash, email], (err, result) => {
-//           if (err) {
-//             console.error('Error inserting user into database: ' + err);
-//             res.sendStatus(500);
-//           } else {
-//             res.sendStatus(200);
-//           }
-//         });
-//       });
-//     });
-//   });
-// });
 app.post('/register', (req, res) => {
   const { username, password, email, type } = req.body;
   const query = 'SELECT * FROM users WHERE user_email = ?';
   connection.query(query, [email], (err, rows) => {
     if (err) {
-      console.error('Error checking for existing email: ' + err);
-      res.sendStatus(500);
+      res.sendStatus(err);
       return;
     }
     if (rows.length > 0) {
@@ -136,21 +96,19 @@ app.post('/register', (req, res) => {
     }
     bcrypt.genSalt(10, (err, salt) => {
       if (err) {
-        console.error('Error generating salt: ' + err);
-        res.sendStatus(500);
+        res.sendStatus(err);
         return;
       }
       bcrypt.hash(password, salt, (err, hash) => {
         if (err) {
-          console.error('Error hashing password: ' + err);
-          res.sendStatus(500);
+    
+          res.sendStatus(err);
           return;
         }
         const insertQuery = 'INSERT INTO Users (user_name, user_password, user_email, user_type) VALUES (?, ?, ?, "user")';
         connection.query(insertQuery, [username, hash, email], (err, result) => {
           if (err) {
-            console.error('Error inserting user into database: ' + err);
-            res.sendStatus(500);
+            res.sendStatus(err);
           } else {
             res.sendStatus(200);
       
@@ -185,6 +143,37 @@ app.get('/protected', (req, res) => {
 
 const secretKey = 'mysecretkey';
 
+// app.post('/loginn', (req, res) => {
+//   const { email, password } = req.body;
+//   const query = 'SELECT * FROM Users WHERE user_email = ?';
+//   connection.query(query, [email], (err, results) => {
+//     if (err) {
+//       console.error('Error retrieving user from database: ' + err);
+//       res.sendStatus(500);
+//       return;
+//     }
+//     if (results.length === 0) {
+//       res.status(401).send({ message: 'Invalid email or password' });
+//     }
+
+//     const user = results[0];
+//     console.log(results,'the user');
+//     bcrypt.compare(password, user.user_password, (err, isMatch) => {
+//       if (err) {
+//         console.error('Error comparing passwords: ' + err);
+//         res.sendStatus(500);
+//         return;
+//       }
+
+//       if (!isMatch) {
+//         res.status(401).send({ message: 'Invalid email or password' });
+//         return;
+//       }
+//       const token = jwt.sign({ userId: user.User_Id }, secretKey, { expiresIn: '1h' });
+//       res.send({ token });
+//     });
+//   });
+// });
 app.post('/loginn', (req, res) => {
   const { email, password } = req.body;
   const query = 'SELECT * FROM Users WHERE user_email = ?';
@@ -196,10 +185,11 @@ app.post('/loginn', (req, res) => {
     }
     if (results.length === 0) {
       res.status(401).send({ message: 'Invalid email or password' });
-      return;
+      return; // Add this line to return from the function
     }
 
     const user = results[0];
+    console.log(results,'the user');
     bcrypt.compare(password, user.user_password, (err, isMatch) => {
       if (err) {
         console.error('Error comparing passwords: ' + err);
@@ -216,6 +206,7 @@ app.post('/loginn', (req, res) => {
     });
   });
 });
+
 
 const CLIENT_ID = "258481515920-rvekh1dpr2hp2tjq9qamjcr6ui2t63r7.apps.googleusercontent.com"
 const CLIENT_SECRET = "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";

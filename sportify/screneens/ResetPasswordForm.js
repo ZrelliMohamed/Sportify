@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import LoginScreen from './LoginPage';
 
 
-
+import API_URL from './var'
 const ResetPasswordForm = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,28 +17,38 @@ const ResetPasswordForm = () => {
 
 
 console.log(email)
-  const handleResetPassword = async () => {
-    if (newPassword !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-    try {
-      const response = await axios.put('http://10.0.2.2:3000/change-password', {
+const handleResetPassword = async () => {
+  if (newPassword !== confirmPassword) {
+    Alert.alert('Error', 'Passwords do not match');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/change-password`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         email,
         password: newPassword,
-        
-      });
-      if (response.status === 200) {
-        Alert.alert('Success', 'Password updated successfully');
-        navigation.navigate('LoginPage', { email:email })
-      } else {
-        Alert.alert('Error', response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Could not reset password. Please try again later.');
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.status === 200) {
+      Alert.alert('Success', 'Password updated successfully');
+      navigation.navigate('LoginPage', { email });
+    } else {
+      Alert.alert('Error', data.message);
     }
-  };
+  } catch (error) {
+    console.error(error);
+    Alert.alert('Error', 'Could not reset password. Please try again later.');
+  }
+};
+
 
   return (
     <View style={styles.container}>

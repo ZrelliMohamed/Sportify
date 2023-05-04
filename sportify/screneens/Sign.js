@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-
+import API_URL from './var'
 function Sign() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,28 +13,34 @@ function Sign() {
 
   const handleSignIn = async () => {
     try {
-      console.log(username,password,email)
-      
-      const response = await axios.post('http://10.0.2.2:3000/register', {
-        username: username,
-        password: password,
-        email: email,
-        type:'user'
-        
+      console.log(username, password, email);
+  
+      const response = await fetch(`${API_URL}/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+          email: email,
+          type: 'user',
+        }),
       });
-      console.log(response);
-      if (response.status === 200 ) {
-        alert(`welcome  ${username}`)
-        navigation.navigate('HeightPicker',{email:email});
+  
+      console.log('here', response);
+      if (response.status === 200) {
+        alert(`welcome  ${username}`);
+        navigation.navigate('HeightPicker', { email: email });
       } else {
         alert('Invalid username or password');
       }
     } catch (error) {
-      console.error('Error signing in: ' + error);
+      console.error('Error signing in: ', error.message);
       alert('Error signing in, please try again');
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Username</Text>
