@@ -4,4 +4,4 @@ const { handleLogin } = require('../controllers/user')
 const router = express.Router
 router.get("/useremail/:email",getOneByEmail)
 router.post('/login',handleLogin)
-module.exports = router
+module.exports = router  
