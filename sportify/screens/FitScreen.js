@@ -22,6 +22,7 @@ const FitScreen = () => {
   //   setWorkout,
   // } = useContext(FitnessContext);
 const [i,setI]=useState(0)
+
   return (
     <SafeAreaView>
       <Image style={{ width: "100%", height: 370 }} source={{ uri: fitnessData[0].excersises[i].image }} />
@@ -153,6 +154,7 @@ const [i,setI]=useState(0)
           </Pressable>
         )}
       </Pressable>
+      
     </SafeAreaView>
   );
 };

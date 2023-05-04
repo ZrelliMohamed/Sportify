@@ -159,7 +159,6 @@ app.post('/loginn', (req, res) => {
     }
     if (results.length === 0) {
       res.status(401).send({ message: 'Invalid email or password' });
-      return;
     }
 
     const user = results[0];

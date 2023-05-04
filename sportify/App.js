@@ -7,11 +7,6 @@ import VerifyCodeForm from './screneens/VerifyCodeForm.js';
 import ResetPasswordForm from './screneens/ResetPasswordForm.js';
 import Sign from './screneens/Sign.js';
 import { NativeBaseProvider } from 'native-base';
-import WorkoutScreen from './screens/WorkoutScreen.js';
-import ProgramScreen from './screens/ProgramScreen.js';
-import ExerciceScreen from './screens/ExerciceScreen.js';
-import FitScreen from './screens/FitScreen.js';
-import RestScreen from './screens/RestScreen.js';
 import MainStackNavigator from './MainStackNavigator.js';
 
 const Stack = createNativeStackNavigator();
