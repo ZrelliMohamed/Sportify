@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import VerifyCodeForm from './VerifyCodeForm';
 import API_URL from './var'
+
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -26,24 +27,28 @@ const ForgetPassword = () => {
       setMessage('Could not send email');
     }
   };
-  
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Forget Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your email"
-        onChangeText={setEmail}
-        value={email}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSendEmail}>
-        <Text style={styles.buttonText}>Send Email</Text>
-      </TouchableOpacity>
-      <Text style={styles.message}>{message}</Text>
-      {showVerifyCodeForm && <VerifyCodeForm email={email} />} 
+      {showVerifyCodeForm ? (
+        email ? <VerifyCodeForm email={email} /> : <View><Text>undefined</Text></View>
+      ) : (
+        <>
+          <Text style={styles.title}>Forget Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your email"
+            onChangeText={setEmail}
+            value={email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TouchableOpacity style={styles.button} onPress={handleSendEmail}>
+            <Text style={styles.buttonText}>Send Email</Text>
+          </TouchableOpacity>
+          <Text style={styles.message}>{message}</Text>
+        </>
+      )}
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from './BottomTabNavigator.js';
 import Store from './screens/store/Store.js';
@@ -12,26 +12,37 @@ import ProgramScreen from './screens/ProgramScreen.js';
 import ExerciceScreen from './screens/ExerciceScreen.js';
 import FitScreen from './screens/FitScreen.js';
 import RestScreen from './screens/RestScreen.js';
+import { useRoute } from '@react-navigation/native';
+
+const UserDataContext = createContext();
 
 const Stack = createNativeStackNavigator();
 
 const MainStackNavigator = () => {
+  const route = useRoute();
+  const [userData, setUserData] = useState(route.params.userData);
+
+  console.log("MainStackNavigator",userData);
+
   return (
-    <Stack.Navigator initialRouteName="BottomTabNavigator">
-      <Stack.Screen name="Store" component={Store} />
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-      <Stack.Screen name="SingleProduct" component={SingleProduct} options={{ headerShown: false }} />
-      <Stack.Screen name="CarteScreen" component={CarteScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="WorkoutScreen" component={WorkoutScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="ProgramScreen" component={ProgramScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="ExerciceScreen" component={ExerciceScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="Fit" component={FitScreen} options={{headerShown:false}}/>
-          <Stack.Screen name="Rest" component={RestScreen} options={{headerShown:false}}/>
-    </Stack.Navigator>
+    <UserDataContext.Provider value={{ userData, setUserData }}>
+      <Stack.Navigator initialRouteName="BottomTabNavigator">
+        <Stack.Screen name="Store" component={Store} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+        <Stack.Screen name="SingleProduct" component={SingleProduct} options={{ headerShown: false }} />
+        <Stack.Screen name="CarteScreen" component={CarteScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="WorkoutScreen" component={WorkoutScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="ProgramScreen" component={ProgramScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="ExerciceScreen" component={ExerciceScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="Fit" component={FitScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="Rest" component={RestScreen} options={{headerShown:false}}/>
+      </Stack.Navigator>
+    </UserDataContext.Provider>
   );
 };
 
+export { UserDataContext };
 export default MainStackNavigator;

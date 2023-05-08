@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Input, HStack, Box, ScrollView, Flex, Heading, Image } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -7,10 +7,12 @@ import Rating from './store/Rating';
 import { useNavigation } from '@react-navigation/native';
 import CoachList from './CoachList';
 import ProductList from './ProductList';
+import { UserDataContext } from '../MainStackNavigator.js';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-
+  const { userData } = useContext(UserDataContext);
+  console.log('homescreen',userData);
   const handlePress = (id) => {
     navigation.navigate('SingleProduct', { productId: id });
   };
