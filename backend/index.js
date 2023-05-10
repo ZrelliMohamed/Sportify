@@ -16,11 +16,43 @@ app.use(express.json())
 app.use(bodyParser.json());
 const connection = require('./database/index');
 const { getAll, add } = require('./controllers/user');
+
+
 // products Routes 
 /************************************************ */
 const productsRouter = require('./controllers/products');
 app.use('/products', productsRouter);
 /************************************************* */
+
+
+// exercises Routes 
+/************************************************ */
+const exercisesRouter = require('./routes/exercices');
+app.use('/exercises', exercisesRouter);
+/************************************************* */
+
+
+// programes Routes 
+/************************************************ */
+const programesRouter = require('./routes/programes');
+app.use('/programes', programesRouter);
+/************************************************* */
+
+
+// programes_has_exercices Routes 
+/************************************************ */
+const programes_has_exercicesRouter = require('./routes/programes_has_exercices');
+app.use('/program-exercises', programes_has_exercicesRouter);
+/************************************************* */
+
+// review Routes 
+/************************************************ */
+const reviewRouter = require('./routes/review');
+app.use('/review', reviewRouter);
+/************************************************* */
+
+
+
 app.get('/api/users/getAll',(req,res)=>{
   getAll((err,result)=>{
       if(err){

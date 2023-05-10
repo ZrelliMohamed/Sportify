@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`users` (
   `User_preview` FLOAT NULL DEFAULT NULL,
   PRIMARY KEY (`User_Id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 13
+AUTO_INCREMENT = 14
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`product` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 9
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -119,6 +120,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `spotify`.`programes_has_exercices` (
   `prg_id` INT NOT NULL,
   `exercice_id` INT NOT NULL,
+  `day` INT NOT NULL,
   PRIMARY KEY (`prg_id`, `exercice_id`),
   INDEX `fk_programes_has_exercices_exercices1_idx` (`exercice_id` ASC) VISIBLE,
   INDEX `fk_programes_has_exercices_programes1_idx` (`prg_id` ASC) VISIBLE,
@@ -157,6 +159,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`review` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb3;
 
 
