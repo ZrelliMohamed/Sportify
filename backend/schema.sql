@@ -18,6 +18,18 @@ CREATE SCHEMA IF NOT EXISTS `spotify` DEFAULT CHARACTER SET utf8mb3 ;
 USE `spotify` ;
 
 -- -----------------------------------------------------
+-- Table `spotify`.`programes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotify`.`programes` (
+  `prg_id` INT NOT NULL AUTO_INCREMENT,
+  `prg_img` LONGTEXT NOT NULL,
+  `prg_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`prg_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
 -- Table `spotify`.`Users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `spotify`.`Users` (
@@ -35,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`Users` (
   `User_preview` FLOAT NULL DEFAULT NULL,
   PRIMARY KEY (`User_Id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 14
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -49,8 +62,8 @@ CREATE TABLE IF NOT EXISTS `spotify`.`commandes` (
   PRIMARY KEY (`commande_id`, `User_Id`, `prg_id`),
   INDEX `fk_Commandes_User1_idx` (`User_Id` ASC, `prg_id` ASC) VISIBLE,
   CONSTRAINT `fk_Commandes_User1`
-    FOREIGN KEY (`User_Id`)
-    REFERENCES `spotify`.`Users` (`User_Id`)
+    FOREIGN KEY (`User_Id` , `prg_id`)
+    REFERENCES `spotify`.`Users` (`User_Id` , `prg_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -77,36 +90,21 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `spotify`.`product` (
   `product_id` INT NOT NULL AUTO_INCREMENT,
-  `product_name` VARCHAR(45) NOT NULL,
-  `product_price` INT NOT NULL,
-  `product_desc` VARCHAR(45) NULL DEFAULT NULL,
-  `commande_id` INT NOT NULL,
-  PRIMARY KEY (`product_id`, `commande_id`),
-  INDEX `fk_Product_Commandes1_idx` (`commande_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Product_Commandes1`
+  `product_name` LONGTEXT NOT NULL,
+  `product_price` DECIMAL(10,2) NOT NULL,
+  `product_desc` LONGTEXT NULL DEFAULT NULL,
+  `product_image` LONGTEXT NULL DEFAULT NULL,
+  `count_in_stock` INT NOT NULL,
+  `rating` FLOAT NOT NULL,
+  `num_reviews` INT NOT NULL,
+  `commande_id` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`product_id`),
+  INDEX `fk_product_commande_idx` (`commande_id` ASC) VISIBLE,
+  CONSTRAINT `fk_product_commande`
     FOREIGN KEY (`commande_id`)
     REFERENCES `spotify`.`commandes` (`commande_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `spotify`.`programes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `spotify`.`programes` (
-  `prg_id` INT NOT NULL AUTO_INCREMENT,
-  `prg_img` LONGTEXT NOT NULL,
-  `prg_name` VARCHAR(45) NOT NULL,
-  `User_Id` INT NOT NULL,
-  PRIMARY KEY (`prg_id`, `User_Id`),
-  INDEX `fk_programes_Users1_idx` (`User_Id` ASC) VISIBLE,
-  CONSTRAINT `fk_programes_Users1`
-    FOREIGN KEY (`User_Id`)
-    REFERENCES `spotify`.`Users` (`User_Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -117,6 +115,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `spotify`.`programes_has_exercices` (
   `prg_id` INT NOT NULL,
   `exercice_id` INT NOT NULL,
+  `day` INT NOT NULL,
   PRIMARY KEY (`prg_id`, `exercice_id`),
   INDEX `fk_programes_has_exercices_exercices1_idx` (`exercice_id` ASC) VISIBLE,
   INDEX `fk_programes_has_exercices_programes1_idx` (`prg_id` ASC) VISIBLE,
@@ -129,6 +128,33 @@ CREATE TABLE IF NOT EXISTS `spotify`.`programes_has_exercices` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `spotify`.`review`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotify`.`review` (
+  `review_id` INT NOT NULL AUTO_INCREMENT,
+  `product_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `rating` FLOAT NOT NULL,
+  `comment` LONGTEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`review_id`),
+  INDEX `fk_review_product_idx` (`product_id` ASC) VISIBLE,
+  INDEX `fk_review_user_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_review_product`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `spotify`.`product` (`product_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_review_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `spotify`.`users` (`User_Id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb3;
 
 

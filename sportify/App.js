@@ -13,6 +13,7 @@ import GenderPicker from './screneens/GenderPicker.js'
 import WeightPicker from './screneens/WeightPicker.js'
 import SportGoalSelector from './screneens/SportGoalSelector.js'
 import HomeScreen from './screens/HomeScreen.js'
+import Dashbord from './Admin/Dashbord.js';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -20,17 +21,18 @@ const App = () => {
     <NativeBaseProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="LoginPage">
-          <Stack.Screen name="LoginPage" component={LoginPage} />
+          <Stack.Screen name="LoginPage" component={LoginPage}  options={{ headerShown: false }}/>
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
           <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} />
           <Stack.Screen name="ResetPasswordForm" component={ResetPasswordForm} />
-          <Stack.Screen name="Sign" component={Sign} />
+          <Stack.Screen name="Sign" component={Sign} options={{ headerShown: false }}/>
           <Stack.Screen name="HeightPicker" component={HeightPicker} />
           <Stack.Screen name="GenderPicker" component={GenderPicker} />
           <Stack.Screen name="WeightPicker" component={WeightPicker} />
           <Stack.Screen name="SportGoalSelector" component={SportGoalSelector} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="MainStackNavigator" component={MainStackNavigator} options={{ headerShown: false }} />
+          <Stack.Screen name="Admin" component={Dashbord} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

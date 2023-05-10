@@ -17,6 +17,42 @@ app.use(bodyParser.json());
 const connection = require('./database/index');
 const { getAll, add } = require('./controllers/user');
 
+
+// products Routes 
+/************************************************ */
+const productsRouter = require('./controllers/products');
+app.use('/products', productsRouter);
+/************************************************* */
+
+
+// exercises Routes 
+/************************************************ */
+const exercisesRouter = require('./routes/exercices');
+app.use('/exercises', exercisesRouter);
+/************************************************* */
+
+
+// programes Routes 
+/************************************************ */
+const programesRouter = require('./routes/programes');
+app.use('/programes', programesRouter);
+/************************************************* */
+
+
+// programes_has_exercices Routes 
+/************************************************ */
+const programes_has_exercicesRouter = require('./routes/programes_has_exercices');
+app.use('/program-exercises', programes_has_exercicesRouter);
+/************************************************* */
+
+// review Routes 
+/************************************************ */
+const reviewRouter = require('./routes/review');
+app.use('/review', reviewRouter);
+/************************************************* */
+
+
+
 app.get('/api/users/getAll',(req,res)=>{
   getAll((err,result)=>{
       if(err){
@@ -143,37 +179,6 @@ app.get('/protected', (req, res) => {
 
 const secretKey = 'mysecretkey';
 
-// app.post('/loginn', (req, res) => {
-//   const { email, password } = req.body;
-//   const query = 'SELECT * FROM Users WHERE user_email = ?';
-//   connection.query(query, [email], (err, results) => {
-//     if (err) {
-//       console.error('Error retrieving user from database: ' + err);
-//       res.sendStatus(500);
-//       return;
-//     }
-//     if (results.length === 0) {
-//       res.status(401).send({ message: 'Invalid email or password' });
-//     }
-
-//     const user = results[0];
-//     console.log(results,'the user');
-//     bcrypt.compare(password, user.user_password, (err, isMatch) => {
-//       if (err) {
-//         console.error('Error comparing passwords: ' + err);
-//         res.sendStatus(500);
-//         return;
-//       }
-
-//       if (!isMatch) {
-//         res.status(401).send({ message: 'Invalid email or password' });
-//         return;
-//       }
-//       const token = jwt.sign({ userId: user.User_Id }, secretKey, { expiresIn: '1h' });
-//       res.send({ token });
-//     });
-//   });
-// });
 app.post('/loginn', (req, res) => {
   const { email, password } = req.body;
   const query = 'SELECT * FROM Users WHERE user_email = ?';
@@ -189,7 +194,7 @@ app.post('/loginn', (req, res) => {
     }
 
     const user = results[0];
-    console.log(results,'the user');
+    console.log(results[0].User_Id,'the user');
     bcrypt.compare(password, user.user_password, (err, isMatch) => {
       if (err) {
         console.error('Error comparing passwords: ' + err);
@@ -202,17 +207,16 @@ app.post('/loginn', (req, res) => {
         return;
       }
       const token = jwt.sign({ userId: user.User_Id }, secretKey, { expiresIn: '1h' });
-      res.send({ token });
+      res.send({ token,User_Id:results[0].User_Id });
     });
   });
 });
 
 
-const CLIENT_ID = "258481515920-rvekh1dpr2hp2tjq9qamjcr6ui2t63r7.apps.googleusercontent.com"
-const CLIENT_SECRET = "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";
+const CLIENT_ID = "988516806806-s1ivhmqc8lhtu8ven9bc4ih5aoic2nae.apps.googleusercontent.com"
+const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//04sl12Qp47j6-CgYIARAAGAQSNwF-L9IrrwEMvr2wjkyhWRS4SYwTbfmFc2lpsNq5096tngR_rRLx_zMqyeArVXMubUgBSvjmI0w";
-
+const REFRESH_TOKEN = "1//04yvUFqGAVTstCgYIARAAGAQSNwF-L9IrpfDiE01R-cSw7jh-LBxQIehsf6qKe1xVzyNCChHmYqHpbq9frAakrQ75QzOMYiyEMuo";
 const oAuth2Client = new OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
@@ -224,7 +228,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     type: "OAuth2",
-    user: "medb0748@gmail.com",
+    user: "alihajri1312@gmail.com",
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     refreshToken: REFRESH_TOKEN,
@@ -233,30 +237,7 @@ const transporter = nodemailer.createTransport({
 });
 const verificationCodeMap = new Map();
 
-// app.post("/forget-password-email", async (req, res) => {
-//   const { email } = req.body;
-//   const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
-//   const mailOptions = {
-//     from: "medb0748@gmail.com",
-//     to: email,
-//     subject: "Reset Password Code",
-//     text: `Your reset password code is ${verificationCode}`,
-//   };
-
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       console.log(error);
-//       res.status(500).send("Could not send email");
-//     } else {
-//       console.log("Email sent: " + info.response);
-//       res.status(200).send("Email sent successfully");
-//       verificationCodeMap.set(email, verificationCode);
-//       console.log("Verification code for", email, "is", verificationCode);
-
-//     }
-//   });
-// });
 app.post("/forget-password-email", async (req, res) => {
   const { email } = req.body;
 
@@ -275,7 +256,7 @@ app.post("/forget-password-email", async (req, res) => {
       // Generate verification code and send email
       const verificationCode = Math.floor(100000 + Math.random() * 900000);
       const mailOptions = {
-        from: "medb0748@gmail.com",
+        from: "alihajri1312@gmail.com",
         to: email,
         subject: "Reset Password Code",
         text: `Your reset password code is ${verificationCode}`,
@@ -284,10 +265,10 @@ app.post("/forget-password-email", async (req, res) => {
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.log(error);
-          res.status(500).send("Could not send email");
+          res.status(500).send(error);
         } else {
           console.log("Email sent: " + info.response);
-          res.status(200).send("Email sent successfully");
+          res.status(200).json("Email sent successfully");
           verificationCodeMap.set(email, verificationCode);
           console.log("Verification code for", email, "is", verificationCode);
         }
@@ -302,13 +283,13 @@ app.post("/forget-password-email", async (req, res) => {
 app.post("/verify-code", (req, res) => {
   const { email, code } = req.body;
   console.log("email:", email);
-  console.log("code:", code);
+  console.log("code:",typeof(Number(code)));
   const verificationCode = verificationCodeMap.get(email);
-  console.log("verificationCode:", verificationCode);
-  if (verificationCode == code) {
-    res.status(200).send("Code verified successfully");
+  console.log("verificationCode:",typeof(verificationCode) );
+  if (verificationCode == Number(code)) {
+    res.status(200).json("Code verified successfully");
   } else {
-    res.status(400).send("Invalid code");
+    res.status(400).json("Invalid code");
   }
 });
 
@@ -326,11 +307,11 @@ app.put('/change-password', (req, res) => {
   connection.query(sql, [hash, email], (err, result) => {
     if (err) {
       console.error(err)
-      res.status(500).send('Could not update password');
+      res.status(500).json('Could not update password');
     } else if (result.affectedRows === 0) {
-      res.status(404).send('User not found')
+      res.status(404).json('User not found')
     } else {
-      res.send('Password updated successfully')
+      res.json('Password updated successfully')
     }
   });
 });

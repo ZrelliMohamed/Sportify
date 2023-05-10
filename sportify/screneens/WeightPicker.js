@@ -63,7 +63,6 @@ const WeightPicker = () => {
       </Picker>
       <TouchableOpacity
         style={[styles.button, !selectedWeight && styles.disabledButton]}
-        onPress={() => onNext(selectedWeight)}
         disabled={!selectedWeight}
       >
         <Text style={styles.buttonText} onPress={handleNextButtonPress}>Next</Text>

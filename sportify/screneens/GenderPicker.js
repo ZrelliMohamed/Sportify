@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet , onNext} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import axios from 'axios'
+
 import API_URL from './var'
 const GenderPicker = () => {
   const [selectedGender, setSelectedGender] = useState(null);
   const navigation = useNavigation();
   const route = useRoute();
   const{email}  = route.params;
-  const goToAnotherScreen = () => {
-    navigation.navigate('WeightPicker');
-  };
+ 
   const handleGenderSelect = (value) => {
     setSelectedGender(value);
   };
@@ -73,7 +71,6 @@ const GenderPicker = () => {
       </View>
       <TouchableOpacity
         style={styles.nextButton}
-        onPress={handleNextPress}
         disabled={!selectedGender}
       >
         <Text style={styles.nextButtonText} onPress={handleNextButtonPress}>Next</Text>

@@ -1,4 +1,4 @@
-export default Data = {
+const Data = {
   name: 'John Doe',
   avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
   statistics: {
@@ -57,28 +57,6 @@ export default Data = {
       day: 'Sunday',
       exercises: [{ name:'Rest', sets:'-', reps:'-'}],
     }
-    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
    ],
 };
+export default Data;
