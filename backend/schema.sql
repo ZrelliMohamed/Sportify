@@ -18,18 +18,6 @@ CREATE SCHEMA IF NOT EXISTS `spotify` DEFAULT CHARACTER SET utf8mb3 ;
 USE `spotify` ;
 
 -- -----------------------------------------------------
--- Table `spotify`.`programes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `spotify`.`programes` (
-  `prg_id` INT NOT NULL AUTO_INCREMENT,
-  `prg_img` LONGTEXT NOT NULL,
-  `prg_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`prg_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
 -- Table `spotify`.`Users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `spotify`.`Users` (
@@ -44,15 +32,8 @@ CREATE TABLE IF NOT EXISTS `spotify`.`Users` (
   `user_weight` VARCHAR(45) NULL DEFAULT NULL,
   `user_goal` VARCHAR(45) NULL DEFAULT NULL,
   `user_preference` VARCHAR(45) NULL DEFAULT NULL,
-  `prg_id` INT NOT NULL,
   `User_preview` FLOAT NULL DEFAULT NULL,
-  PRIMARY KEY (`User_Id`, `prg_id`),
-  INDEX `fk_User_programes_idx` (`prg_id` ASC) VISIBLE,
-  CONSTRAINT `fk_User_programes`
-    FOREIGN KEY (`prg_id`)
-    REFERENCES `spotify`.`programes` (`prg_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
+  PRIMARY KEY (`User_Id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -68,8 +49,8 @@ CREATE TABLE IF NOT EXISTS `spotify`.`commandes` (
   PRIMARY KEY (`commande_id`, `User_Id`, `prg_id`),
   INDEX `fk_Commandes_User1_idx` (`User_Id` ASC, `prg_id` ASC) VISIBLE,
   CONSTRAINT `fk_Commandes_User1`
-    FOREIGN KEY (`User_Id` , `prg_id`)
-    REFERENCES `spotify`.`Users` (`User_Id` , `prg_id`)
+    FOREIGN KEY (`User_Id`)
+    REFERENCES `spotify`.`Users` (`User_Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -107,6 +88,25 @@ CREATE TABLE IF NOT EXISTS `spotify`.`product` (
     REFERENCES `spotify`.`commandes` (`commande_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `spotify`.`programes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotify`.`programes` (
+  `prg_id` INT NOT NULL AUTO_INCREMENT,
+  `prg_img` LONGTEXT NOT NULL,
+  `prg_name` VARCHAR(45) NOT NULL,
+  `User_Id` INT NOT NULL,
+  PRIMARY KEY (`prg_id`, `User_Id`),
+  INDEX `fk_programes_Users1_idx` (`User_Id` ASC) VISIBLE,
+  CONSTRAINT `fk_programes_Users1`
+    FOREIGN KEY (`User_Id`)
+    REFERENCES `spotify`.`Users` (`User_Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
