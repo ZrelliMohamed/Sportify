@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native';
 // Import your components or screens here
 import HomeScreen from './screens/HomeScreen';
 import WorkoutScreen from './screens/WorkoutScreen';
-import ProgressScreen from './screens/ProgressScreen';
+import ProgressScreen from './screens/CoachList';
 import SettingsScreen from './screens/ProfileScreen';
 import NewRoutineScreen from './screens/NewRoutineScreen.js';
 const Tab = createBottomTabNavigator();
