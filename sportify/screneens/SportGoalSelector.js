@@ -36,7 +36,7 @@ const SportGoalSelector = () => {
     .then(response => {
       if (response.status === 200) {
         alert('cong');
-        navigation.navigate('HomeScreen',{email: email});
+        navigation.navigate('MainStackNavigator',{email: email});
       } else {
         console.error('Error updating user goal: ' + response.statusText);
       }
