@@ -7,12 +7,10 @@ import { FontAwesome } from '@expo/vector-icons'
 
 const CarteItems = () => {
   const [data, setData] = useState(products.slice(0,2))
-
   const handleDelete = (id) => {
     const newData = data.filter((item) => item._id !== id)
     setData(newData)
   }
-
   const renderIterms = (data) => (
     <Pressable>
       <Box ml={6} mb={3}>
