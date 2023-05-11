@@ -7,7 +7,7 @@ import { UserDataContext } from '../MainStackNavigator';
 import { Accelerometer } from 'expo-sensors';
 import API_URL from '../screneens/var'
 import axios from 'axios';
-import StepTracker from './UseLocationAndSteps';
+import StepTracker from './useLocationAndSteps';
 
 function ProfileScreen() {
   const { steps, calories } = StepTracker();
