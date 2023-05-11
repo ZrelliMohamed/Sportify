@@ -16,6 +16,8 @@ app.use(express.json())
 app.use(bodyParser.json());
 const connection = require('./database/index');
 const { getAll, add } = require('./controllers/user');
+
+
 // products Routes 
 /************************************************ */
 const productsRouter = require('./controllers/products');
@@ -38,6 +40,145 @@ app.get('/api/users/getAll',(req,res)=>{
       }
   })
 })
+// *****************************************
+// Assuming you already have the required imports and server setup code
+
+// GET endpoint to retrieve all coach users
+app.get('/users/coaches', (req, res) => {
+  connection.query('SELECT * FROM users WHERE user_type = ?', ['coach'], (error, results) => {
+    if (error) {
+      console.error('Error executing query: ', error);
+      return res.status(500).json({ error: 'Failed to retrieve coaches.' });
+    }
+
+    // Return the list of coach users
+    res.status(200).json({ coaches: results });
+  });
+});
+
+// *****************************************
+app.post('/users', (req, res) => {
+  // Extract user data from the request body
+  const { user_name, user_email, user_password, user_img, user_type, user_heigth, user_gender, user_weight, user_goal, user_preference, User_preview } = req.body;
+
+  // Create a new user object
+  const newUser = {
+    user_name,
+    user_email,
+    user_password,
+    user_img,
+    user_type,
+    user_heigth,
+    user_gender,
+    user_weight,
+    user_goal,
+    user_preference,
+    User_preview
+  };
+
+  // Perform the database query
+  connection.query('INSERT INTO users SET ?', newUser, (error, results) => {
+    if (error) {
+      console.error('Error executing query: ', error);
+      return res.status(500).json({ error: 'Failed to create user.' });
+    }
+
+    // Return a success response
+    res.status(201).json({ message: 'User created successfully.', user: { User_Id: results.insertId, ...newUser } });
+  });
+});
+
+
+// ***************************************
+app.get('/cloudinarySignature', (req, res) => {
+  const cloudinary = require('cloudinary').v2;
+  cloudinary.config({
+    cloud_name: 'dqjdflymg',
+    api_key: '989539197932947',
+    api_secret: 'UnQIrPrmBNNA8ln3-u4ya2L9yuA'
+  });
+
+  const generateSignature = () => {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const params = {
+      folder: 'assets',
+      timestamp: timestamp,
+      overwrite: true // set to true if you want to overwrite an image with the same name
+    };
+    const signature = cloudinary.utils.api_sign_request(params, cloudinary.config().api_secret);
+    return {
+      timestamp: timestamp,
+      signature: signature
+    };
+  };
+
+  const signature = generateSignature();
+  res.json(signature);
+});
+// *****************************************
+app.patch('/users/:id', (req, res) => {
+  const { id } = req.params;
+  const updateFields = req.body;
+  const updateValues = Object.values(updateFields);
+  const updateKeys = Object.keys(updateFields);
+
+  const checkUserQuery = `SELECT * FROM users WHERE User_Id = ?`;
+  const checkUserValues = [id];
+
+  connection.query(checkUserQuery, checkUserValues, (err, results, fields) => {
+    if (err) {
+      console.error('Error checking if user exists: ' + err);
+      res.sendStatus(500);
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).send('User not found');
+      return;
+    }
+
+    const updateUserQuery = `UPDATE users SET ${updateKeys.map(key => `${key}=?`).join(',')} WHERE User_Id=?`;
+    const values = [...updateValues, id];
+
+    connection.query(updateUserQuery, values, (err, results, fields) => {
+      if (err) {
+        console.error('Error updating user: ' + err);
+        res.sendStatus(500);
+        return;
+      }
+
+      const getUserQuery = `SELECT * FROM users WHERE User_Id = ?`;
+
+      connection.query(getUserQuery, checkUserValues, (err, results, fields) => {
+        if (err) {
+          console.error('Error retrieving updated user: ' + err);
+          res.sendStatus(500);
+          return;
+        }
+
+        res.status(200).json(results[0]);
+      });
+    });
+  });
+});
+// ***********************************
+app.get('/users/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = 'SELECT * FROM users WHERE User_Id = ?';
+  connection.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Error retrieving user data:', err);
+      res.status(500).send('Error retrieving user data');
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).send('User not found');
+      return;
+    }
+    const user = results[0];
+    res.send(user);
+  });
+});
 
 app.post('/updateHeight', (req, res) => {
   console.log(req.body);
@@ -169,7 +310,7 @@ app.post('/loginn', (req, res) => {
     }
 
     const user = results[0];
-    console.log(results[0].User_Id,'the user');
+    console.log(results[0],'the user');
     bcrypt.compare(password, user.user_password, (err, isMatch) => {
       if (err) {
         console.error('Error comparing passwords: ' + err);

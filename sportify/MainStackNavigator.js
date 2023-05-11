@@ -4,6 +4,8 @@ import BottomTabNavigator from './BottomTabNavigator.js';
 import Store from './screens/store/Store.js';
 import HomeScreen from './screens/HomeScreen.js';
 import ProfileScreen from './screens/ProfileScreen.js';
+import CoachProfile from './screens/CoachProfile.js';
+import CoachList from './screens/CoachList.js';
 import SettingsScreen from './screens/SettingsScreen.js';
 import SingleProduct from './screens/store/SingleProduct.js';
 import CarteScreen from './screens/store/CarteScreen.js';
@@ -11,6 +13,8 @@ import WorkoutScreen from './screens/WorkoutScreen.js';
 import ProgramScreen from './screens/ProgramScreen.js';
 import ExerciceScreen from './screens/ExerciceScreen.js';
 import FitScreen from './screens/FitScreen.js';
+import Chat from './screens/Chat.js';
+import Payment from './screens/Payment.js';
 import RestScreen from './screens/RestScreen.js';
 import { useRoute } from '@react-navigation/native';
 import CarteItems from './screens/store/CarteItems.js';
@@ -56,6 +60,10 @@ const MainStackNavigator = () => {
           <Stack.Screen name="ExerciceScreen" component={ExerciceScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Fit"  component={FitScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Rest" component={RestScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="CoachList" component={CoachList} options={{headerShown:false}}/>
+        <Stack.Screen name="CoachProfile" component={CoachProfile} options={{headerShown:false}}/>
+        <Stack.Screen name="Chat" component={Chat} options={{headerShown:false}}/>
+        <Stack.Screen name="Payment" component={Payment} options={{headerShown:false}}/>
         </Stack.Navigator>
         </ToggleContext.Provider>
       </CartContext.Provider>
