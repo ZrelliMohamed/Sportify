@@ -1,138 +1,167 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { Card } from 'react-native-elements';
-import {Button} from "native-base"
-import { useNavigation } from '@react-navigation/native';
-import SettingsScreen from './SettingsScreen';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import useLocationAndSteps from './useLocationAndSteps'
-import userData from './userData.js'
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, Alert } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { useNavigation ,useRoute} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
+import { UserDataContext } from '../MainStackNavigator';
+import { Accelerometer } from 'expo-sensors';
+import API_URL from '../screneens/var'
+import axios from 'axios';
+import StepTracker from './UseLocationAndSteps';
 
-const ProfileScreen = () => {
-  const [steps, setSteps] = useState(0);
-
+function ProfileScreen() {
+  const { steps, calories } = StepTracker();
+  const route = useRoute();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [profile,setProfile]=useState([])
+  // Access the email prop
 
-  const { location } = useLocationAndSteps();
+  const { userData, setUserData } = useContext(UserDataContext);
 
-  const formatLocation = (location) => {
-    const { city, state, country } = location;
-    return `${city}, ${state}, ${country}`;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/users/${userData.User_Id}`);
+        setProfile(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    let subscription;
+    if (isFocused) {
+      subscription = Accelerometer.addListener(accelerometerData => {
+        if (accelerometerData.y > 1.5) {
+          setSteps(steps => steps + 1);
+        }
+      });
+    }
+    return () => {
+      if (subscription) {
+        subscription.remove();
+      }
+    };
+  }, [isFocused]);
+
+  const handleEditProfile = () => {
+    setMenuVisible(false);
+    navigation.navigate('SettingsScreen',{profile:profile});
+    handleSubmit();
   };
 
-  const programs = [
-    {
-      id: 1,
-      title: 'Weight Loss',
-      description: 'This program is designed to help you lose weight and get in shape',
-      duration: 12,
-      image: 'https://source.unsplash.com/random/200x200',
-    },
-    {
-      id: 2,
-      title: 'Muscle Building',
-      description: 'This program is designed to help you build muscle mass and get stronger',
-      duration: 8,
-      image: 'https://source.unsplash.com/random/201x201',
-    },
-    {
-      id: 3,
-      title: 'Fitness Challenge',
-      description: 'This program is designed to push you to your limits and help you achieve your fitness goals',
-      duration: 6,
-      image: 'https://source.unsplash.com/random/202x202',
-    },
-  ];
+  const handleChat = () => {
+    setMenuVisible(false);
+    navigation.navigate('Chat');
+  };
 
-  const renderProgram = (program) => {
-    return (
-      <>
-        <Text style={styles.programTitle}>{program.title}</Text>
-        <Text style={styles.programDescription}>{program.description}</Text>
-        <TouchableOpacity style={styles.programButton}>
-          <Text style={styles.programButtonText}>Enroll</Text>
-        </TouchableOpacity>
-      </>
+  const handleLogout1 = () => {
+    Alert.alert(
+      'Confirm Logout',
+      'Are you sure you want to log out?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          onPress: async () => {
+            try {
+              // TODO: Perform logout logic here
+              // replace with your actual logout function
+              navigation.navigate('LoginPage');
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
     );
   };
 
+  const handleLogout = () => {
+    setMenuVisible(false);
+    handleLogout1();
+  };
+
+  const handleSocialMediaLink = url => {
+    setMenuVisible(false);
+    Linking.openURL(url);
+  };
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
   return (
- 
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={{ uri: userData.avatar }} style={styles.avatar} />
-        <Text style={styles.name}>{userData.name}</Text>
-        <TouchableOpacity
-          style={styles.settings}
-          onPress={() => navigation.navigate('SettingsScreen')}
-        >
-          <Icon name="cog" size={24} color="#fff" />
+        <TouchableOpacity onPress={toggleMenu}>
+          <Icon name="menu" type="material" color="#fff" size={30} />
         </TouchableOpacity>
+        <Text style={styles.title}>Profile</Text>
+        <View style={{ width: 30 }} />
       </View>
-      <ScrollView>
-      <View style={styles.body}>
-        <Card containerStyle={styles.card}>
-          <View style={styles.cardHeader}>
-            <Icon name="trophy" size={24} color="#4286f4" />
-            <Text style={styles.cardTitle}>Achievements</Text>
-          </View>
-          <View style={styles.cardBody}>
-            <View style={styles.achievement}>
-              <Icon name="check" size={24} color="#4286f4" />
-              <Text style={styles.achievementText}>Completed 10 workouts</Text>
-            </View>
-            <View style={styles.achievement}>
-              <Icon name="check" size={24} color="#4286f4" />
-              <Text style={styles.achievementText}>Burned 1000 calories</Text>
-            </View>
-            <View style={styles.achievement}>
-              <Icon name="check" size={24} color="#4286f4" />
-              <Text style={styles.achievementText}>Reached 10,000 steps in a day</Text>
-            </View>
-          </View>
-        </Card>
-
-        <Card containerStyle={styles.card}>
-          <View style={styles.cardHeader}>
-            <Icon name="heart" size={24} color="#4286f4" />
-            <Text style={styles.cardTitle}>Favorites</Text>
-          </View>
-          <View style={styles.cardBody}>
-            <TouchableOpacity style={styles.favorite}>
-              <Icon name="dumbbell" size={24} color="#4286f4" />
-              <Text style={styles.favoriteText}>Full Body Workout</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.favorite}>
-              <Icon name="heartbeat" size={24} color="#4286f4" />
-              <Text style={styles.favoriteText}>Cardio Workout</Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
-
-        <Card containerStyle={[styles.card, styles.programCard]}>
-          <View style={styles.cardHeader}>
-            <Icon name="graduation-cap" size={24} color="#4286f4" />
-            <Text style={styles.cardTitle}>Programs</Text>
-          </View>
-          <View style={styles.cardBody}>
-            {programs.map((program) => (
-              <TouchableOpacity style={styles.program} key={program.id}>
-                <Image source={{ uri: program.image }} style={styles.programImage} />
-                <View style={styles.programInfo}>
-                  <Text style={styles.programTitle}>{program.title}</Text>
-                  <Text style={styles.programDescription}>{program.description}</Text>
-                  <Text style={styles.programDuration}>{program.duration} weeks</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </Card>
+      <View style={[styles.content, menuVisible && styles.contentCovered]}>
+        {menuVisible && <TouchableOpacity style={styles.contentCover} onPress={toggleMenu} />}
+        <Image source={{ uri: profile.user_img }} style={styles.profilePicture} />
+        <View style={styles.card}>
+          <Text style={styles.profileName}>{profile.user_name}</Text>
+          <Text style={styles.program}>Fitness Program: {profile.user_preference}</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.steps}>Steps Today: {steps}</Text>
+          <Text style={styles.calories}>Calories Burned: {calories} kcal</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.info}>Height: {profile.user_height}</Text>
+          <Text style={styles.info}>Weight: {profile.user_weight}</Text>
+          <Text style={styles.info}>Goal: {profile.user_goal}</Text>
+        </View>
       </View>
-      </ScrollView>
-
+      {menuVisible && (
+        <View style={styles.menu}>
+          <TouchableOpacity style={styles.menuItem} onPress={handleEditProfile}>
+            <Icon name="user-circle" type="font-awesome" color="#fff" size={24} />
+            <Text style={styles.menuText}>Edit Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem} onPress={handleChat}>
+            <Icon name="comments" type="font-awesome" color="#fff" size={24} />
+            <Text style={styles.menuText}>Messenger</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+            <Icon name="sign-out" type="font-awesome" color="#fff" size={24} />
+            <Text style={styles.menuText}>Logout</Text>
+          </TouchableOpacity>
+          <View style={styles.socialMedia}>
+            <TouchableOpacity
+              style={styles.socialMediaIcon}
+              onPress={() => handleSocialMediaLink('https://www.facebook.com/profile.php?id=100085264825545')}
+            >
+              <Icon name="facebook" type="font-awesome" color="#fff" size={24} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.socialMediaIcon} onPress={() => handleSocialMediaLink('https://www.twitter.com')}>
+              <Icon name="twitter" type="font-awesome" color="#fff" size={24} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.socialMediaIcon}
+              onPress={() => handleSocialMediaLink('https://www.instagram.com/hajrivaliii/')}
+            >
+              <Icon name="instagram" type="font-awesome" color="#fff" size={24} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -142,103 +171,94 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#4286f4',
-    paddingVertical: 30,
-    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    backgroundColor: '#008b8b',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
-  avatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    marginRight: 20,
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  title: {
     color: '#fff',
-  },
-  settings: {
-    marginLeft: 'auto',
-  },
-  body: {
-    flex: 1,
-    padding: 20,
-  },
-  card: {
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 10,
-  },
-  cardBody: {
-    marginTop: 20,
-  },
-  achievement: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  achievementText: {
-    marginLeft: 10,
-  },
-  favorite: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  favoriteText: {
-    marginLeft: 10,
-  },
-  programCard: {
-    padding: 0,
-  },
-  program: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  programImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginRight: 20,
-  },
-  programInfo: {
-    flex: 1,
-  },
-  programTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 5,
   },
-  programDescription: {
-    fontSize: 16,
-    color: '#aaa',
-    marginBottom: 5,
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
   },
-  programDuration: {
-    fontSize: 16,
-    color: '#aaa',
+  contentCover: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  programButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#4286f4',
+  contentCovered: {
+    opacity: 0.5,
+  },
+  profilePicture: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginBottom: 16,
+  },
+  card: {
+    backgroundColor: '#f0f0f0',
     borderRadius: 5,
-    marginTop: 10,
+    padding: 16,
+    marginBottom: 16,
+    alignSelf: 'stretch',
   },
-  programButtonText: {
-    color: '#fff',
+  profileName: {
+    fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  program: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  steps: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  calories: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  info: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  menu: {
+    position: 'absolute',
+    top: 60,
+    right: 10,
+    backgroundColor: '#008b8b',
+    borderRadius: 5,
+    padding: 8,
+    zIndex: 1,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  menuText: {
+    color: '#fff',
+    marginLeft: 16,
+    fontSize: 16,
+  },
+  socialMedia: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+  },
+  socialMediaIcon: {
+    marginHorizontal: 16,
   },
 });
 
