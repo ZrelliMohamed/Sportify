@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from './BottomTabNavigator.js';
 import Store from './screens/store/Store.js';
@@ -13,36 +13,55 @@ import ExerciceScreen from './screens/ExerciceScreen.js';
 import FitScreen from './screens/FitScreen.js';
 import RestScreen from './screens/RestScreen.js';
 import { useRoute } from '@react-navigation/native';
+import CarteItems from './screens/store/CarteItems.js';
 
 const UserDataContext = createContext();
+const CartContext = createContext();
+const ToggleContext = createContext();
 
 const Stack = createNativeStackNavigator();
 
 const MainStackNavigator = () => {
   const route = useRoute();
   const [userData, setUserData] = useState(route.params.userData);
-
-  console.log("MainStackNavigator",userData);
-
+  const [cart, setCart] = useState([]);
+  const [toggle,setToggle] = useState(false)
+  const retoggle= ()=>{
+    setToggle(!toggle)
+  }
+  const addtocart = (options) => {
+    const [productId, value] = options;
+    const index = cart.findIndex((item) => item[0] === productId);
+    if (index === -1) {
+      setCart([...cart, options]);
+    } else {
+      setCart([...cart.slice(0, index), options, ...cart.slice(index + 1)]);
+    }
+  };
   return (
     <UserDataContext.Provider value={{ userData, setUserData }}>
-      <Stack.Navigator initialRouteName="BottomTabNavigator">
-        <Stack.Screen name="Store" component={Store} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-        <Stack.Screen name="SingleProduct" component={SingleProduct} options={{ headerShown: false }} />
-        <Stack.Screen name="CarteScreen" component={CarteScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="WorkoutScreen" component={WorkoutScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="ProgramScreen" component={ProgramScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="ExerciceScreen" component={ExerciceScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="Fit" component={FitScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="Rest" component={RestScreen} options={{headerShown:false}}/>
-      </Stack.Navigator>
+      <CartContext.Provider value={{ cart, setCart }}>
+      <ToggleContext.Provider value={{ toggle, retoggle }}>
+        <Stack.Navigator initialRouteName="BottomTabNavigator">
+          <Stack.Screen name="Store" component={Store} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+          <Stack.Screen name="SingleProduct" component={SingleProduct} options={{ headerShown: false }}
+            initialParams={{ func: addtocart, cart: cart }}/>
+          <Stack.Screen name="CarteScreen" component={CarteScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }}/>
+          <Stack.Screen name="WorkoutScreen" component={WorkoutScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="ProgramScreen" component={ProgramScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ExerciceScreen" component={ExerciceScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="Fit"  component={FitScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="Rest" component={RestScreen} options={{ headerShown: false }} />
+        </Stack.Navigator>
+        </ToggleContext.Provider>
+      </CartContext.Provider>
     </UserDataContext.Provider>
   );
 };
 
-export { UserDataContext };
+export { UserDataContext, CartContext,ToggleContext};
 export default MainStackNavigator;

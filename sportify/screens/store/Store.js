@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList,TouchableOpacity  } from 'react-native';
 import { Input, HStack, Box, Flex, Heading, Image } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons'
-import products from './data';
 import Rating from './Rating';
 import { useNavigation } from '@react-navigation/native';
-
+import { CartContext } from '../../MainStackNavigator.js';
+import ProductList from '../ProductList'
 const Store = () => {
+  
+  const { cart, addtocart } = useContext(CartContext);
+
   const navigation = useNavigation();
   const handlePress = (id) => {
     navigation.navigate('SingleProduct', { productId: id });
@@ -52,16 +55,14 @@ const Store = () => {
     <Pressable onPress={handleToCart}>
       <FontAwesome5 name="shopping-cart" size={24} color="#333" />
       <Box px={1} rounded="full" position="absolute" top={-13} left={2} bgColor="red.900" _text={{ color: "white", fontSize: '11px' }}>
-                4
+                {cart.length}
               </Box>
     </Pressable>
   </HStack>
-      <FlatList
-        data={products}
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={styles.productsContainer}
-      />
+  <View style={styles.productsContainer}>
+          <Heading style={styles.productsTitle}>Products</Heading>
+          <ProductList />
+  </View>
     </View>
   );
 };
@@ -111,6 +112,15 @@ const styles = StyleSheet.create({
   ratingText: {
     marginLeft: 5,
     fontSize: 14,
+  },
+  productsContainer: {
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+  },
+  productsTitle: {
+    marginBottom: 8,
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
 

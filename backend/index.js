@@ -21,6 +21,13 @@ const { getAll, add } = require('./controllers/user');
 const productsRouter = require('./controllers/products');
 app.use('/products', productsRouter);
 /************************************************* */
+
+// review Routes 
+/************************************************ */
+const reviewRouter = require('./routes/review');
+app.use('/review', reviewRouter);
+/************************************************* */
+
 app.get('/api/users/getAll',(req,res)=>{
   getAll((err,result)=>{
       if(err){

@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Image, HStack, Box, Flex } from 'native-base';
-import {FontAwesome5} from '@expo/vector-icons'
-import products from './store/data';
+import axios from 'axios';
 import Rating from './store/Rating';
 import { useNavigation } from '@react-navigation/native';
+import { UserDataContext,ToggleContext } from '../MainStackNavigator';
+import API_URL from '../screneens/var';
 const ProductList = () => {
+  const { toggle, retoggle } = useContext(ToggleContext);
+  const [products,setProducts]=useState([])
+  const { userData } = useContext(UserDataContext);
+  useEffect(() => {
+  axios.get(`${API_URL}/products`)
+  .then(response => {setProducts(response.data);retoggle()})
+  .catch(error => {console.error('Error retrieving products from server:', error);});
+}, [toggle]);
   const navigation = useNavigation();
   const handlePress = (id) => {
     navigation.navigate('SingleProduct',{ productId: id });
@@ -19,14 +28,14 @@ const ProductList = () => {
       {products.map((product) => (
         <View key={product._id} style={styles.cardContainer}>
           <View style={styles.card}>
-            <Pressable onPress={() => handlePress(product._id)}>
-              <Image source={{ uri: product.image }} alt={product.name} style={styles.cardImage} />
+            <Pressable onPress={() => handlePress(product.product_id)}>
+              <Image source={{ uri: product.product_image }} alt={product.product_name} style={styles.cardImage} />
               <View style={styles.cardInfo}>
-                <Text style={styles.cardTitle} numberOfLines={1}>{product.name}</Text>
-                <Text style={styles.cardDescription}>${product.price}</Text>
+                <Text style={styles.cardTitle} numberOfLines={1}>{product.product_name}</Text>
+                <Text style={styles.cardDescription}>${product.product_price}</Text>
                 <View style={styles.cardRating}>
                   <Rating value={product.rating} />
-                  <Text style={styles.cardRatingText}>{product.numReviews} reviews</Text>
+                  <Text style={styles.cardRatingText}>{product.num_reviews} reviews</Text>
                 </View>
               </View>
             </Pressable>

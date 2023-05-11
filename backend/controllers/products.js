@@ -34,8 +34,33 @@ router.get('/filtring', (req, res) => {
     });
   });
   
-
-
+  router.post('/ProductCart', (req, res) => {
+    const { cart } = req.body;
+    const products = [];
+  
+    cart.forEach((tuple,i) => {
+      const productId = tuple[0];
+  
+      db.query('SELECT * FROM product WHERE product_id = ?', [productId], (error, results, fields) => {
+        if (error) {
+          console.error(error);
+          return res.status(500).json({ message: 'Something went wrong' });
+        }
+  
+        if (results.length === 0) {
+          return res.status(404).json({ message: `Product with ID ${productId} not found` });
+        }
+  
+        products.push({...results[0],QuantiteCommande:tuple[1]});
+  
+        if (products.length === cart.length) {
+          // All products have been fetched, send the response
+          return res.json({ products });
+        }
+      });
+    });
+  
+  });
 // Get one product by ID
 router.get('/:id', (req, res) => {
   const sql = 'SELECT * FROM product WHERE product_id = ?';
@@ -108,4 +133,5 @@ router.post('/', (req, res) => {
     });
   });
 
+  
 module.exports = router;

@@ -9,8 +9,10 @@ import WorkoutScreen from './screens/WorkoutScreen';
 import ProgressScreen from './screens/ProgressScreen';
 import SettingsScreen from './screens/ProfileScreen';
 import NewRoutineScreen from './screens/NewRoutineScreen.js';
+
 const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
+
   const { colors } = useTheme();
   return (
     <>

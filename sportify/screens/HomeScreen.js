@@ -1,18 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext,useEffect,useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Input, HStack, Box, ScrollView, Flex, Heading, Image } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import products from './store/data';
 import Rating from './store/Rating';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,useRoute } from '@react-navigation/native';
 import CoachList from './CoachList';
 import ProductList from './ProductList';
 import { UserDataContext } from '../MainStackNavigator.js';
-
+import { CartContext } from '../MainStackNavigator.js';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { userData } = useContext(UserDataContext);
-  console.log('homescreen',userData);
+  const { cart, addtocart } = useContext(CartContext);
   const handlePress = (id) => {
     navigation.navigate('SingleProduct', { productId: id });
   };
@@ -44,7 +44,7 @@ const HomeScreen = () => {
     <Pressable onPress={handleToCart}>
       <FontAwesome5 name="shopping-cart" size={24} color="#333" />
       <Box px={1} rounded="full" position="absolute" top={-13} left={2} bgColor="red.900" _text={{ color: "white", fontSize: '11px' }}>
-                4
+                {cart.length}
               </Box>
     </Pressable>
   </HStack>
