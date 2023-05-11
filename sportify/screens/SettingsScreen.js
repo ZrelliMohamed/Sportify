@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image ,Alert} from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image ,Alert,ScrollView} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import API_URL from '../screneens/var'
-import { ScrollView } from 'react-native-gesture-handler';
+
 import {useRoute} from '@react-navigation/native';
 const options = {
   title: 'Select Profile Picture',
@@ -30,7 +30,7 @@ const SettingScreen = () => {
       quality: 1,
     });
   
-    if (!result.cancelled) {
+    if (!result.canceled) {
       const data = new FormData();
       data.append('file', {
         uri: result.assets[0].uri,
@@ -130,7 +130,7 @@ const SettingScreen = () => {
             />
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Height (cm)</Text>
+            <Text style={styles.label}>Height (m)</Text>
             <TextInput
               style={styles.input}
               value={height.toString()}

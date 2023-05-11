@@ -51,8 +51,7 @@ function ProfileScreen() {
 
   const handleEditProfile = () => {
     setMenuVisible(false);
-    navigation.navigate('SettingsScreen',{profile:profile});
-    handleSubmit();
+    navigation.navigate('SettingsScreen',{profile:profile})
   };
 
   const handleChat = () => {

@@ -95,7 +95,7 @@ const LoginScreen = () => {
       {showForm ? (
         <>
         <View style={styles.logoContainer}>
-        <Image source={logo} style={[styles.logo]} />
+        <Image source={logo} style={[styles.logo],{flex:1}} />
       </View>
         <Formik
           initialValues={{ email: '', password: '' }}
@@ -214,10 +214,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   logo: {
-
     width: 120,
-    flex:1
-    ,
     height: 120,
   },
   title: {
