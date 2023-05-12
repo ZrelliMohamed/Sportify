@@ -1,8 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Text, ScrollView } from 'react-native';
-import coaches from './Coachs';
+import { View, StyleSheet, Image, Text, ScrollView,TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Rating from './store/Rating';
+import API_URL from '../screneens/var';
+import axios from 'axios';
 const HomeCoach = () => {
+        const [coaches, setCoaches] = useState([]);
+      const navigation=useNavigation()
+        useEffect(() => {
+          fetchCoaches();
+        }, []);
+      
+        const fetchCoaches = async () => {
+          try {
+            const response = await axios.get(`${API_URL}/users/coaches`);
+            console.log(response.data);
+            setCoaches(response.data.coaches);
+          } catch (error) {
+            console.error('Error fetching coaches: ', error);
+          }
+        };
+        const navigateToProfile = (coach) => {
+            console.log(coach,'sended');
+            navigation.navigate('CoachProfile', { coach:coach });
+          };
+        
   return (
     <ScrollView
       horizontal
@@ -10,6 +32,8 @@ const HomeCoach = () => {
       contentContainerStyle={styles.container}
     >
       {coaches.map((coach) => (
+        <TouchableOpacity onPress={() => navigateToProfile(coach)}
+        >
         <View key={coach.user_name} style={styles.cardContainer}>
           <View style={styles.card}>
             <View>
@@ -24,6 +48,7 @@ const HomeCoach = () => {
             </View>
           </View>
         </View>
+        </TouchableOpacity>
       ))}
     </ScrollView>
   )

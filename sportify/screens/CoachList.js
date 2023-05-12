@@ -34,7 +34,7 @@ const navigation=useNavigation()
   );
 
   const navigateToProfile = (coach) => {
-    console.log(coach,'ccc');
+    console.log(coach,'sended');
     navigation.navigate('CoachProfile', { coach:coach });
   };
 
