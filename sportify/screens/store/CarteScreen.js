@@ -4,10 +4,11 @@ import { Box, Button, Center, HStack, ScrollView } from 'native-base'
 import CartEmpty from './CartEmpty'
 import CarteItems from './CarteItems'
 import { CartContext } from '../../MainStackNavigator';
+import { useNavigation } from '@react-navigation/native'
 const CarteScreen = () => {
   const { cart, setCart } = useContext(CartContext);
   const [total,setTotale]=useState(0)
-  
+  const navigation =useNavigation()
   return (
     <Box flex={1} safeAreaTop bg={"gray.200"}>
         {/* Header */}
@@ -26,7 +27,9 @@ const CarteScreen = () => {
             <Button borderRadius={50} px={10} bg='#7e9e1e'  >{`$${total}`}</Button>
             </HStack>
         </Center>
-        <Button borderRadius={100} mt={15} bg='black' m={50} h={70}> CHECKOUT</Button>
+        <Button borderRadius={100} mt={15} bg='black' m={50} h={70}
+        onPress={()=>{navigation.navigate("Checkout"),{total:total}}}
+        > CHECKOUT</Button>
       </ScrollView> 
      
       }

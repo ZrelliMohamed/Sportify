@@ -12,7 +12,7 @@ const Review = ({ productId,SPtoggle }) => {
   
   const { toggle, retoggle } = useContext(ToggleContext);
      const { userData } = useContext(UserDataContext);
-  
+
      const [rating, setRating] = useState(0);
      const [comment, setComment] = useState('');
      const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
@@ -38,7 +38,6 @@ const Review = ({ productId,SPtoggle }) => {
            setIsSubmitEnabled(false);
            selectRef.current.setValue(0);
            textAreaRef.current.clear();
-           
          })
          .catch((err) => {
            console.log(err);
@@ -57,7 +56,6 @@ const Review = ({ productId,SPtoggle }) => {
         })
          .catch((err) => console.log(err));
      }, [rating]);
-  console.log(rating);
      /* ***Handel the review to let the user review the product only once*** */
      const [canRev,setCanRev]=useState(true)
      const filtered_data = reviews.filter(review => review.user_id === userData.User_Id);
