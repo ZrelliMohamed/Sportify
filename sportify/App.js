@@ -20,7 +20,7 @@ const App = () => {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Admin">
+        <Stack.Navigator initialRouteName="LoginPage">
           <Stack.Screen name="LoginPage" component={LoginPage}  options={{ headerShown: false }}/>
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
           <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} />
