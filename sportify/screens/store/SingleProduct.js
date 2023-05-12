@@ -1,26 +1,26 @@
-import { View, Text ,Animated } from 'react-native'
-import React, { useEffect, useState,useContext } from 'react'
+import { Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
-import { Box, ScrollView,Image, Heading, HStack, Center, Spacer,Button } from 'native-base';
+import { Box, ScrollView,Image, Heading, HStack, Spacer,Button } from 'native-base';
 import NumericInput from 'react-native-numeric-input'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Rating from './Rating';
 import Review from './Review';
 import axios from 'axios';
 import API_URL from '../../screneens/var';
-import { ToggleContext } from '../../MainStackNavigator';
 const SingleProduct = () => {
-  const { toggle, retoggle } = useContext(ToggleContext);
+  const [toggle, setToggle] = useState(false)
     const [product,setProduct] = useState({})
     const [value,setValue] = useState(1)
     const route = useRoute();
   const { productId } = route.params;
   const {func} = route.params;
   const URL =`${API_URL}/products/${productId}`
+  const SPtoggle=()=>{
+    setToggle(!toggle)
+  }
   useEffect(()=>{
     axios.get(URL).then((res)=>{
       setProduct(res.data)
-      retoggle()
     })
     .catch((err)=>{console.log(err);})
     },[toggle])
@@ -54,26 +54,6 @@ const SingleProduct = () => {
         rightButtonBackgroundColor={"black"}
         leftButtonBackgroundColor={"black"}
         />
-        {/* <NumericInput
-  value={value}
-  onChange={(newValue) => setValue(newValue)}
-  totalWidth={120}
-  totalHeight={40}
-  iconSize={30}
-  step={1}
-  maxValue={15}
-  minValue={1}
-  rounded
-  borderColor="#D1D5DB"
-  textColor="#374151"
-  iconStyle={{ color: '#374151' }}
-  rightButtonBackgroundColor="#fff"
-  leftButtonBackgroundColor="#fff"
-> 
-  <Icon name="plus" size={20} color="#374151" />
-  <Text>{value}</Text>
-  <Icon name="minus" size={20} color="#374151" />
-</NumericInput>*/}
          <Spacer/>
         <Heading bold color={"black"} fontSize={19}>
             ${product.product_price}
@@ -88,7 +68,7 @@ const SingleProduct = () => {
             ADD TO CART
             </Button>
             {/* Review */}
-            <Review val={product.rating}  productId={productId}/>
+            <Review val={product.rating}  productId={productId} SPtoggle={SPtoggle}/>
         </ScrollView>
         
     </Box>

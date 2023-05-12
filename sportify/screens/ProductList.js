@@ -12,7 +12,9 @@ const ProductList = () => {
   const { userData } = useContext(UserDataContext);
   useEffect(() => {
   axios.get(`${API_URL}/products`)
-  .then(response => {setProducts(response.data);retoggle()})
+  .then(response => {setProducts(response.data);
+    // retoggle()
+  })
   .catch(error => {console.error('Error retrieving products from server:', error);});
 }, [toggle]);
   const navigation = useNavigation();

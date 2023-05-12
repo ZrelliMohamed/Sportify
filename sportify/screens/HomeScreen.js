@@ -1,10 +1,8 @@
-import React, { useContext,useEffect,useState } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Input, HStack, Box, ScrollView, Flex, Heading, Image } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
-import products from './store/data';
-import Rating from './store/Rating';
-import { useNavigation,useRoute } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
 import HomeCoach from './HomeCoach';
 import ProductList from './ProductList';
 import { UserDataContext } from '../MainStackNavigator.js';
@@ -13,14 +11,10 @@ const HomeScreen = () => {
   const navigation = useNavigation();
   const { userData } = useContext(UserDataContext);
   const { cart, addtocart } = useContext(CartContext);
-  const handlePress = (id) => {
-    navigation.navigate('SingleProduct', { productId: id });
-  };
-
   const handleToCart = () => {
     navigation.navigate('CarteScreen');
   };
-
+console.log('home screeen');
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>

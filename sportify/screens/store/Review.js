@@ -3,11 +3,13 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Box, CheckIcon, FormControl, Heading, Select, VStack, TextArea, Button } from 'native-base';
 import Rating from './Rating';
 import Messsage from './Notification/Messsage'; 
-import { UserDataContext, ToggleContext } from '../../MainStackNavigator';
+import { UserDataContext} from '../../MainStackNavigator';
 import axios from 'axios';
 import API_URL from '../../screneens/var';
 
-const Review = ({ productId }) => {
+import {ToggleContext } from '../../MainStackNavigator';
+const Review = ({ productId,SPtoggle }) => {
+  
   const { toggle, retoggle } = useContext(ToggleContext);
      const { userData } = useContext(UserDataContext);
   
@@ -36,7 +38,7 @@ const Review = ({ productId }) => {
            setIsSubmitEnabled(false);
            selectRef.current.setValue(0);
            textAreaRef.current.clear();
-           retoggle();
+           
          })
          .catch((err) => {
            console.log(err);
@@ -49,10 +51,13 @@ const Review = ({ productId }) => {
   
      useEffect(() => {
        axios(`${API_URL}/review/${productId}/${userData.User_Id}`)
-         .then((res) => setReviews(res.data))
+         .then((res) => {setReviews(res.data)
+          SPtoggle();
+          retoggle();
+        })
          .catch((err) => console.log(err));
-     }, [toggle]);
-  
+     }, [rating]);
+  console.log(rating);
      /* ***Handel the review to let the user review the product only once*** */
      const [canRev,setCanRev]=useState(true)
      const filtered_data = reviews.filter(review => review.user_id === userData.User_Id);

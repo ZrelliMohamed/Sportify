@@ -12,15 +12,6 @@ const FitScreen = () => {
   const [workout, setWorkout] = useState(0);
   const [calories, setCalories] = useState(0);
   const [minutes, setMinutes] = useState(0);
-
-  // const {
-  //   minutes,
-  //   setMinutes,
-  //   calories,
-  //   setCalories,
-  //   workout,
-  //   setWorkout,
-  // } = useContext(FitnessContext);
 const [i,setI]=useState(0)
 
   return (
