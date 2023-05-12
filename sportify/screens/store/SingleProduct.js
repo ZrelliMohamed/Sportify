@@ -40,7 +40,21 @@ const SingleProduct = () => {
         </Heading>
         <Rating value={product.rating}/>
         <HStack space={2}  my={5}>
-        <NumericInput
+        <NumericInput 
+        value={value} totalWidth={140} totalHeight={30}
+        onChange={(newValue) => setValue(newValue)}
+        iconSize={25}
+        step={1}
+        maxValue={15}
+        minValue={0}
+        borderColor="grey"
+        rounded
+        textColor={"black"}
+        iconStyle={{color:'white'}}
+        rightButtonBackgroundColor={"black"}
+        leftButtonBackgroundColor={"black"}
+        />
+        {/* <NumericInput
   value={value}
   onChange={(newValue) => setValue(newValue)}
   totalWidth={120}
@@ -55,11 +69,11 @@ const SingleProduct = () => {
   iconStyle={{ color: '#374151' }}
   rightButtonBackgroundColor="#fff"
   leftButtonBackgroundColor="#fff"
->
+> 
   <Icon name="plus" size={20} color="#374151" />
   <Text>{value}</Text>
   <Icon name="minus" size={20} color="#374151" />
-</NumericInput>
+</NumericInput>*/}
          <Spacer/>
         <Heading bold color={"black"} fontSize={19}>
             ${product.product_price}

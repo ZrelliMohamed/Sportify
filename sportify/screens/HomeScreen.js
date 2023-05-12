@@ -5,7 +5,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import products from './store/data';
 import Rating from './store/Rating';
 import { useNavigation,useRoute } from '@react-navigation/native';
-import CoachList from './CoachList';
+import HomeCoach from './HomeCoach';
 import ProductList from './ProductList';
 import { UserDataContext } from '../MainStackNavigator.js';
 import { CartContext } from '../MainStackNavigator.js';
@@ -56,7 +56,7 @@ const HomeScreen = () => {
         </View>
         <View style={styles.coachesContainer}>
           <Heading style={styles.coachesTitle}>Coaches</Heading>
-          <CoachList />
+          <HomeCoach />
         </View>
       </ScrollView>
     </View>
