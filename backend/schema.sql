@@ -1,22 +1,18 @@
 -- MySQL Workbench Forward Engineering
-
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
 -- Schema spotify
 -- -----------------------------------------------------
-
 -- -----------------------------------------------------
 -- Schema spotify
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `spotify` DEFAULT CHARACTER SET utf8mb3 ;
 USE `spotify` ;
-
 -- -----------------------------------------------------
 -- Table `spotify`.`users`
 -- -----------------------------------------------------
@@ -37,8 +33,6 @@ CREATE TABLE IF NOT EXISTS `spotify`.`users` (
 ENGINE = InnoDB
 AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8mb3;
-
-
 -- -----------------------------------------------------
 -- Table `spotify`.`commandes`
 -- -----------------------------------------------------
@@ -55,8 +49,6 @@ CREATE TABLE IF NOT EXISTS `spotify`.`commandes` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
-
-
 -- -----------------------------------------------------
 -- Table `spotify`.`exercices`
 -- -----------------------------------------------------
@@ -70,8 +62,6 @@ CREATE TABLE IF NOT EXISTS `spotify`.`exercices` (
   PRIMARY KEY (`exercice_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
-
-
 -- -----------------------------------------------------
 -- Table `spotify`.`product`
 -- -----------------------------------------------------
@@ -112,8 +102,6 @@ CREATE TABLE IF NOT EXISTS `spotify`.`programes` (
     REFERENCES `spotify`.`users` (`User_Id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
-
-
 -- -----------------------------------------------------
 -- Table `spotify`.`programes_has_exercices`
 -- -----------------------------------------------------
@@ -133,8 +121,6 @@ CREATE TABLE IF NOT EXISTS `spotify`.`programes_has_exercices` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
-
-
 -- -----------------------------------------------------
 -- Table `spotify`.`review`
 -- -----------------------------------------------------
@@ -160,8 +146,6 @@ CREATE TABLE IF NOT EXISTS `spotify`.`review` (
 ENGINE = InnoDB
 AUTO_INCREMENT = 19
 DEFAULT CHARACTER SET = utf8mb3;
-
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
