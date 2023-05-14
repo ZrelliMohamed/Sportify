@@ -55,7 +55,36 @@ app.get('/users/coaches', (req, res) => {
     res.status(200).json({ coaches: results });
   });
 });
-
+// ******************************************
+app.post('/coaches', (req, res) => {
+  const { user_name, user_email,user_password, user_img, user_gender, user_preference } = req.body;
+  const user_type = 'coach';
+  const sql = 'INSERT INTO users (user_name, user_email,user_password, user_img, user_type, user_gender, user_preference) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  connection.query(sql, [user_name, user_email,user_password, user_img, user_type, user_gender, user_preference], (error, results) => {
+    if (error) {
+      console.error('Error adding coach to database:', error);
+      res.status(500).send('Error adding coach to database');
+    } else {
+      const newCoach = { User_Id: results.insertId, user_name, user_email, user_img, user_type, user_gender, user_preference };
+      res.status(201).json(newCoach);
+    }
+  });
+});
+// *****************************************
+app.delete('/coaches/:id', (req, res) => {
+  const { id } = req.params;
+  const sql = 'DELETE FROM users WHERE User_Id = ? AND user_type = "coach"';
+  connection.query(sql, [id], (error, results) => {
+    if (error) {
+      console.error('Error deleting coach from database:', error);
+      res.status(500).send('Error deleting coach from database');
+    } else if (results.affectedRows === 0) {
+      res.status(404).send('Coach not found');
+    } else {
+      res.status(200).send('Coach deleted successfully');
+    }
+  });
+});
 // *****************************************
 app.post('/users', (req, res) => {
   // Extract user data from the request body
@@ -305,6 +334,7 @@ app.post('/loginn', (req, res) => {
       return;
     }
     if (results.length === 0) {
+      console.log(results,"res");
       res.status(401).send({ message: 'Invalid email or password' });
       return; // Add this line to return from the function
     }
@@ -329,29 +359,29 @@ app.post('/loginn', (req, res) => {
 });
 
 
-const CLIENT_ID = "988516806806-s1ivhmqc8lhtu8ven9bc4ih5aoic2nae.apps.googleusercontent.com"
-const CLIENT_SECRET = "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";
-const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//04yvUFqGAVTstCgYIARAAGAQSNwF-L9IrpfDiE01R-cSw7jh-LBxQIehsf6qKe1xVzyNCChHmYqHpbq9frAakrQ75QzOMYiyEMuo";
-const oAuth2Client = new OAuth2(
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URI
-);
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+// const CLIENT_ID = "988516806806-s1ivhmqc8lhtu8ven9bc4ih5aoic2nae.apps.googleusercontent.com"
+// const CLIENT_SECRET = "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";
+// const REDIRECT_URI = "https://developers.google.com/oauthplayground";
+// const REFRESH_TOKEN = "1//04yvUFqGAVTstCgYIARAAGAQSNwF-L9IrpfDiE01R-cSw7jh-LBxQIehsf6qKe1xVzyNCChHmYqHpbq9frAakrQ75QzOMYiyEMuo";
+// const oAuth2Client = new OAuth2(
+//   CLIENT_ID,
+//   CLIENT_SECRET,
+//   REDIRECT_URI
+// );
+// oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    type: "OAuth2",
-    user: "alihajri1312@gmail.com",
-    clientId: CLIENT_ID,
-    clientSecret: CLIENT_SECRET,
-    refreshToken: REFRESH_TOKEN,
-    accessToken: oAuth2Client.getAccessToken(),
-  },
-});
-const verificationCodeMap = new Map();
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     type: "OAuth2",
+//     user: "alihajri1312@gmail.com",
+//     clientId: CLIENT_ID,
+//     clientSecret: CLIENT_SECRET,
+//     refreshToken: REFRESH_TOKEN,
+//     accessToken: oAuth2Client.getAccessToken(),
+//   },
+// });
+// const verificationCodeMap = new Map();
 
 
 app.post("/forget-password-email", async (req, res) => {
@@ -431,7 +461,81 @@ app.put('/change-password', (req, res) => {
     }
   });
 });
+app.use(express.json());
 
+app.post('/admin/login', (req, res) => {
+  const { user_name, user_password } = req.body;
 
+  connection.query('SELECT * FROM users WHERE user_name = ? AND user_password = ? AND user_type = ?', [user_name, user_password, 'admin'], (error, results) => {
+    if (error) {
+      console.error('Failed to fetch user:', error);
+      res.status(500).json({ message: 'Internal server error' });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(401).json({ message: 'Invalid credentials' });
+      return;
+    }
+
+    const user = results[0];
+    const token = jwt.sign({ userId: user.User_Id }, 'secret');
+    res.json({ token });
+  });
+});
+app.post('/admin/create', (req, res) => {
+  const userData = {
+    user_name: 'admin',
+    user_email: req.body.user_email,
+    user_password: req.body.user_password,
+    user_img: null,
+    user_type: 'admin',
+    user_heigth:null,
+    user_gender: null,
+    user_weight: null,
+    user_goal: null,
+    user_preference: null,
+    User_preview: null
+  };
+
+  connection.query('INSERT INTO users SET ?', userData, (error, results) => {
+    if (error) {
+      console.error('Failed to create user:', error);
+      res.status(500).json({ message: 'Internal server error' });
+      return;
+    }
+    console.log('User created successfully:', results);
+    res.status(200).json({ message: 'User created successfully' });
+  });
+});
+app.get('/exercices', (req, res) => {
+  const sql = 'SELECT * FROM `spotify`.`exercices`';
+
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+app.put('/exercices/:id', (req, res) => {
+  const { id } = req.params;
+  const { exercice_image, exercice_name, exercice_description, exercice_sets, exercice_calories } = req.body;
+  const sql = `UPDATE \`spotify\`.\`exercices\`
+               SET \`exercice_image\` = '${exercice_image}', \`exercice_name\` = '${exercice_name}', \`exercice_description\` = '${exercice_description}', \`exercice_sets\` = '${exercice_sets}', \`exercice_calories\` = '${exercice_calories}'
+               WHERE \`exercice_id\` = ${id}`;
+
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+app.delete('/exercices/:id', (req, res) => {
+  const { id } = req.params;
+  const sql = `DELETE FROM \`spotify\`.\`exercices\` WHERE \`exercice_id\` = ${id}`;
+
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+});
             
 app.listen(Port,()=>{console.log('listenning on port ,',Port);})

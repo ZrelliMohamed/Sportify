@@ -14,6 +14,8 @@ import WeightPicker from './screneens/WeightPicker.js'
 import SportGoalSelector from './screneens/SportGoalSelector.js'
 import HomeScreen from './screens/HomeScreen.js'
 import Dashbord from './Admin/Dashbord.js';
+import Appp from './Admin/Appp.js';
+import Login from './Admin/Login.js';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -33,6 +35,9 @@ const App = () => {
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="MainStackNavigator" component={MainStackNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Admin" component={Dashbord} options={{ headerShown: false }} />
+          <Stack.Screen name="AdminLogin" component={Login} options={{ headerShown: false }} />
+
+          <Stack.Screen name="AdminApp" component={Appp} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

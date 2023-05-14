@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image ,Alert,ScrollView} from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image ,Alert} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import API_URL from '../screneens/var'
-
+import { ScrollView } from 'react-native-gesture-handler';
 import {useRoute} from '@react-navigation/native';
 const options = {
   title: 'Select Profile Picture',
@@ -23,7 +23,9 @@ const SettingScreen = () => {
   const [height, setHeight] = useState(route.params.profile.user_heigth);
   const [preferences, setPreferences] = useState(route.params.profile.user_preference);
   const [profilePicture, setProfilePicture] = useState(route.params.profile.user_img);
-
+  const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dqjdflymg/upload';
+  const CLOUDINARY_UPLOAD_PRESET = 'aloulou';
+  
   const handleImageUpload = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -33,25 +35,14 @@ const SettingScreen = () => {
     if (!result.canceled) {
       const data = new FormData();
       data.append('file', {
-        uri: result.assets[0].uri,
-        type: result.assets[0].type,
-        name: result.assets[0].fileName,
+        uri: result.uri,
+        type: 'image/jpeg',
+        name: 'photo.jpg',
       });
-      data.append('api_key', '989539197932947');
-      data.append('timestamp', Date.now() / 1000);
+      data.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
   
-      // Add the Cloudinary signature generated on the backend
-      const signature = await fetch('http://localhost:3000/cloudinarySignature')
-        .then(response => response.json());
-  
-      data.append('signature', signature.signature);
-      data.append('folder', 'assets');
-  
-      fetch('https://api.cloudinary.com/v1_1/dqjdflymg/image/upload', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      fetch(CLOUDINARY_URL, {
+        method: 'POST',
         body: data,
       })
         .then(response => response.json())
@@ -61,37 +52,37 @@ const SettingScreen = () => {
       alert('You did not select any image.');
     }
   };
-
-
+  
   const handleUpdateUser = () => {
-    const updatedUser = {
-      user_name: username,
-      user_email: email,
-      user_password: password,
-      user_weight: weight,
-      user_heigth: height,
-      user_preference: preferences,
-      user_img: profilePicture,
-    };
+    handleImageUpload().then(() => {
+      const updatedUser = {
+        user_name: username,
+        user_email: email,
+        user_password: password,
+        user_weight: weight,
+        user_heigth: height,
+        user_preference: preferences,
+        user_img: profilePicture,
+      };
   
-    axios
-      .patch(`${API_URL}/users/${route.params.profile.User_Id}`, updatedUser)
-      .then(response => {
-        console.log(response.data);
-        // do something with the updated user data
-        
-        // Display an alert to indicate successful update
-        Alert.alert("Success", "User information updated successfully!");
-      })
-      .catch(error => {
-        console.log(error.response.data);
-        // handle error
-        
-        // Display an alert to indicate the error
-        Alert.alert("Error", "An error occurred while updating user information.");
-      });
+      axios
+        .patch(`${API_URL}/users/${route.params.profile.User_Id}`, updatedUser)
+        .then(response => {
+          console.log(response.data);
+          // do something with the updated user data
+  
+          // Display an alert to indicate successful update
+          Alert.alert('Success', 'User information updated successfully!');
+        })
+        .catch(error => {
+          console.log(error.response.data);
+          // handle error
+  
+          // Display an alert to indicate the error
+          Alert.alert('Error', 'An error occurred while updating user information.');
+        });
+    });
   };
-  
 
   return (
     <View style={styles.container}>
@@ -130,7 +121,7 @@ const SettingScreen = () => {
             />
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Height (m)</Text>
+            <Text style={styles.label}>Height (cm)</Text>
             <TextInput
               style={styles.input}
               value={height.toString()}
