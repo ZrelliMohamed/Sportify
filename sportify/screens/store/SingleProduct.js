@@ -45,7 +45,7 @@ const SingleProduct = () => {
         onChange={(newValue) => setValue(newValue)}
         iconSize={25}
         step={1}
-        maxValue={15}
+        maxValue={product.count_in_stock}
         minValue={0}
         borderColor="grey"
         rounded

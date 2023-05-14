@@ -18,6 +18,7 @@ import Payment from './screens/Payment.js';
 import RestScreen from './screens/RestScreen.js';
 import { useRoute } from '@react-navigation/native';
 import CarteItems from './screens/store/CarteItems.js';
+import Checkout from './screens/store/Checkout.js';
 
 const UserDataContext = createContext();
 const CartContext = createContext();
@@ -42,6 +43,7 @@ const MainStackNavigator = () => {
       setCart([...cart.slice(0, index), options, ...cart.slice(index + 1)]);
     }
   };
+  console.log(cart,'inmain');
   return (
     <UserDataContext.Provider value={{ userData, setUserData }}>
       <CartContext.Provider value={{ cart, setCart }}>
@@ -64,6 +66,7 @@ const MainStackNavigator = () => {
         <Stack.Screen name="CoachProfile" component={CoachProfile} options={{headerShown:false}}/>
         <Stack.Screen name="Chat" component={Chat} options={{headerShown:false}}/>
         <Stack.Screen name="Payment" component={Payment} options={{headerShown:false}}/>
+        <Stack.Screen name="Checkout" component={Checkout} options={{ headerShown: false }} />
         </Stack.Navigator>
         </ToggleContext.Provider>
       </CartContext.Provider>
