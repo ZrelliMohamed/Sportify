@@ -359,29 +359,29 @@ app.post('/loginn', (req, res) => {
 });
 
 
-// const CLIENT_ID = "988516806806-s1ivhmqc8lhtu8ven9bc4ih5aoic2nae.apps.googleusercontent.com"
-// const CLIENT_SECRET = "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";
-// const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-// const REFRESH_TOKEN = "1//04yvUFqGAVTstCgYIARAAGAQSNwF-L9IrpfDiE01R-cSw7jh-LBxQIehsf6qKe1xVzyNCChHmYqHpbq9frAakrQ75QzOMYiyEMuo";
-// const oAuth2Client = new OAuth2(
-//   CLIENT_ID,
-//   CLIENT_SECRET,
-//   REDIRECT_URI
-// );
-// oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+const CLIENT_ID = "988516806806-d24apdsna641b7t71pgbtocmf5ajuvqs.apps.googleusercontent.com"
+const CLIENT_SECRET = "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";
+const REDIRECT_URI = "https://developers.google.com/oauthplayground";
+const REFRESH_TOKEN = "1//04kEEBs9k5rUvCgYIARAAGAQSNwF-L9Ird93ghyeQmrl6N-ky3KxoAr-WsSCK9A57vlzir_U9fBKrVtXe3Z6aGbmHw10or8oyp70";
+const oAuth2Client = new OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     type: "OAuth2",
-//     user: "alihajri1312@gmail.com",
-//     clientId: CLIENT_ID,
-//     clientSecret: CLIENT_SECRET,
-//     refreshToken: REFRESH_TOKEN,
-//     accessToken: oAuth2Client.getAccessToken(),
-//   },
-// });
-// const verificationCodeMap = new Map();
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    type: "OAuth2",
+    user: "alihajri1312@gmail.com",
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+    refreshToken: REFRESH_TOKEN,
+    accessToken: oAuth2Client.getAccessToken(),
+  },
+});
+const verificationCodeMap = new Map();
 
 
 app.post("/forget-password-email", async (req, res) => {
