@@ -23,7 +23,7 @@ const App = () => {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LoginPage">
+        <Stack.Navigator initialRouteName="AdminApp">
           <Stack.Screen name="LoginPage" component={LoginPage}  options={{ headerShown: false }}/>
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
           <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} />
@@ -46,3 +46,13 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+
+
+
+
