@@ -348,7 +348,7 @@ const transporter = nodemailer.createTransport({
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     refreshToken: REFRESH_TOKEN,
-    accessToken: oAuth2Client.getAccessToken(),
+  //   accessToken: oAuth2Client.getAccessToken(),
   },
 });
 const verificationCodeMap = new Map();
