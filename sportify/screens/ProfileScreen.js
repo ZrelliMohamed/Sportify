@@ -31,7 +31,7 @@ function ProfileScreen() {
     };
 
     fetchUserData();
-  }, []);
+  }, [profile]);
 
   useEffect(() => {
     let subscription;
@@ -171,12 +171,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#008b8b',
+    backgroundColor: 'black',
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
   title: {
-    color: '#fff',
+    color: '#D0FD3E',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 60,
     right: 10,
-    backgroundColor: '#008b8b',
+    backgroundColor: 'black',
     borderRadius: 5,
     padding: 8,
     zIndex: 1,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   menuText: {
-    color: '#fff',
+    color: '#D0FD3E',
     marginLeft: 16,
     fontSize: 16,
   },
