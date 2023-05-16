@@ -56,7 +56,7 @@ function ProfileScreen() {
 
   const handleChat = () => {
     setMenuVisible(false);
-    navigation.navigate('Chat');
+    navigation.navigate('ConversationList');
   };
 
   const handleLogout1 = () => {

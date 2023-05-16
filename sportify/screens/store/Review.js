@@ -88,7 +88,7 @@ const Review = ({ productId,SPtoggle }) => {
     formLabel: {
       fontSize: 14,
       fontWeight: 'bold',
-      color: '#333'
+      color: '#7e9e1e'
     },
     formControl: {
       backgroundColor: '#f5f5f5',
@@ -99,7 +99,7 @@ const Review = ({ productId,SPtoggle }) => {
       backgroundColor: '#f5f5f5',
     },
     submitButton: {
-      backgroundColor: '#03a9f4',
+      backgroundColor: '#7e9e1e',
     }
   });
   

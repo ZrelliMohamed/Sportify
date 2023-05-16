@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from './BottomTabNavigator.js';
-import Store from './screens/store/Store.js';
 import HomeScreen from './screens/HomeScreen.js';
 import ProfileScreen from './screens/ProfileScreen.js';
 import CoachProfile from './screens/CoachProfile.js';
@@ -19,6 +18,9 @@ import RestScreen from './screens/RestScreen.js';
 import { useRoute } from '@react-navigation/native';
 import CarteItems from './screens/store/CarteItems.js';
 import Checkout from './screens/store/Checkout.js';
+import {StripeProvider} from '@stripe/stripe-react-native'
+import ConversationList from './screens/ConversationList.js'
+import ChatBox from './screens/ChatBox.js'
 
 const UserDataContext = createContext();
 const CartContext = createContext();
@@ -27,6 +29,7 @@ const ToggleContext = createContext();
 const Stack = createNativeStackNavigator();
 
 const MainStackNavigator = () => {
+  const STRIPE_KEY='pk_test_51N81TcDhD2qNY2jv3WuG2om74vGFnwvzkWHjvlx2xSm7pqwZqHvRlxKWEGqOw4FPWfqFtYu6hmOGumWYS0qvtZGt00ey0kmgIm'
   const route = useRoute();
   const [userData, setUserData] = useState(route.params.userData);
   const [cart, setCart] = useState([]);
@@ -43,13 +46,13 @@ const MainStackNavigator = () => {
       setCart([...cart.slice(0, index), options, ...cart.slice(index + 1)]);
     }
   };
-  console.log(cart,'inmain');
+    
   return (
+    <StripeProvider publishableKey={STRIPE_KEY}>
     <UserDataContext.Provider value={{ userData, setUserData }}>
       <CartContext.Provider value={{ cart, setCart }}>
       <ToggleContext.Provider value={{ toggle, retoggle }}>
         <Stack.Navigator initialRouteName="BottomTabNavigator">
-          <Stack.Screen name="Store" component={Store} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
@@ -67,10 +70,13 @@ const MainStackNavigator = () => {
         <Stack.Screen name="Chat" component={Chat} options={{headerShown:false}}/>
         <Stack.Screen name="Payment" component={Payment} options={{headerShown:false}}/>
         <Stack.Screen name="Checkout" component={Checkout} options={{ headerShown: false }} />
+        <Stack.Screen name="ConversationList" component={ConversationList} options={{headerShown:false}}/>
+        <Stack.Screen name="ChatBox" component={ChatBox} options={{headerShown:false}}/>
         </Stack.Navigator>
         </ToggleContext.Provider>
       </CartContext.Provider>
     </UserDataContext.Provider>
+    </StripeProvider>
   );
 };
 

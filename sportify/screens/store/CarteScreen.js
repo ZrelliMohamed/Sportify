@@ -13,9 +13,6 @@ const CarteScreen = () => {
     <Box flex={1} safeAreaTop bg={"gray.200"}>
         {/* Header */}
         <Center w="full" py={5}>
-            <Text color="black" fontSize={20} bold>
-                CART
-            </Text>
         </Center>
       {/* If Carte is Empty display this component */}
      {cart.length ===0 ? <CartEmpty/> :
@@ -28,7 +25,7 @@ const CarteScreen = () => {
             </HStack>
         </Center>
         <Button borderRadius={100} mt={15} bg='black' m={50} h={70}
-        onPress={()=>{navigation.navigate("Checkout"),{total:total}}}
+        onPress={()=>{navigation.navigate("Checkout")}}
         > CHECKOUT</Button>
       </ScrollView> 
      
