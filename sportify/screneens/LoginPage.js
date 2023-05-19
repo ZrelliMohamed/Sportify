@@ -95,7 +95,7 @@ const LoginScreen = () => {
       {showForm ? (
         <>
         <View style={styles.logoContainer}>
-        <Image source={logo} style={[styles.logo],{flex:1}} />
+        <Image source={logo} style={{...[styles.logo],flex:1}} />
       </View>
         <Formik
           initialValues={{ email: '', password: '' }}
@@ -251,6 +251,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginTop: 8,
   },
+
   button: {
     backgroundColor: 'black',
     padding: 12,

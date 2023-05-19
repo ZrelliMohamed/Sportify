@@ -51,7 +51,6 @@ const ExerciseScreen = () => {
           </Pressable>
         ))}
       </ScrollView>
-
       <Pressable
         onPress={() =>
           navigation.navigate("Fit", {

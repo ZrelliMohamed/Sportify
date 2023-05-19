@@ -30,11 +30,39 @@ app.use('/orders', ordersRoute);
 const productsRouter = require('./controllers/products');
 app.use('/products', productsRouter);
 /************************************************* */
+// programes Routes 
+/************************************************ */
+const programesRouter = require('./routes/programes');
+app.use('/programes', programesRouter);
+/************************************************* */
+// programes Routes 
+/************************************************ */
+const proexRouter = require('./routes/programes_has_exercices');
+app.use('/progexer', proexRouter);
+/************************************************* */
 
 // review Routes 
 /************************************************ */
 const reviewRouter = require('./routes/review');
 app.use('/review', reviewRouter);
+/************************************************* */
+
+app.get('/getcoachsProgBy/:id',(req,res)=>{
+  const query =`select p.prg_id,p.User_Id,p.prg_img,p.prg_name,p.prg_price,p.prg_goal,
+  e.*
+   from programes p
+  Inner Join programes_has_exercices pe on pe.prg_id=p.prg_id 
+  inner join exercices e on e.exercice_id = pe.exercice_id
+   where p.User_Id=?
+   `
+   connection.query(query,req.params.id,(err,result)=>{
+    if(err){
+      res.json(err)
+    }
+    res.json(result)
+   })
+})
+
 /************************************************* */
 
 app.get('/api/users/getAll',(req,res)=>{
@@ -64,18 +92,33 @@ app.get('/users/coaches', (req, res) => {
 });
 // ******************************************
 app.post('/coaches', (req, res) => {
-  const { user_name, user_email,user_password, user_img, user_gender, user_preference } = req.body;
+  var { user_name, user_email,user_password, user_img, user_gender, user_preference } = req.body;
   const user_type = 'coach';
-  const sql = 'INSERT INTO users (user_name, user_email,user_password, user_img, user_type, user_gender, user_preference) VALUES (?, ?, ?, ?, ?, ?, ?)';
-  connection.query(sql, [user_name, user_email,user_password, user_img, user_type, user_gender, user_preference], (error, results) => {
-    if (error) {
-      console.error('Error adding coach to database:', error);
-      res.status(500).send('Error adding coach to database');
-    } else {
-      const newCoach = { User_Id: results.insertId, user_name, user_email, user_img, user_type, user_gender, user_preference };
-      res.status(201).json(newCoach);
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) {
+      res.sendStatus(err);
+      return;
     }
+  
+    bcrypt.hash(user_password, salt, (err, hash) => {
+      if (err) {
+        res.sendStatus(err);
+        return;
+      }
+      user_password=hash
+      const sql = 'INSERT INTO users (user_name, user_email,user_password, user_img, user_type, user_gender, user_preference) VALUES (?, ?, ?, ?, ?, ?, ?)';
+      connection.query(sql, [user_name, user_email,user_password, user_img, user_type, user_gender, user_preference], (error, results) => {
+        if (error) {
+          console.error('Error adding coach to database:', error);
+          res.status(500).send('Error adding coach to database');
+        } else {
+          const newCoach = { User_Id: results.insertId, user_name, user_email,user_password, user_img, user_type, user_gender, user_preference };
+          res.status(201).json(newCoach);
+        }
+      });
+    });
   });
+
 });
 // *****************************************
 app.delete('/coaches/:id', (req, res) => {
@@ -95,36 +138,47 @@ app.delete('/coaches/:id', (req, res) => {
 // *****************************************
 app.post('/users', (req, res) => {
   // Extract user data from the request body
-  const { user_name, user_email, user_password, user_img, user_type, user_heigth, user_gender, user_weight, user_goal, user_preference, User_preview } = req.body;
+  var { user_name, user_email, user_password, user_img, user_type, user_heigth, user_gender, user_weight, user_goal, user_preference, User_preview } = req.body;
 
-  // Create a new user object
-  const newUser = {
-    user_name,
-    user_email,
-    user_password,
-    user_img,
-    user_type,
-    user_heigth,
-    user_gender,
-    user_weight,
-    user_goal,
-    user_preference,
-    User_preview
-  };
-
-  // Perform the database query
-  connection.query('INSERT INTO users SET ?', newUser, (error, results) => {
-    if (error) {
-      console.error('Error executing query: ', error);
-      return res.status(500).json({ error: 'Failed to create user.' });
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) {
+      res.sendStatus(err);
+      return;
     }
-
-    // Return a success response
-    res.status(201).json({ message: 'User created successfully.', user: { User_Id: results.insertId, ...newUser } });
+  
+    bcrypt.hash(user_password, salt, (err, hash) => {
+      if (err) {
+  
+        res.sendStatus(err);
+        return;
+      }
+      user_password=hash
+      const newUser = {
+        user_name,
+        user_email,
+        user_password,
+        user_img,
+        user_type,
+        user_heigth,
+        user_gender,
+        user_weight,
+        user_goal,
+        user_preference,
+        User_preview
+      };
+      connection.query('INSERT INTO users SET ?', newUser, (error, results) => {
+        if (error) {
+          console.error('Error executing query: ', error);
+          return res.status(500).json({ error: 'Failed to create user.' });
+        }
+    
+        // Return a success response
+        res.status(201).json({ message: 'User created successfully.', user: { User_Id: results.insertId, ...newUser } });
+      });
+    });
   });
+
 });
-
-
 // ***************************************
 app.get('/cloudinarySignature', (req, res) => {
   const cloudinary = require('cloudinary').v2;
@@ -366,10 +420,10 @@ app.post('/loginn', (req, res) => {
 });
 
 
- const CLIENT_ID = "988516806806-d24apdsna641b7t71pgbtocmf5ajuvqs.apps.googleusercontent.com"
-const CLIENT_SECRET = "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";
+const CLIENT_ID = "515417945974-qhnj4ngj9oo8745477ktvpgespokuov0.apps.googleusercontent.com"
+const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//04kEEBs9k5rUvCgYIARAAGAQSNwF-L9Ird93ghyeQmrl6N-ky3KxoAr-WsSCK9A57vlzir_U9fBKrVtXe3Z6aGbmHw10or8oyp70";
+const REFRESH_TOKEN = "1//04d15_357ndA5CgYIARAAGAQSNwF-L9IrQhc4I05iBMtDB7ydx5V73BuPupS_BYDb-O27a7_KZRVjsIglYz3B_k6E4T-NLJCQuRQ";
 const oAuth2Client = new OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
@@ -380,11 +434,11 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     type: "OAuth2",
-    user: "alihajri1312@gmail.com",
+    user: "medb0748@gmail.com",
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     refreshToken: REFRESH_TOKEN,
-    accessToken: oAuth2Client.getAccessToken(),
+    // accessToken: oAuth2Client.getAccessToken(),
   },
 });
 const verificationCodeMap = new Map();
@@ -407,7 +461,7 @@ app.post("/forget-password-email", async (req, res) => {
       // Generate verification code and send email
       const verificationCode = Math.floor(100000 + Math.random() * 900000);
       const mailOptions = {
-        from: "alihajri1312@gmail.com",
+        from: "medb0748@gmail.com",
         to: email,
         subject: "Reset Password Code",
         text: `Your reset password code is ${verificationCode}`,

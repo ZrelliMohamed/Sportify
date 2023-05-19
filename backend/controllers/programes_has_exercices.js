@@ -20,8 +20,7 @@ getOneProgramExercise : function(req, res) {
 addExerciseToProgram: function(req, res) {
     const programId = req.body.prg_id;
     const exerciseId = req.body.exercice_id;
-    const dayId=req.body.day;
-    const data = { prg_id: programId, exercice_id: exerciseId, day:dayId };
+    const data = { prg_id: programId, exercice_id: exerciseId};
 
   programExercises.add(data, function(err, result) {
     if (err) {

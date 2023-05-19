@@ -16,8 +16,8 @@ module.exports = {
         });
       },
        add:function(data, callBack) {
-        const sql = 'INSERT INTO spotify.programes (prg_img, prg_name, User_Id) VALUES (?, ?, ?)';
-        conn.query(sql, [data.prg_img, data.prg_name, data.User_Id], function(error, result) {
+        const sql = 'INSERT INTO spotify.programes (prg_img, prg_name, User_Id, prg_price, prg_goal) VALUES (?, ?, ?, ?, ?)';
+        conn.query(sql, [data.prg_img, data.prg_name, data.User_Id , data.prg_price ,data.prg_goal ], function(error, result) {
           if (error) {
             console.error('Error inserting program:', error);
             callBack(error, null);
