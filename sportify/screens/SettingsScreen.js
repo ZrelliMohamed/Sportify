@@ -192,7 +192,7 @@ const SettingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#B8CBD0',
   },
   scrollViewContent: {
     paddingHorizontal: moderateScale(20),
@@ -232,13 +232,13 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(40),
   },
   button: {
-    backgroundColor: '#1e88e5',
+    backgroundColor: 'black',
     paddingVertical: moderateScale(12),
     borderRadius: moderateScale(5),
     marginTop: moderateScale(20),
   },
   buttonText: {
-    color: '#fff',
+    color: '#D0FD3E',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: moderateScale(18),

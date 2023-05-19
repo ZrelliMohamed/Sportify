@@ -109,7 +109,7 @@ function ProfileScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={toggleMenu}>
-          <Icon name="menu" type="material" color="#fff" size={30} />
+          <Icon name="menu" type="material" color="#D0FD3E" size={30} />
         </TouchableOpacity>
         <Text style={styles.title}>Profile</Text>
         <View style={{ width: 30 }} />
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginBottom:90
   },
   header: {
     flexDirection: 'row',

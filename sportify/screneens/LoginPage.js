@@ -103,7 +103,7 @@ const LoginScreen = () => {
           validationSchema={validationSchema}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-            <View style={[styles.formContainer, { width: width * 0.8 }]}>
+            <View style={[styles.formContainer, { width: width * 0.8 , marginTop:130}]}>
               <Text style={styles.title}>Sportify</Text>
               <View style={styles.inputContainer}>
                 <TextInput
@@ -247,19 +247,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   forgotPassword: {
-    color: 'blue',
+    color: 'black',
     textDecorationLine: 'underline',
     marginTop: 8,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: 'black',
     padding: 12,
     borderRadius: 8,
     marginTop: 16,
     width: '100%',
   },
   buttonText: {
-    color: 'white',
+    color: '#D0FD3E',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
