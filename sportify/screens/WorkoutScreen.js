@@ -36,7 +36,7 @@ const WorkoutScreen = () => {
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Image
               style={{ width: '90%', height: 120, marginTop: 20, borderRadius: 7 }}
-              source={{ uri: "https://www.pngmart.com/files/15/Workout-Fitness-Man-Transparent-PNG.png" }}
+              source={{ uri: "https://www.pngmart.com/files/4/Fitness-PNG-HD.png" }}
             />
           </View>
         </View>
@@ -61,7 +61,7 @@ const WorkoutScreen = () => {
       <View style={styles.logoContainer}>
         <Image
           style={styles.logoImage}
-          source={{uri:'https://e7.pngegg.com/pngimages/299/457/png-clipart-treadmill-physical-fitness-elliptical-trainers-exercise-equipment-fitness-gallery-treadmill-miscellaneous-running.png'}}
+          source={{uri:'https://www.seekpng.com/png/detail/220-2205760_athletes-fitness-png.png'}}
         />
       </View>
       </TouchableOpacity>

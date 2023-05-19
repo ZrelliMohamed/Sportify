@@ -420,10 +420,10 @@ app.post('/loginn', (req, res) => {
 });
 
 
- const CLIENT_ID = "988516806806-d24apdsna641b7t71pgbtocmf5ajuvqs.apps.googleusercontent.com"
-const CLIENT_SECRET = "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";
+const CLIENT_ID = "515417945974-qhnj4ngj9oo8745477ktvpgespokuov0.apps.googleusercontent.com"
+const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//04kEEBs9k5rUvCgYIARAAGAQSNwF-L9Ird93ghyeQmrl6N-ky3KxoAr-WsSCK9A57vlzir_U9fBKrVtXe3Z6aGbmHw10or8oyp70";
+const REFRESH_TOKEN = "1//04d15_357ndA5CgYIARAAGAQSNwF-L9IrQhc4I05iBMtDB7ydx5V73BuPupS_BYDb-O27a7_KZRVjsIglYz3B_k6E4T-NLJCQuRQ";
 const oAuth2Client = new OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
@@ -434,7 +434,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     type: "OAuth2",
-    user: "alihajri1312@gmail.com",
+    user: "medb0748@gmail.com",
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     refreshToken: REFRESH_TOKEN,
@@ -461,7 +461,7 @@ app.post("/forget-password-email", async (req, res) => {
       // Generate verification code and send email
       const verificationCode = Math.floor(100000 + Math.random() * 900000);
       const mailOptions = {
-        from: "alihajri1312@gmail.com",
+        from: "medb0748@gmail.com",
         to: email,
         subject: "Reset Password Code",
         text: `Your reset password code is ${verificationCode}`,

@@ -6,17 +6,26 @@ import Rating from './store/Rating';
 import { useNavigation } from '@react-navigation/native';
 import { UserDataContext,ToggleContext } from '../MainStackNavigator';
 import API_URL from '../screneens/var';
-const ProductList = () => {
+const ProductList = ({Search}) => {
   const { toggle, retoggle } = useContext(ToggleContext);
   const [products,setProducts]=useState([])
   const { userData } = useContext(UserDataContext);
+
   useEffect(() => {
-  axios.get(`${API_URL}/products`)
-  .then(response => {setProducts(response.data);
-    // retoggle()
-  })
-  .catch(error => {console.error('Error retrieving products from server:', error);});
-}, [toggle]);
+    axios.get(`${API_URL}/products`)
+    .then(response => {
+      let filteredProducts = response.data;
+      if (Search) {
+        filteredProducts = filteredProducts.filter(product =>
+          product.product_name.toLowerCase().includes(Search.toLowerCase())
+        );
+      }
+      setProducts(filteredProducts);
+    })
+    .catch(error => {
+      console.error('Error retrieving products from server:', error);
+    });
+  }, [toggle, Search]);
   const navigation = useNavigation();
   const handlePress = (id) => {
     navigation.navigate('SingleProduct',{ productId: id });

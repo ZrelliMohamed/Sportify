@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Input, HStack, Box, ScrollView, Flex, Heading, Image } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -8,13 +8,17 @@ import ProductList from './ProductList';
 import { UserDataContext } from '../MainStackNavigator.js';
 import { CartContext } from '../MainStackNavigator.js';
 const HomeScreen = () => {
+  const [Search,setSearch] =useState('')
   const navigation = useNavigation();
   const { userData } = useContext(UserDataContext);
   const { cart, addtocart } = useContext(CartContext);
   const handleToCart = () => {
     navigation.navigate('CarteScreen');
   };
-console.log('home screeen');
+  const handleTextChange = (newText) => {
+    setSearch(newText);
+  };
+console.log(Search);
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -31,6 +35,8 @@ console.log('home screeen');
       _focus={{ bg: "white" }}
       borderRadius={999}
       paddingLeft={3}
+      value={Search}
+      onChangeText={handleTextChange}
       InputLeftElement={
         <FontAwesome5 name="search" size={18} color="#ccc" ml={2} />
       }
@@ -46,11 +52,11 @@ console.log('home screeen');
 
         <View style={styles.productsContainer}>
           <Heading style={styles.productsTitle}>Products</Heading>
-          <ProductList />
+          <ProductList Search={Search} />
         </View>
         <View style={styles.coachesContainer}>
           <Heading style={styles.coachesTitle}>Coaches</Heading>
-          <HomeCoach />
+          <HomeCoach Search={Search} />
         </View>
       </ScrollView>
     </View>
