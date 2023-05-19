@@ -420,7 +420,7 @@ app.post('/loginn', (req, res) => {
 });
 
 
-const CLIENT_ID = "515417945974-qhnj4ngj9oo8745477ktvpgespokuov0.apps.googleusercontent.com"
+ const CLIENT_ID = "515417945974-qhnj4ngj9oo8745477ktvpgespokuov0.apps.googleusercontent.com"
 const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
 const REFRESH_TOKEN = "1//04d15_357ndA5CgYIARAAGAQSNwF-L9IrQhc4I05iBMtDB7ydx5V73BuPupS_BYDb-O27a7_KZRVjsIglYz3B_k6E4T-NLJCQuRQ";
@@ -445,8 +445,6 @@ const verificationCodeMap = new Map();
 
 app.post("/forget-password-email", async (req, res) => {
   const { email } = req.body;
-
-  // Retrieve all users from the database
   getAll((err, users) => {
     if (err) {
       res.status(500).json(err);

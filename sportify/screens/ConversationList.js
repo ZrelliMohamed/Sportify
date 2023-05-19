@@ -3,6 +3,7 @@ import { UserDataContext } from "../MainStackNavigator";
 import { View, ScrollView, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import SERVER_URL from '../screneens/SERVER_URL';
 import ChatBox from './ChatBox';
 
 const ConversationList = () => {
@@ -12,16 +13,16 @@ const ConversationList = () => {
   const [searchText, setSearchText] = useState('')
   const [toggle,setToggle] = useState(false)
   const { userData } = useContext(UserDataContext)
-  const SERVER_URL = 'http://192.168.89.76:3001'
-  console.log(userData)
+  
+  console.log(userData,"userData")
 const toggler = (x) =>{
   setToggle(x)
 }
   useEffect(() => {
     axios.get(`${SERVER_URL}/api/chat/conversations/${userData.User_Id}`)
-      .then(response => setUsers(response.data))
+      .then(response =>{console.log(response.data,"response"), setUsers(response.data)})
       .catch(error => console.error(error));
-  }, [userData.User_Id,messages]);
+  }, [userData,messages]);
 
   const handleUserSelect = (user) => {
     axios.get(`${SERVER_URL}/api/chat/messages/${userData.User_Id}/${user.User_Id}`)
