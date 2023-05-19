@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { UserDataContext } from '../MainStackNavigator';
+import axios from 'axios';
+import API_URL from '../screneens/var';
+import ProgramCreation from '../Coach Interface/ProgramCreation';
 
 const TodoItem = ({ title, onDelete }) => {
+
+
   return (
-    <View style={styles.todoItem}>
+   <View style={styles.todoItem}>
       <Text style={styles.todoTitle}>{title}</Text>
       <TouchableOpacity onPress={onDelete}>
         <AntDesign name="delete" size={24} color="#ff6262" />
       </TouchableOpacity>
-    </View>
+    </View> 
   );
 };
 
 const NewRoutineScreen = () => {
   const [todoItems, setTodoItems] = useState([]);
   const [newTodoItem, setNewTodoItem] = useState('');
-
+  const {userData} = useContext(UserDataContext)
+  const [user,setUser]=useState(null)
+  useEffect(()=>{
+    axios.get(`${API_URL}/users/${userData.User_Id}`)
+    .then(res=>setUser(res.data))
+    .catch(err=>console.log(err))
+  },[])
   const handleAddTodo = () => {
     if (newTodoItem.trim() !== '') {
       setTodoItems([...todoItems, newTodoItem]);
@@ -31,7 +43,7 @@ const NewRoutineScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    user!==null && user.user_type==='user'? <View style={styles.container}>
       <Text style={styles.title}>HAMA</Text>
       <View style={styles.inputContainer}>
         <TextInput
@@ -52,7 +64,9 @@ const NewRoutineScreen = () => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-    </View>
+    </View>: 
+    <ProgramCreation/>
+   
   );
 };
 

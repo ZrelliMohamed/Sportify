@@ -54,13 +54,12 @@ module.exports ={
                 conn.query(sqlUpdate, valuesUpdate, (error, results, fields) => {
                   if (error) {
                     res.status(500).json('erreur in updating count_in_stock');
-                  } else {
-                    res.json(result);
-                  }
+                  } 
                 });
               }
             });
           });
+          res.json('Added succesfully')
         });
       },
       

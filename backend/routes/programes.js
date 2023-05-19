@@ -6,7 +6,7 @@ const {getAllPrograms,getOneProgram,createProgram,updateProgram,deleteProgram} =
  
 router.get('/getAll', getAllPrograms);
 router.get('/:id', getOneProgram);
-router.post('/programes', createProgram);
+router.post('/', createProgram);
 router.put('/:id', updateProgram);
 router.delete('/:id', deleteProgram);
 

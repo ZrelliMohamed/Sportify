@@ -15,13 +15,16 @@ import FitScreen from './screens/FitScreen.js';
 import Chat from './screens/Chat.js';
 import Payment from './screens/Payment.js';
 import RestScreen from './screens/RestScreen.js';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import CarteItems from './screens/store/CarteItems.js';
 import Checkout from './screens/store/Checkout.js';
 import {StripeProvider} from '@stripe/stripe-react-native'
 import ConversationList from './screens/ConversationList.js'
 import ChatBox from './screens/ChatBox.js'
-
+import Exercises from './Coach Interface/Exercises.js';
+import { TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import ProgramesConfirmation from './Coach Interface/ProgramesConfirmation.js';
 const UserDataContext = createContext();
 const CartContext = createContext();
 const ToggleContext = createContext();
@@ -37,6 +40,7 @@ const MainStackNavigator = () => {
   const retoggle= ()=>{
     setToggle(!toggle)
   }
+  const navigation = useNavigation()
   const addtocart = (options) => {
     const [productId, value] = options;
     const index = cart.findIndex((item) => item[0] === productId);
@@ -46,7 +50,7 @@ const MainStackNavigator = () => {
       setCart([...cart.slice(0, index), options, ...cart.slice(index + 1)]);
     }
   };
-    
+    const [programes,setProgrames]=useState({})
   return (
     <StripeProvider publishableKey={STRIPE_KEY}>
     <UserDataContext.Provider value={{ userData, setUserData }}>
@@ -72,6 +76,21 @@ const MainStackNavigator = () => {
         <Stack.Screen name="Checkout" component={Checkout} options={{ headerShown: false }} />
         <Stack.Screen name="ConversationList" component={ConversationList} options={{headerShown:false}}/>
         <Stack.Screen name="ChatBox" component={ChatBox} options={{headerShown:false}}/>
+        <Stack.Screen name="Exercises" component={Exercises} options={{headerTitle: 'Programe',
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Confirmation')}
+          style={{ marginRight: 16 }}
+        >
+          <Ionicons
+            name="checkmark"
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      ),  
+      }} initialParams={{setProg:setProgrames}} />
+       <Stack.Screen name="Confirmation" component={ProgramesConfirmation} options={{headerShown:true}} initialParams={{programes:programes}} />
         </Stack.Navigator>
         </ToggleContext.Provider>
       </CartContext.Provider>

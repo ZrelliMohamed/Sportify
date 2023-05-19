@@ -8,12 +8,8 @@ import fitness from "../data/fitness";
 
 const ExerciceScreen = () => {
   const route = useRoute();
-//   console.log(route.params);
   const navigation = useNavigation();
-  // const {
-  //   completed,
-  //   setCompleted,
-  // } = useContext(FitnessItems);
+
   return (
     <>
       <ScrollView
@@ -34,8 +30,6 @@ const ExerciceScreen = () => {
         />
 
         {fitness[0].excersises.map((item, index) => {
-          console.log(item.excersises);
-          
           return (
           
           <Pressable
@@ -56,22 +50,14 @@ const ExerciceScreen = () => {
                 x{item.sets}
               </Text>
             </View>
-
-            {/* {completed.includes(item.name) ? (
-              <AntDesign style={{marginLeft:40}} name="checkcircle" size={24} color="green" />
-            ) : (
-              null
-            )} */}
           </Pressable>
         )})}
       </ScrollView>
-
       <Pressable
       onPress={() =>  {
         navigation.navigate("Fit",{
           excersises:fitness.excersises,                                       
       })
-      // setCompleted([]);
       }}
         style={{
           backgroundColor: "blue",

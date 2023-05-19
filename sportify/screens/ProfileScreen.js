@@ -8,18 +8,22 @@ import { Accelerometer } from 'expo-sensors';
 import API_URL from '../screneens/var'
 import axios from 'axios';
 import StepTracker from './useLocationAndSteps';
+import { ScrollView } from 'native-base';
+import PrgCoach from './PrgCoach';
 
 function ProfileScreen() {
+  const { userData, setUserData } = useContext(UserDataContext);
+
+
   const { steps, calories } = StepTracker();
   const route = useRoute();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [menuVisible, setMenuVisible] = useState(false);
-  const [profile,setProfile]=useState([])
   // Access the email prop
-
-  const { userData, setUserData } = useContext(UserDataContext);
-
+  
+  const [profile,setProfile]=useState([])
+  console.log(profile);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -31,7 +35,7 @@ function ProfileScreen() {
     };
 
     fetchUserData();
-  }, [profile]);
+  }, []);
 
   useEffect(() => {
     let subscription;
@@ -100,6 +104,8 @@ function ProfileScreen() {
   };
 
   return (
+    <ScrollView>
+
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={toggleMenu}>
@@ -119,11 +125,16 @@ function ProfileScreen() {
           <Text style={styles.steps}>Steps Today: {steps}</Text>
           <Text style={styles.calories}>Calories Burned: {calories} kcal</Text>
         </View>
-        <View style={styles.card}>
+        {profile.user_type !== "coach" &&<View style={styles.card}>
           <Text style={styles.info}>Height: {profile.user_height}</Text>
           <Text style={styles.info}>Weight: {profile.user_weight}</Text>
           <Text style={styles.info}>Goal: {profile.user_goal}</Text>
-        </View>
+        </View>}
+        {profile.user_type === "coach" &&<View style={styles.card}>
+          <Text>Programes</Text>
+          <PrgCoach/>
+        </View>}
+       
       </View>
       {menuVisible && (
         <View style={styles.menu}>
@@ -159,6 +170,7 @@ function ProfileScreen() {
         </View>
       )}
     </View>
+              </ScrollView>
   );
 }
 
