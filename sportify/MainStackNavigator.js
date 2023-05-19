@@ -22,6 +22,7 @@ import {StripeProvider} from '@stripe/stripe-react-native'
 import ConversationList from './screens/ConversationList.js'
 import ChatBox from './screens/ChatBox.js'
 
+
 const UserDataContext = createContext();
 const CartContext = createContext();
 const ToggleContext = createContext();
@@ -53,7 +54,7 @@ const MainStackNavigator = () => {
       <CartContext.Provider value={{ cart, setCart }}>
       <ToggleContext.Provider value={{ toggle, retoggle }}>
         <Stack.Navigator initialRouteName="BottomTabNavigator">
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: true, headerStyle: { backgroundColor: 'black', },headerTitleStyle: { fontSize: 20,fontWeight: 'bold', color: 'white'  } }}/>
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
           <Stack.Screen name="SingleProduct" component={SingleProduct} options={{ headerShown: false }}

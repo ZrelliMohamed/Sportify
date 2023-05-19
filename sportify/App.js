@@ -29,11 +29,11 @@ const App = () => {
           <Stack.Screen name="VerifyCodeForm" component={VerifyCodeForm} />
           <Stack.Screen name="ResetPasswordForm" component={ResetPasswordForm} />
           <Stack.Screen name="Sign" component={Sign} options={{ headerShown: false }}/>
-          <Stack.Screen name="HeightPicker" component={HeightPicker} />
-          <Stack.Screen name="GenderPicker" component={GenderPicker} />
-          <Stack.Screen name="WeightPicker" component={WeightPicker} />
-          <Stack.Screen name="SportGoalSelector" component={SportGoalSelector} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="HeightPicker" component={HeightPicker}  options={{headerShown: true, headerStyle: { backgroundColor: 'black', },headerTitleStyle: { fontSize: 20,fontWeight: 'bold', color: 'white'  } }}/>
+          <Stack.Screen name="GenderPicker" component={GenderPicker} options={{headerShown: true, headerStyle: { backgroundColor: 'black', },headerTitleStyle: { fontSize: 20,fontWeight: 'bold', color: 'white'  } }}/>
+          <Stack.Screen name="WeightPicker" component={WeightPicker}  options={{headerShown: true, headerStyle: { backgroundColor: 'black', },headerTitleStyle: { fontSize: 20,fontWeight: 'bold', color: 'white'  } }}/>
+          <Stack.Screen name="SportGoalSelector" component={SportGoalSelector} options={{headerShown: true, headerStyle: { backgroundColor: 'black', },headerTitleStyle: { fontSize: 20,fontWeight: 'bold', color: 'white'  } }}/>
+          <Stack.Screen name="HomeScreen" component={HomeScreen}  />
           <Stack.Screen name="MainStackNavigator" component={MainStackNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Admin" component={Dashbord} options={{ headerShown: false }} />
           <Stack.Screen name="AdminLogin" component={Login} options={{ headerShown: false }} />

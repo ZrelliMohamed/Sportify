@@ -32,7 +32,7 @@ const NewRoutineScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>HAMA</Text>
+      <Text style={styles.title}> My Routine </Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   addButton: {
-    backgroundColor: '#55a3d6',
+    backgroundColor: 'black',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addButtonText: {
-    color: '#fff',
+    color: '#D0FD3E',
     fontWeight: 'bold',
   },
   listContainer: {
