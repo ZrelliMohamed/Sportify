@@ -11,7 +11,7 @@ const ChatBox = ({ userData, selectedUser, messages, setMessages, setSelectedUse
   const [socket, setSocket] = useState(null)
   const [debouncedMessage, setDebouncedMessage] = useState('')
   
-  const SERVER_URL = 'http://192.168.89.76:3001'
+  const SERVER_URL = 'http://192.168.11.149:3001'
 
   useEffect(() => {
     func(true)
