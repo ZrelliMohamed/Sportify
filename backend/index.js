@@ -209,15 +209,13 @@ app.get('/cloudinarySignature', (req, res) => {
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
   const updateFields = req.body;
-  const updateValues = Object.values(updateFields);
-  const updateKeys = Object.keys(updateFields);
 
-  const checkUserQuery = `SELECT * FROM users WHERE User_Id = ?`;
+  const checkUserQuery = 'SELECT * FROM users WHERE User_Id = ?';
   const checkUserValues = [id];
 
   connection.query(checkUserQuery, checkUserValues, (err, results, fields) => {
     if (err) {
-      console.error('Error checking if user exists: ' + err);
+      console.error('Error checking if user exists:', err);
       res.sendStatus(500);
       return;
     }
@@ -227,26 +225,43 @@ app.patch('/users/:id', (req, res) => {
       return;
     }
 
-    const updateUserQuery = `UPDATE users SET ${updateKeys.map(key => `${key}=?`).join(',')} WHERE User_Id=?`;
-    const values = [...updateValues, id];
+    const updateUserQuery = 'UPDATE users SET ? WHERE User_Id = ?';
 
-    connection.query(updateUserQuery, values, (err, results, fields) => {
+    bcrypt.genSalt(10, (err, salt) => {
       if (err) {
-        console.error('Error updating user: ' + err);
+        console.error('Error generating salt:', err);
         res.sendStatus(500);
         return;
       }
 
-      const getUserQuery = `SELECT * FROM users WHERE User_Id = ?`;
-
-      connection.query(getUserQuery, checkUserValues, (err, results, fields) => {
+      bcrypt.hash(updateFields.user_password, salt, (err, hash) => {
         if (err) {
-          console.error('Error retrieving updated user: ' + err);
+          console.error('Error hashing password:', err);
           res.sendStatus(500);
           return;
         }
 
-        res.status(200).json(results[0]);
+        updateFields.user_password = hash;
+
+        connection.query(updateUserQuery, [updateFields, id], (err, results, fields) => {
+          if (err) {
+            console.error('Error updating user:', err);
+            res.sendStatus(500);
+            return;
+          }
+
+          const getUserQuery = 'SELECT * FROM users WHERE User_Id = ?';
+
+          connection.query(getUserQuery, checkUserValues, (err, results, fields) => {
+            if (err) {
+              console.error('Error retrieving updated user:', err);
+              res.sendStatus(500);
+              return;
+            }
+
+            res.status(200).json(results[0]);
+          });
+        });
       });
     });
   });

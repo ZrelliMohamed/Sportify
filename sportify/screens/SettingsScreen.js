@@ -36,6 +36,7 @@ const validationSchema = Yup.object().shape({
 const SettingScreen = () => {
   const route = useRoute();
   const profile = route.params.profile;
+  const toggle = route.params.toggle;
   const [profilePicture, setProfilePicture] = useState(profile.user_img);
 
   useEffect(() => {
@@ -86,7 +87,7 @@ const SettingScreen = () => {
         .then(response => {
           console.log(response.data);
           // do something with the updated user data
-
+toggle()
           // Display an alert to indicate successful update
           Alert.alert('Success', 'User information updated successfully!');
         })
@@ -107,9 +108,10 @@ const SettingScreen = () => {
       username: profile.user_name,
       email: profile.user_email,
       password: '',
-      weight: profile.user_weight.toString(),
-      height: profile.user_heigth.toString(),
+      weight: profile.user_weight,
+      height: profile.user_heigth,
       preferences: profile.user_preference,
+      user_img: profilePicture,
     },
     onSubmit: handleUpdateUser,
   });

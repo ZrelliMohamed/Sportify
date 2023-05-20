@@ -21,7 +21,7 @@ function ProfileScreen() {
   const isFocused = useIsFocused();
   const [menuVisible, setMenuVisible] = useState(false);
   // Access the email prop
-  
+  const [state,setState]=useState(true);
   const [profile,setProfile]=useState([])
   console.log(profile);
   useEffect(() => {
@@ -35,7 +35,7 @@ function ProfileScreen() {
     };
 
     fetchUserData();
-  }, []);
+  }, [profile.user_img,state]);
 
   useEffect(() => {
     let subscription;
@@ -52,10 +52,12 @@ function ProfileScreen() {
       }
     };
   }, [isFocused]);
-
+const toggle = () => {
+  setState(!state)
+}
   const handleEditProfile = () => {
     setMenuVisible(false);
-    navigation.navigate('SettingsScreen',{profile:profile})
+    navigation.navigate('SettingsScreen',{profile:profile,toggle:toggle})
   };
 
   const handleChat = () => {
