@@ -210,7 +210,7 @@ app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
   const updateFields = req.body;
 
-  const checkUserQuery = 'SELECT * FROM users WHERE User_Id = ?';
+  const checkUserQuery = `SELECT * FROM users WHERE User_Id = ?`;
   const checkUserValues = [id];
 
   connection.query(checkUserQuery, checkUserValues, (err, results, fields) => {
@@ -225,23 +225,7 @@ app.patch('/users/:id', (req, res) => {
       return;
     }
 
-    const updateUserQuery = 'UPDATE users SET ? WHERE User_Id = ?';
-
-    bcrypt.genSalt(10, (err, salt) => {
-      if (err) {
-        console.error('Error generating salt:', err);
-        res.sendStatus(500);
-        return;
-      }
-
-      bcrypt.hash(updateFields.user_password, salt, (err, hash) => {
-        if (err) {
-          console.error('Error hashing password:', err);
-          res.sendStatus(500);
-          return;
-        }
-
-        updateFields.user_password = hash;
+    const updateUserQuery = `UPDATE users SET ? WHERE User_Id = ?`;
 
         connection.query(updateUserQuery, [updateFields, id], (err, results, fields) => {
           if (err) {
@@ -250,7 +234,7 @@ app.patch('/users/:id', (req, res) => {
             return;
           }
 
-          const getUserQuery = 'SELECT * FROM users WHERE User_Id = ?';
+          const getUserQuery = `SELECT * FROM users WHERE User_Id = ?`;
 
           connection.query(getUserQuery, checkUserValues, (err, results, fields) => {
             if (err) {
@@ -264,8 +248,68 @@ app.patch('/users/:id', (req, res) => {
         });
       });
     });
+// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+app.put('/change-password', (req, res) => {
+  const { userId, currentPassword, newPassword } = req.body;
+
+  // Query to check the current password
+  const checkPasswordQuery = 'SELECT user_password FROM users WHERE User_Id = ?';
+
+  // Query to update the new password
+  const updatePasswordQuery = 'UPDATE users SET user_password = ? WHERE User_Id = ?';
+
+  // Check the current password
+  connection.query(checkPasswordQuery, [userId], (error, results) => {
+    if (error) {
+      console.error('Error executing checkPasswordQuery:', error);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const storedPassword = results[0].user_password;
+
+    // Compare the current password with the stored password
+    bcrypt.compare(currentPassword, storedPassword, (err, isMatch) => {
+      if (err) {
+        console.error('Error comparing passwords:', err);
+        return res.status(500).json({ error: 'Database error' });
+      }
+
+      if (!isMatch) {
+        return res.status(400).json({ error: 'Incorrect current password' });
+      }
+
+      // Hash the new password
+      bcrypt.genSalt(10, (err, salt) => {
+        if (err) {
+          console.error('Error generating salt:', err);
+          return res.sendStatus(500);
+        }
+
+        bcrypt.hash(newPassword, salt, (err, hash) => {
+          if (err) {
+            console.error('Error hashing password:', err);
+            return res.sendStatus(500);
+          }
+
+          // Update the new password
+          connection.query(updatePasswordQuery, [hash, userId], (err, _) => {
+            if (err) {
+              console.error('Error executing updatePasswordQuery:', err);
+              return res.status(500).json({ error: 'Database error' });
+            }
+
+            // Password updated successfully
+            return res.status(200).json({ message: 'Password updated successfully' });
+          });
+        });
+      });
+    });
   });
-});
+})
 // ***********************************
 app.get('/users/:id', (req, res) => {
   const userId = req.params.id;

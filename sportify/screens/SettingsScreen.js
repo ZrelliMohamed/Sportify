@@ -27,10 +27,9 @@ const options = {
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().min(6, 'Password must be at least 6 characters'),
   weight: Yup.number().required('Weight is required'),
   height: Yup.number().required('Height is required'),
-  preferences: Yup.string(),
+  goal: Yup.string(),
 });
 
 const SettingScreen = () => {
@@ -75,10 +74,9 @@ const SettingScreen = () => {
       const updatedUser = {
         user_name: values.username,
         user_email: values.email,
-        user_password: values.password,
         user_weight: values.weight,
         user_heigth: values.height,
-        user_preference: values.preferences,
+        user_goal: values.goal,
         user_img: profilePicture,
       };
 
@@ -107,10 +105,9 @@ toggle()
     initialValues: {
       username: profile.user_name,
       email: profile.user_email,
-      password: '',
       weight: profile.user_weight,
       height: profile.user_heigth,
-      preferences: profile.user_preference,
+      goal: profile.user_goal,
       user_img: profilePicture,
     },
     onSubmit: handleUpdateUser,
@@ -148,15 +145,6 @@ toggle()
             error={touched.email && errors.email}
           />
           <CustomTextInput
-            label="New Password (optional)"
-            placeholder="Enter new password"
-            value={values.password}
-            onChangeText={handleChange('password')}
-            onBlur={handleBlur('password')}
-            secureTextEntry
-            error={touched.password && errors.password}
-          />
-          <CustomTextInput
             label="Weight (kg)"
             placeholder="Enter weight"
             value={values.weight}
@@ -175,12 +163,12 @@ toggle()
             error={touched.height && errors.height}
           />
           <CustomTextInput
-            label="Preferences"
-            placeholder="Enter preferences"
-            value={values.preferences}
-            onChangeText={handleChange('preferences')}
-            onBlur={handleBlur('preferences')}
-            error={touched.preferences && errors.preferences}
+            label="goal"
+            placeholder="Enter goal"
+            value={values.goal}
+            onChangeText={handleChange('goal')}
+            onBlur={handleBlur('goal')}
+            error={touched.goal && errors.goal}
           />
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Save Changes</Text>
