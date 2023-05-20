@@ -26,8 +26,8 @@ module.exports ={
           });
       
           ItemtoBuy.forEach(obj => {
-            const sqlInsert = `INSERT INTO product (product_name, product_price, product_desc, product_image, count_in_stock, rating, num_reviews, commande_id) 
-                               VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+            const sqlInsert = `INSERT INTO product (product_name, product_price, product_desc, product_image, count_in_stock, rating, num_reviews, commande_id,Qantite_commande) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       
             const valuesInsert = [
               obj.product_name,
@@ -37,7 +37,8 @@ module.exports ={
               obj.count_in_stock,
               obj.rating,
               obj.num_reviews,
-              obj.commande_id
+              obj.commande_id,
+              obj.QuantiteCommande
             ];
       
             conn.query(sqlInsert, valuesInsert, (error, results, fields) => {

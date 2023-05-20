@@ -11,7 +11,7 @@ const ProgramesConfirmation = ({ route }) => {
   // const { toggle, retoggle } = useContext(ToggleContext)
   const { programes } = route.params;
   const {userData} = useContext(UserDataContext)
-    console.log(programes);
+    console.log('*',programes);
   const [imageUrl, setImageUrl] = useState(null);
   const navigation = useNavigation()
   return (
@@ -38,7 +38,8 @@ const ProgramesConfirmation = ({ route }) => {
                 for (const exercise of programes[day]) {
                   const response = await axios.post(`${API_URL}/progexer/program-exercises`, {
                     prg_id: res.data.insertId,
-                    exercice_id: exercise.exercice_id
+                    exercice_id: exercise.exercice_id,
+                    sets:exercise.sets
                   });
                   console.log(`Exercise ${exercise.exercice_id} added to program ${res.data.insertId}`);
                 }
