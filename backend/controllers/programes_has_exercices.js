@@ -21,7 +21,9 @@ addExerciseToProgram: function(req, res) {
     const programId = req.body.prg_id;
     const exerciseId = req.body.exercice_id;
     const sets = req.body.sets;
-    const data = { prg_id: programId, exercice_id: exerciseId,sets:sets};
+    const day = req.body.day
+    console.log(day);
+    const data = { prg_id: programId, exercice_id: exerciseId,sets:sets,day:day};
   programExercises.add(data, function(err, result) {
     if (err) {
       console.error(err);

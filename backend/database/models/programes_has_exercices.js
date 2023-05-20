@@ -12,12 +12,14 @@ module.exports = {
         });
       },
       getOne: function(prg_id, callback) {
-        const sql = 'SELECT * FROM programes_has_exercices WHERE prg_id = ?';
+        const sql = `select p.*,e.exercice_image,e.exercice_name from programes_has_exercices p
+        inner join exercices e 
+        where e.exercice_id=p.exercice_id and p.prg_id=?`;
         conn.query(sql, prg_id, function(error, results, fields) {
           if (error) {
             callback(error, null);
           } else {
-            callback(null, results[0]);
+            callback(null, results);
           }
         });
       },     

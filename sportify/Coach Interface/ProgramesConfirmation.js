@@ -39,7 +39,8 @@ const ProgramesConfirmation = ({ route }) => {
                   const response = await axios.post(`${API_URL}/progexer/program-exercises`, {
                     prg_id: res.data.insertId,
                     exercice_id: exercise.exercice_id,
-                    sets:exercise.sets
+                    sets:exercise.sets,
+                    day:day
                   });
                   console.log(`Exercise ${exercise.exercice_id} added to program ${res.data.insertId}`);
                 }

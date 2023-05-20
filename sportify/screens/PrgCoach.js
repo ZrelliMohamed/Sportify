@@ -3,11 +3,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import API_URL from '../screneens/var'
 import { UserDataContext,ToggleContext } from '../MainStackNavigator'
+import { useNavigation } from '@react-navigation/native'
 
 const PrgCoach = () => {
   const { userData } = useContext(UserDataContext)
   const [programes, setPrograme] = useState([])
   const { toggle, retoggle} =useContext(ToggleContext)
+  const Navigation = useNavigation()
   useEffect(async () => {
     const { data } = await axios.get(`${API_URL}/getcoachsProgBy/${userData.User_Id}`)
     setPrograme(data)
@@ -34,7 +36,10 @@ const PrgCoach = () => {
     // Handle purchase of program with prg_id
     console.log(`Purchase program with ID ${prg_id}`);
   };
-
+  const handleView= (prg_id) => {
+    // Handle purchase of program with prg_id
+    Navigation.navigate('ProgramView',{prg_id});
+  };
   // Display unique programs
   return (
     <View style={styles.container}>
@@ -46,6 +51,9 @@ const PrgCoach = () => {
             <Text style={styles.programPrice}>${prog.prg_price}</Text>
            {profile.user_type !== "coach"&& <TouchableOpacity style={styles.purchaseButton} onPress={() => handlePurchase(prog.prg_id)}>
               <Text style={styles.buttonText}>Purchase</Text>
+            </TouchableOpacity>}
+            {profile.user_type === "coach"&& <TouchableOpacity style={styles.purchaseButton} onPress={() => handleView(prog.prg_id)}>
+              <Text style={styles.buttonText}>View</Text>
             </TouchableOpacity>}
           </View>
         </View>
