@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {View,Text,TextInput,Button,StyleSheet,Image,TouchableOpacity,KeyboardAvoidingView} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import API_URL from './var';
 
@@ -56,7 +47,7 @@ function Sign() {
       <View style={styles.container}>
         <Image source={backgroundImage} style={[styles.backgroundImage, { transform: [{ scale: 1 }] }]} />
         <View style={styles.logoContainer}>
-          <Image source={logo} style={[styles.logo], { flex: 1 }} />
+          <Image source={logo} style={{...[styles.logo],  flex: 1 }} />
           <View style={[styles.formContainer, { width: '80%', position: 'absolute', top: 150 , marginTop:90}]}>
             <Text style={styles.title}>Create Account</Text>
             <Text style={styles.label}>Username</Text>

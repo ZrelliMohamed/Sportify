@@ -25,6 +25,7 @@ import Exercises from './Coach Interface/Exercises.js';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ProgramesConfirmation from './Coach Interface/ProgramesConfirmation.js';
+import ProgramView from './Coach Interface/ProgramView.js';
 const UserDataContext = createContext();
 const CartContext = createContext();
 const ToggleContext = createContext();
@@ -58,8 +59,9 @@ const MainStackNavigator = () => {
       <ToggleContext.Provider value={{ toggle, retoggle }}>
         <Stack.Navigator initialRouteName="BottomTabNavigator">
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: true, headerStyle: { backgroundColor: 'black', },headerTitleStyle: { fontSize: 20,fontWeight: 'bold', color: 'white'  } }}/>
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen}  options={{ headerShown: false }}/>
           <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+          <Stack.Screen name="ProgramView" component={ProgramView} />
           <Stack.Screen name="SingleProduct" component={SingleProduct} options={{ headerShown: false }}
             initialParams={{ func: addtocart, cart: cart }}/>
           <Stack.Screen name="CarteScreen" component={CarteScreen} options={{ headerShown: false }}/>
