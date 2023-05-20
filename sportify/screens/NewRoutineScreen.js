@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { UserDataContext } from '../MainStackNavigator';
+import axios from 'axios';
+import API_URL from '../screneens/var';
+import ProgramCreation from '../Coach Interface/ProgramCreation';
 
 const TodoItem = ({ title, onDelete }) => {
+
+
   return (
-    <View style={styles.todoItem}>
+   <View style={styles.todoItem}>
       <Text style={styles.todoTitle}>{title}</Text>
       <TouchableOpacity onPress={onDelete}>
         <AntDesign name="delete" size={24} color="#ff6262" />
       </TouchableOpacity>
-    </View>
+    </View> 
   );
 };
 
 const NewRoutineScreen = () => {
   const [todoItems, setTodoItems] = useState([]);
   const [newTodoItem, setNewTodoItem] = useState('');
-
+  const {userData} = useContext(UserDataContext)
+  const [user,setUser]=useState(null)
+  useEffect(()=>{
+    axios.get(`${API_URL}/users/${userData.User_Id}`)
+    .then(res=>setUser(res.data))
+    .catch(err=>console.log(err))
+  },[])
   const handleAddTodo = () => {
     if (newTodoItem.trim() !== '') {
       setTodoItems([...todoItems, newTodoItem]);
@@ -31,8 +43,9 @@ const NewRoutineScreen = () => {
   };
 
   return (
+    user!==null && user.user_type==='user'? 
     <View style={styles.container}>
-      <Text style={styles.title}>HAMA</Text>
+    <Text style={styles.title}> My Routine </Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -52,7 +65,9 @@ const NewRoutineScreen = () => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-    </View>
+    </View>: 
+    <ProgramCreation/>
+   
   );
 };
 
@@ -86,7 +101,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   addButton: {
-    backgroundColor: '#55a3d6',
+    backgroundColor: 'black',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
@@ -94,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addButtonText: {
-    color: '#fff',
+    color: '#D0FD3E',
     fontWeight: 'bold',
   },
   listContainer: {

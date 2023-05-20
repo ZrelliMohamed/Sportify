@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet , onNext} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -58,6 +58,7 @@ const GenderPicker = () => {
           onPress={() => handleGenderSelect('male')}
         >
           <Icon name="mars" size={50} color="#fff" />
+          <Text style={styles.nextButtonText}>male</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -67,6 +68,7 @@ const GenderPicker = () => {
           onPress={() => handleGenderSelect('female')}
         >
           <Icon name="venus" size={50} color="#fff" />
+          <Text style={styles.nextButtonText}>female</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 60
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   button: {
-    backgroundColor: '#007aff',
+    backgroundColor: 'black',
     borderRadius: 50,
     padding: 20,
     alignItems: 'center',
@@ -108,14 +110,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#005cb2'
   },
   nextButton: {
-    backgroundColor: '#007aff',
+    backgroundColor: 'black',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    marginTop: 20
+    marginTop: 320
   },
   nextButtonText: {
-    color: '#fff',
+    color: '#D0FD3E',
     fontWeight: 'bold',
     fontSize: 18
   }

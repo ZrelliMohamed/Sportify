@@ -3,6 +3,7 @@ import { UserDataContext } from "../MainStackNavigator";
 import { View, ScrollView, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import SERVER_URL from '../screneens/SERVER_URL';
 import ChatBox from './ChatBox';
 
 const ConversationList = () => {
@@ -12,7 +13,7 @@ const ConversationList = () => {
   const [searchText, setSearchText] = useState('')
   const [toggle,setToggle] = useState(false)
   const { userData } = useContext(UserDataContext)
-  const SERVER_URL = 'http://192.168.11.149:3001'
+  
   console.log(userData,"userData")
 const toggler = (x) =>{
   setToggle(x)

@@ -118,6 +118,8 @@ import { View, ScrollView, Text, KeyboardAvoidingView } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native'
 import { ListItem, Input, Button , Header, Icon} from 'react-native-elements';
+
+import SERVER_URL from '../screneens/SERVER_URL'
 import io from 'socket.io-client';
 
 const Chat = () => {
@@ -128,7 +130,7 @@ const Chat = () => {
   const [socket, setSocket] = useState(null);
   const route = useRoute();
   const receiver = route.params?.receiver;
-  const SERVER_URL = 'http://192.168.11.149:3001';
+
 
   useEffect(() => {
     const newSocket = io(SERVER_URL);
@@ -151,7 +153,7 @@ const Chat = () => {
 
       axios
         .get(
-          `http://192.168.11.149:3001/api/chat/messages/${userData.User_Id}/${receiver.User_Id}`
+          `${SERVER_URL}/api/chat/messages/${userData.User_Id}/${receiver.User_Id}`
         )
         .then((response) => setMessages(response.data))
         .catch((error) => console.error(error));
@@ -166,7 +168,7 @@ const Chat = () => {
       message: message,
     });
     axios
-      .post('http://192.168.11.149:3001/api/chat/sendMessage', {
+      .post(SERVER_URL+'/api/chat/sendMessage', {
         sender_id: userData.User_Id,
         receiver_id: receiver.User_Id,
         message: message,
@@ -177,7 +179,7 @@ const Chat = () => {
         console.log(response.data, 'dataaaaa');
         axios
           .get(
-            `http://192.168.11.149:3001/api/chat/messages/${userData.User_Id}/${receiver.User_Id}`
+            `${SERVER_URL}/api/chat/messages/${userData.User_Id}/${receiver.User_Id}`
           )
           .then((response) => setMessages(response.data))
           .catch((error) => console.error(error));

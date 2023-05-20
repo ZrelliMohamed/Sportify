@@ -36,7 +36,7 @@ const WorkoutScreen = () => {
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Image
               style={{ width: '90%', height: 120, marginTop: 20, borderRadius: 7 }}
-              source={{ uri: "https://media3.giphy.com/media/xvGatK16b9D3nakfcD/giphy.gif" }}
+              source={{ uri: "https://www.pngmart.com/files/4/Fitness-PNG-HD.png" }}
             />
           </View>
         </View>
@@ -61,7 +61,7 @@ const WorkoutScreen = () => {
       <View style={styles.logoContainer}>
         <Image
           style={styles.logoImage}
-          source={{uri:'https://e7.pngegg.com/pngimages/299/457/png-clipart-treadmill-physical-fitness-elliptical-trainers-exercise-equipment-fitness-gallery-treadmill-miscellaneous-running.png'}}
+          source={{uri:'https://www.seekpng.com/png/detail/220-2205760_athletes-fitness-png.png'}}
         />
       </View>
       </TouchableOpacity>
@@ -73,7 +73,7 @@ export default WorkoutScreen
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#CD853F',
+    backgroundColor: 'black',
     paddingVertical: 20,
     paddingHorizontal: 30,
     width: '100%',
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#D0FD3E',
     margin: 15,
   },
   statsContainer: {
@@ -119,8 +119,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 17,
-    color: 'black',
-    opacity: 0.2,
+    color: 'white',
     marginTop: 6
   },
   logoContainer: {

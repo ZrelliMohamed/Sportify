@@ -5,13 +5,13 @@ import axios from 'axios';
 import { Input, Button, Header, Icon } from 'react-native-elements';
 import io from 'socket.io-client';
 import _ from 'lodash';
+import SERVER_URL from '../screneens/SERVER_URL'
 
 const ChatBox = ({ userData, selectedUser, messages, setMessages, setSelectedUser,func }) => {
   const [message, setMessage] = useState('')
   const [socket, setSocket] = useState(null)
   const [debouncedMessage, setDebouncedMessage] = useState('')
   
-  const SERVER_URL = 'http://192.168.11.149:3001'
 
   useEffect(() => {
     func(true)
