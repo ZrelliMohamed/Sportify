@@ -29,6 +29,7 @@ import ProgramView from './Coach Interface/ProgramView.js';
 const UserDataContext = createContext();
 const CartContext = createContext();
 const ToggleContext = createContext();
+const ProgContext = createContext();
 
 const Stack = createNativeStackNavigator();
 
@@ -52,14 +53,22 @@ const MainStackNavigator = () => {
     }
   };
     const [programes,setProgrames]=useState({})
+    const [ProgToPurchase,setProgToPurchase]=useState(null)
+
+    const setProPurchased =(option)=> {
+      setProgToPurchase(option)
+    }
+    console.log('prog',ProgToPurchase);
+
   return (
     <StripeProvider publishableKey={STRIPE_KEY}>
+      <ProgContext.Provider value={{ProgToPurchase,setProgToPurchase}}>
     <UserDataContext.Provider value={{ userData, setUserData }}>
       <CartContext.Provider value={{ cart, setCart }}>
       <ToggleContext.Provider value={{ toggle, retoggle }}>
         <Stack.Navigator initialRouteName="BottomTabNavigator">
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: true, headerStyle: { backgroundColor: 'black', },headerTitleStyle: { fontSize: 20,fontWeight: 'bold', color: 'white'  } }}/>
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen}  options={{ headerShown: false }}/>
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen}  options={{ headerShown: false }} />
           <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
           <Stack.Screen name="ProgramView" component={ProgramView} />
           <Stack.Screen name="SingleProduct" component={SingleProduct} options={{ headerShown: false }}
@@ -72,7 +81,7 @@ const MainStackNavigator = () => {
           <Stack.Screen name="Fit"  component={FitScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Rest" component={RestScreen} options={{ headerShown: false }} />
           <Stack.Screen name="CoachList" component={CoachList} options={{headerShown:false}}/>
-        <Stack.Screen name="CoachProfile" component={CoachProfile} options={{headerShown:false}}/>
+        <Stack.Screen name="CoachProfile" component={CoachProfile} options={{headerShown:false}} initialParams={{setProPurchased:setProPurchased}}/>
         <Stack.Screen name="Chat" component={Chat} options={{headerShown:false}}/>
         <Stack.Screen name="Payment" component={Payment} options={{headerShown:false}}/>
         <Stack.Screen name="Checkout" component={Checkout} options={{ headerShown: false }} />
@@ -81,8 +90,8 @@ const MainStackNavigator = () => {
         <Stack.Screen name="Exercises" component={Exercises} options={{headerTitle: 'Programe',
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => navigation.navigate('Confirmation')}
-          style={{ marginRight: 16 }}
+        onPress={() => navigation.navigate('Confirmation')}
+        style={{ marginRight: 16 }}
         >
           <Ionicons
             name="checkmark"
@@ -97,9 +106,10 @@ const MainStackNavigator = () => {
         </ToggleContext.Provider>
       </CartContext.Provider>
     </UserDataContext.Provider>
+      </ProgContext.Provider>
     </StripeProvider>
   );
 };
 
-export { UserDataContext, CartContext,ToggleContext};
+export { UserDataContext, CartContext,ToggleContext,ProgContext};
 export default MainStackNavigator;
