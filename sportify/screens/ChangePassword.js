@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import API_URL from '../screneens/var';
 
@@ -9,7 +9,8 @@ const ChangePasswordComponent = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigation = useNavigation();
-
+const route =useRoute()
+const{profile} =route.params
   const handlePasswordChange = () => {
     // Perform validation
     if (!currentPassword || !newPassword || !confirmPassword) {

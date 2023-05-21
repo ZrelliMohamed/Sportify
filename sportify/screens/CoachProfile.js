@@ -1,25 +1,43 @@
-import React, { useState,useEffect, useContext } from 'react';
+import React, { useState,useEffect, useContext ,useRef} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { Card } from 'react-native-elements';
-import { Button } from "native-base";
+import { Card,Rating as Rate } from 'react-native-elements'
+import { Box, CheckIcon, FormControl, Heading, Select, VStack, TextArea, Button } from 'native-base';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { UserDataContext,CartContext } from '../MainStackNavigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import API_URL from '../screneens/var'
 import axios from 'axios';
+import Rating from './store/Rating';
+import Messsage from './store/Notification/Messsage';
 const CoachProfile = ({route}) => {
   const {userData} = useContext(UserDataContext)
   const {cart, setCart} = useContext(CartContext)
-
+  const [rating, setRating] = useState(null);
+  const [comment, setComment] = useState('');
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const textAreaRef = useRef(null);
+  const [toggle,setToggle]=useState(false)
+  const handleReview = () => {
+    axios.post(`${API_URL}/reviewC`,{User_Id:userData.User_Id,
+    coach_Id:coach.User_Id,
+    message:comment,
+    rating:rating}).then(res=>{setToggle(!toggle)
+      textAreaRef.current.clear();
+      setIsSubmitEnabled(false)
+    }).catch((err)=>console.log(err))
+   
+  };
   const {setProPurchased} = route.params
   const [profile,setProfile]=useState([])
   const navigation = useNavigation();
   const rout = useRoute();
   const coach = rout.params.coach;
   const {func} = route.params;
-console.log(coach.User_Id,"the coach");
+console.log(profile,"the coach");
   const [programes,setprograms]=useState([])
-
+  useEffect(() => {
+    setIsSubmitEnabled(rating !== null && comment !== '');
+  }, [rating, comment]);
   useEffect(async () => {
     const { data } = await axios.get(`${API_URL}/getcoachsProgBy/${coach.User_Id}`)
     setprograms(data)
@@ -49,6 +67,19 @@ console.log(coach.User_Id,"the coach");
         },
       ]);
     };
+    const handleRating = (value) => {
+      setRating(value);
+      console.log('Selected rating:', value);
+    };
+
+    // handling the reviews 
+    const [reviewsuser,setReviwesUser]=useState('')
+    useEffect(()=>{
+      axios.get(`${API_URL}/reviewC`)
+      .then(res=>{setReviwesUser(res.data)
+      })
+      .catch(err=>console.log(err))
+    },[])
 
   return (
     <View style={styles.container}>
@@ -56,12 +87,15 @@ console.log(coach.User_Id,"the coach");
     <View style={styles.header}>
       <Image source={{ uri: route.params.coach.user_img }} style={styles.profileImage} />
       <View style={styles.nameContainer}>
-        <Text style={styles.name}>{route.params.coach.user_name}</Text>
+        <Text style={styles.name}>{route.params.coach.user_name.toUpperCase()}</Text>
+      </View>
+      <View margin={10}>
+       <Rating value={coach.User_preview}/>
+      </View>
         <TouchableOpacity style={styles.messageButton} onPress={() => { console.log(coach,"rec") , navigation.navigate('Chat', { receiver: coach })}}>
           <Icon name="comments" size={20} color="#fff" />
           <Text style={styles.messageButtonText}>Message</Text>
         </TouchableOpacity>
-      </View>
     </View>
     <View style={styles.body}>
       <View style={styles.descriptionContainer}>
@@ -83,12 +117,56 @@ console.log(coach.User_Id,"the coach");
            {profile.user_type !== "coach"&& <TouchableOpacity style={styles.purchaseButton2} onPress={() => handlePurchase(prog.prg_id)}>
               <Text style={styles.buttonText2}>Purchase</Text>
             </TouchableOpacity>}
-   
           </View>
         </View>
       ))}
     </View>
       </Card>
+      {reviewsuser.length ===0 ? (
+        <View margin={10}>
+        <Messsage color="white" bg="#7e9e1e" size={10} children="NO REVIEWS" bold={0} />
+        </View>
+      ) : (
+        reviewsuser.map((review) => (
+          <View style={styles.reviewContainer5} key={review.review_id}>
+            <View style={{ flexDirection: 'row' }}>
+              <Image source={{ uri: review.user_img }} style={{ width: 50, height: 50, borderRadius: 50 }} />
+              <View style={{ marginLeft: 10 }}>
+                <Heading fontSize={15} color="black">
+                  {review.user_name}
+                </Heading>
+                <Rating value={review.rating} />
+                <Messsage color="black" bg="white" size={10} children={review.message} />
+              </View>
+            </View>
+          </View>
+        ))
+      )}
+      {profile.user_type !== "coach"&& <>
+        <Box><Heading style={styles.header1}>
+          REVIEW {route.params.coach.user_name.toUpperCase()}
+        </Heading>
+        <VStack space={6}>
+          <FormControl>
+            <FormControl.Label style={styles.formLabel1}>Rating</FormControl.Label>
+            <Rate onFinishRating={handleRating}/>
+          </FormControl>
+          <FormControl>
+            <FormControl.Label style={styles.formLabel1}>Comment</FormControl.Label>
+            <TextArea
+              style={styles.textArea1}
+              onChangeText={(text) => setComment(text)}
+              value={comment}
+              ref={textAreaRef}
+            />
+            <Button style={styles.submitButton1} onPress={handleReview} isDisabled={!isSubmitEnabled}
+            marginTop={10} 
+            >
+              Submit
+            </Button>
+          </FormControl> 
+        </VStack> </Box></>
+       }
     </View>
   </ScrollView>
 </View>
@@ -98,6 +176,12 @@ console.log(coach.User_Id,"the coach");
 
 
 const styles = StyleSheet.create({
+  reviewContainer5: {
+    backgroundColor: '#f5f5f5',
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -187,6 +271,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 8,
+    marginRight:10
   },
   programInfo: {
     marginTop: 8,
@@ -241,6 +326,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  formLabel1: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#7e9e1e'
+  },
+  formControl1: {
+    backgroundColor: '#f5f5f5',
+    borderColor: '#f5f5f5',
+  },
+  header1: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333'
+  },
+  submitButton1: {
+     backgroundColor: '#7e9e1e',
+     tintColor:"red"
+  }
 });
 
 
