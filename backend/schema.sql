@@ -5,9 +5,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
 -- Schema spotify
 -- -----------------------------------------------------
 
@@ -15,6 +12,53 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema spotify
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `spotify` DEFAULT CHARACTER SET utf8mb3 ;
+
+-- -----------------------------------------------------
+-- Table `spotify`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotify`.`users` (
+  `User_Id` INT NOT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(45) NOT NULL,
+  `user_email` VARCHAR(100) NOT NULL,
+  `user_password` LONGTEXT NOT NULL,
+  `user_img` LONGTEXT NULL DEFAULT NULL,
+  `user_type` VARCHAR(45) NOT NULL,
+  `user_heigth` INT NULL DEFAULT NULL,
+  `user_gender` VARCHAR(45) NULL DEFAULT NULL,
+  `user_weight` VARCHAR(45) NULL DEFAULT NULL,
+  `user_goal` VARCHAR(45) NULL DEFAULT NULL,
+  `user_preference` VARCHAR(45) NULL DEFAULT NULL,
+  `User_preview` FLOAT NULL DEFAULT NULL,
+  PRIMARY KEY (`User_Id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 29
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `spotify`.`reviewC`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotify`.`reviewC` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `User_Id` INT NOT NULL,
+  `coach_Id` INT NOT NULL,
+  `message` LONGTEXT NOT NULL,
+  `rating` FLOAT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_reviewC_users_idx` (`User_Id` ASC) VISIBLE,
+  INDEX `fk_reviewC_users1_idx` (`coach_Id` ASC) VISIBLE,
+  CONSTRAINT `fk_reviewC_users`
+    FOREIGN KEY (`User_Id`)
+    REFERENCES `spotify`.`users` (`User_Id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_reviewC_users1`
+    FOREIGN KEY (`coach_Id`)
+    REFERENCES `spotify`.`users` (`User_Id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
 USE `spotify` ;
 
 -- -----------------------------------------------------
@@ -35,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`users` (
   `User_preview` FLOAT NULL DEFAULT NULL,
   PRIMARY KEY (`User_Id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 26
+AUTO_INCREMENT = 29
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -54,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`commandes` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 19
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -70,7 +114,30 @@ CREATE TABLE IF NOT EXISTS `spotify`.`exercices` (
   `exercice_calories` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`exercice_id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 105
+AUTO_INCREMENT = 129
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `spotify`.`messages`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotify`.`messages` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `sender_id` INT NOT NULL,
+  `receiver_id` INT NOT NULL,
+  `message` TEXT NOT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `sender_id` (`sender_id` ASC) VISIBLE,
+  INDEX `receiver_id` (`receiver_id` ASC) VISIBLE,
+  CONSTRAINT `messages_ibfk_1`
+    FOREIGN KEY (`sender_id`)
+    REFERENCES `spotify`.`users` (`User_Id`),
+  CONSTRAINT `messages_ibfk_2`
+    FOREIGN KEY (`receiver_id`)
+    REFERENCES `spotify`.`users` (`User_Id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 42
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -96,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`product` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 80
+AUTO_INCREMENT = 93
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -125,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`programes` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 9
+AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -152,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `spotify`.`programes_has_exercices` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 22
+AUTO_INCREMENT = 38
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -182,29 +249,6 @@ ENGINE = InnoDB
 AUTO_INCREMENT = 19
 DEFAULT CHARACTER SET = utf8mb3;
 
-
-
--- -----------------------------------------------------
--- Table spotify.messages
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS spotify.messages (
-  id INT NOT NULL AUTO_INCREMENT,
-  sender_id INT NOT NULL,
-  receiver_id INT NOT NULL,
-  message TEXT NOT NULL,
-  created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  INDEX sender_id (sender_id ASC) VISIBLE,
-  INDEX receiver_id (receiver_id ASC) VISIBLE,
-  CONSTRAINT messages_ibfk_1
-    FOREIGN KEY (sender_id)
-    REFERENCES spotify.users (User_Id),
-  CONSTRAINT messages_ibfk_2
-    FOREIGN KEY (receiver_id)
-    REFERENCES spotify.users (User_Id))
-ENGINE = InnoDB
-AUTO_INCREMENT = 37
-DEFAULT CHARACTER SET = utf8mb3;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

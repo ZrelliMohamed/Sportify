@@ -5,11 +5,13 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation} from '@react-navigation/native';
 import HomeCoach from './HomeCoach';
 import ProductList from './ProductList';
-import { UserDataContext } from '../MainStackNavigator.js';
+import { UserDataContext,ProgContext } from '../MainStackNavigator.js';
 import { CartContext } from '../MainStackNavigator.js';
 const HomeScreen = () => {
   const [Search,setSearch] =useState('')
   const navigation = useNavigation();
+
+  const { ProgToPurchase,setProgToPurchase } = useContext(ProgContext);
   const { userData } = useContext(UserDataContext);
   const { cart, addtocart } = useContext(CartContext);
   const handleToCart = () => {
@@ -44,7 +46,8 @@ console.log(Search);
     <Pressable onPress={handleToCart}>
       <FontAwesome5 name="shopping-cart" size={24} color="#333" />
       <Box px={1} rounded="full" position="absolute" top={-13} left={2} bgColor="red.900" _text={{ color: "white", fontSize: '11px' }}>
-                {cart.length}
+                {ProgToPurchase?cart.length+1:cart.length
+                }
               </Box>
     </Pressable>
   </HStack>

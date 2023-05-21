@@ -47,6 +47,12 @@ const reviewRouter = require('./routes/review');
 app.use('/review', reviewRouter);
 /************************************************* */
 
+// review Coachs 
+/************************************************ */
+const reviewCoach = require('./routes/reviewCoach');
+app.use('/reviewC', reviewCoach);
+/************************************************* */
+
 app.get('/getcoachsProgBy/:id',(req,res)=>{
   const query =`select p.prg_id,p.User_Id,p.prg_img,p.prg_name,p.prg_price,p.prg_goal,
   e.*
