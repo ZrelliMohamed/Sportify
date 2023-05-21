@@ -1,13 +1,22 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { moderateScale } from 'react-native-size-matters';
+import { Picker } from '@react-native-picker/picker';
 
 import API_URL from '../screneens/var';
 import CustomTextInput from '../components/CustomTextInput.js';
@@ -85,7 +94,8 @@ const SettingScreen = () => {
         .then(response => {
           console.log(response.data);
           // do something with the updated user data
-toggle()
+          toggle();
+
           // Display an alert to indicate successful update
           Alert.alert('Success', 'User information updated successfully!');
         })
@@ -162,14 +172,22 @@ toggle()
             keyboardType="numeric"
             error={touched.height && errors.height}
           />
-          <CustomTextInput
-            label="goal"
-            placeholder="Enter goal"
-            value={values.goal}
-            onChangeText={handleChange('goal')}
-            onBlur={handleBlur('goal')}
-            error={touched.goal && errors.goal}
-          />
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Program Goal:</Text>
+            <Picker
+              selectedValue={values.goal}
+              style={styles.picker}
+              onValueChange={handleChange('goal')}
+            >
+              <Picker.Item label="Select a goal" value="" />
+              <Picker.Item label="Gaining" value="gaining" />
+              <Picker.Item label="Losing" value="losing" />
+              <Picker.Item label="Shredded" value="shredded" />
+              <Picker.Item label="Running" value="running" />
+              <Picker.Item label="Protein" value="protein" />
+            </Picker>
+            {errors.goal && touched.goal && <Text style={styles.error}>{errors.goal}</Text>}
+          </View>
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Save Changes</Text>
           </TouchableOpacity>
@@ -232,6 +250,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: moderateScale(18),
+  },
+  formGroup: {
+    marginVertical: moderateScale(10),
+  },
+  label: {
+    fontSize: moderateScale(16),
+    marginBottom: moderateScale(5),
+    fontWeight: 'bold',
+  },
+  picker: {
+    backgroundColor: '#fff',
+    borderRadius: moderateScale(5),
+    borderWidth: moderateScale(1),
+    borderColor: '#ddd',
+    paddingHorizontal: moderateScale(10),
+  },
+  error: {
+    color: 'red',
+    fontSize: moderateScale(12),
+    marginTop: moderateScale(5),
   },
 });
 
