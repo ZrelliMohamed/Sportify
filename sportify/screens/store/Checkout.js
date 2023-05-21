@@ -1,83 +1,87 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, FormControl, Heading, HStack, Input, ScrollView, Spacer, Text } from 'native-base';
 import API_URL from '../../screneens/var';
-import { CartContext } from '../../MainStackNavigator';
+import { CartContext,UserDataContext } from '../../MainStackNavigator';
+import {useStripe} from '@stripe/stripe-react-native'
+import axios from 'axios';
+import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 const Checkout = () => {
-    const {cart ,setCart} = useContext(CartContext)
-    console.log(cart);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch(`${API_URL}/checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          address,
-          cartItems,
-        }),
-      });
-
-      if (response.ok) {
-        setCart([]);
-        alert('Checkout successful!');
-      } else {
-        alert('Something went wrong. Please try again later.');
+  const {initPaymentSheet,presentPaymentSheet}= useStripe()
+  const { cart, setCart } = useContext(CartContext);
+  const { userData } = useContext(UserDataContext);
+  const [ItemtoBuy, setItemToBuy] = useState([]);
+  const [total, setTotal] = useState(0);
+  const navigation = useNavigation()
+  const onCheckout = async()=>{
+    const response = await axios.post(`${API_URL}/payments/intents`,{amount:Math.floor(total*100)})
+      const initResponse =await initPaymentSheet({
+        merchantDisplayName:'Sportify',
+        paymentIntentClientSecret:response.data.paymentIntent
+      })
+      if (initResponse.error){
+        console.log(initResponse.error);
+        Alert.alert('Something went Wrong')
+        return ;
       }
-    } catch (error) {
-      alert('Something went wrong. Please try again later.');
-    }
-  };
+      await presentPaymentSheet()
+      setCart([])
+       axios.post(`${API_URL}/orders/addorderTo/${userData.User_Id}`,ItemtoBuy).then((res)=>console.log(res))
+       .catch(err=>console.log(err))
+       navigation.navigate('ProfileScreen')
 
+  }
+  console.log(userData);
+  useEffect(() => {
+    axios
+      .post(`${API_URL}/products/ProductCart`, { cart: cart })
+      .then((res) => {
+        setItemToBuy(res.data.products);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    let orderTotal = 0;
+    for (const item of ItemtoBuy) {
+      orderTotal += item.product_price * item.QuantiteCommande;
+    }
+    setTotal(orderTotal);
+  }, [ItemtoBuy]);
   return (
-    <Box>
-      {/* <ScrollView px={5} showsVerticalScrollIndicator={false}>
-        <Heading bold fontSize={20} mt={5} mb={3}>
+    <ScrollView>
+      <Box padding={4}>
+        <Heading size="md" mb={4}>
           Checkout
         </Heading>
-
-        <FormControl mb={3}>
-          <FormControl.Label>Name</FormControl.Label>
-          <Input placeholder="Enter your name" value={name} onChangeText={setName} />
-        </FormControl>
-
-        <FormControl mb={3}>
-          <FormControl.Label>Email</FormControl.Label>
-          <Input placeholder="Enter your email" value={email} onChangeText={setEmail} />
-        </FormControl>
-
-        <FormControl mb={3}>
-          <FormControl.Label>Address</FormControl.Label>
-          <Input placeholder="Enter your address" value={address} onChangeText={setAddress} />
-        </FormControl>
-
-        <Heading bold fontSize={18} mt={5} mb={3}>
-          Order Summary
-        </Heading>
-
-        {cart.map((item) => (
-          <HStack key={item[0]} space={2} my={3}>
-            <Text fontSize={16}>
-              {item[1]} x {item[2].product_name}
-            </Text>
-            <Spacer />
-            <Text bold color={'black'} fontSize={16}>
-              ${item[2].product_price * item[1]}
-            </Text>
-          </HStack>
-        ))}
-
-        <Button bg={'#7e9e1e'} color={'white'} m={10} borderRadius={100} onPress={handleSubmit}>
-          PLACE ORDER
-        </Button>
-      </ScrollView> */}
-    </Box>
+        {ItemtoBuy.length > 0 &&
+          ItemtoBuy.map((item, index) => (
+            <Box
+              key={index}
+              borderWidth={1}
+              borderRadius="md"
+              borderColor="gray.200"
+              padding={4}
+              marginBottom={4}
+            >
+              <Text fontSize="lg" fontWeight="bold" mb={2}>
+                {item.product_name}
+              </Text>
+              <Text fontSize="lg" fontWeight="bold" color="green.500">
+                $ {item.product_price}
+              </Text>
+              <Text fontSize="sm" color="gray.500">
+                Quantity: {item.QuantiteCommande}
+              </Text>
+            </Box>
+          ))}
+        <Text fontSize="lg" fontWeight="bold" mb={2}>
+          Total: $ {total}
+        </Text>
+        <Button colorScheme="blue" onPress={()=>onCheckout()}>Place Order</Button>
+      </Box>
+    </ScrollView>
   );
 };
 

@@ -13,14 +13,7 @@ const CartEmpty = () => {
             </Center>
       <Text  style={{color:"#7e9e1e"}}  bold mt={5}>CART IS EMPTY</Text>
         </Center>
-        <Button bg={"#7e9e1e"} color={'white'} borderRadius={100}
-           onPress={()=>{
-            navigation.navigate('Store')
-          }}
-        >
-       
-            START SHOPPING
-        </Button>
+  
     </Box>
   )
 }

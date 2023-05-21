@@ -4,7 +4,7 @@ const db = require('../database/index');
 
 // Get all products
 router.get('/', (req, res) => {
-  const sql = 'SELECT * FROM product';
+  const sql = 'SELECT * FROM product  WHERE commande_id IS NULL;';
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error executing query: ', err);

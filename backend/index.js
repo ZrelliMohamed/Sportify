@@ -17,7 +17,14 @@ app.use(bodyParser.json());
 const connection = require('./database/index');
 const { getAll, add } = require('./controllers/user');
 
+const paymentRoutes = require('./routes/paymentRouter')
+app.use('/payments',paymentRoutes)
 
+// commandes Routes 
+/************************************************ */
+const ordersRoute = require('./routes/order');
+app.use('/orders', ordersRoute);
+/************************************************* */
 // products Routes 
 /************************************************ */
 const productsRouter = require('./controllers/products');
@@ -28,6 +35,11 @@ app.use('/products', productsRouter);
 /************************************************ */
 const reviewRouter = require('./routes/review');
 app.use('/review', reviewRouter);
+/************************************************* */
+// review Routes 
+/************************************************ */
+const exercices = require('./routes/exercices');
+app.use('/exercice', exercices);
 /************************************************* */
 
 app.get('/api/users/getAll',(req,res)=>{
@@ -88,33 +100,46 @@ app.delete('/coaches/:id', (req, res) => {
 // *****************************************
 app.post('/users', (req, res) => {
   // Extract user data from the request body
-  const { user_name, user_email, user_password, user_img, user_type, user_heigth, user_gender, user_weight, user_goal, user_preference, User_preview } = req.body;
+  var { user_name, user_email, user_password, user_img, user_type, user_heigth, user_gender, user_weight, user_goal, user_preference, User_preview } = req.body;
 
-  // Create a new user object
-  const newUser = {
-    user_name,
-    user_email,
-    user_password,
-    user_img,
-    user_type,
-    user_heigth,
-    user_gender,
-    user_weight,
-    user_goal,
-    user_preference,
-    User_preview
-  };
-
-  // Perform the database query
-  connection.query('INSERT INTO users SET ?', newUser, (error, results) => {
-    if (error) {
-      console.error('Error executing query: ', error);
-      return res.status(500).json({ error: 'Failed to create user.' });
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) {
+      res.sendStatus(err);
+      return;
     }
-
-    // Return a success response
-    res.status(201).json({ message: 'User created successfully.', user: { User_Id: results.insertId, ...newUser } });
+  
+    bcrypt.hash(user_password, salt, (err, hash) => {
+      if (err) {
+  
+        res.sendStatus(err);
+        return;
+      }
+      user_password=hash
+      const newUser = {
+        user_name,
+        user_email,
+        user_password,
+        user_img,
+        user_type,
+        user_heigth,
+        user_gender,
+        user_weight,
+        user_goal,
+        user_preference,
+        User_preview
+      };
+      connection.query('INSERT INTO users SET ?', newUser, (error, results) => {
+        if (error) {
+          console.error('Error executing query: ', error);
+          return res.status(500).json({ error: 'Failed to create user.' });
+        }
+    
+        // Return a success response
+        res.status(201).json({ message: 'User created successfully.', user: { User_Id: results.insertId, ...newUser } });
+      });
+    });
   });
+
 });
 
 
@@ -359,17 +384,16 @@ app.post('/loginn', (req, res) => {
 });
 
 
-const CLIENT_ID = "988516806806-s1ivhmqc8lhtu8ven9bc4ih5aoic2nae.apps.googleusercontent.com"
-const CLIENT_SECRET = "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";
+ const CLIENT_ID = "988516806806-d24apdsna641b7t71pgbtocmf5ajuvqs.apps.googleusercontent.com"
+const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = "1//04yvUFqGAVTstCgYIARAAGAQSNwF-L9IrpfDiE01R-cSw7jh-LBxQIehsf6qKe1xVzyNCChHmYqHpbq9frAakrQ75QzOMYiyEMuo";
+const REFRESH_TOKEN = "1//04kEEBs9k5rUvCgYIARAAGAQSNwF-L9Ird93ghyeQmrl6N-ky3KxoAr-WsSCK9A57vlzir_U9fBKrVtXe3Z6aGbmHw10or8oyp70";
 const oAuth2Client = new OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
   REDIRECT_URI
 );
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -378,11 +402,10 @@ const transporter = nodemailer.createTransport({
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     refreshToken: REFRESH_TOKEN,
-  //   accessToken: oAuth2Client.getAccessToken(),
+    accessToken: oAuth2Client.getAccessToken(),
   },
 });
 const verificationCodeMap = new Map();
-
 
 app.post("/forget-password-email", async (req, res) => {
   const { email } = req.body;

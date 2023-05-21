@@ -14,6 +14,7 @@ module.exports = {
           callBack(error, result);
         });
       },
+      
       add: function(exerciseData, callBack) {
         const sql = 'INSERT INTO spotify.exercices (exercice_image, exercice_name, exercice_description, exercice_sets, exercice_calories) VALUES (?, ?, ?, ?, ?)';
         const values = [exerciseData.exercice_image, exerciseData.exercice_name, exerciseData.exercice_description, exerciseData.exercice_sets, exerciseData.exercice_calories];

@@ -10,7 +10,7 @@ const CoachProfile = () => {
   const navigation = useNavigation();
  const route=useRoute();
  const coach=route.params
-console.log('coach1',route.params);
+console.log('coach1',coach.coach);
   const programs = [
     {
       id: 1,
@@ -55,7 +55,7 @@ console.log('coach1',route.params);
         <Text style={styles.name}>{route.params.coach.user_name}</Text>
         <TouchableOpacity
           style={styles.settings}
-          onPress={() => navigation.navigate('Chat')}
+          onPress={() => navigation.navigate('Chat',{receiver:coach.coach})}
         >
           <Icon name="comments" size={24} color="#fff" />
         </TouchableOpacity>
