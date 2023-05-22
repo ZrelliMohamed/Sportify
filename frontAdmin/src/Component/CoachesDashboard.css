@@ -1,0 +1,54 @@
+.coaches-dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .coach-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .coach-item h3 {
+    margin: 0;
+  }
+  
+  .coach-item p {
+    margin: 5px 0;
+  }
+  
+  .coach-item button {
+    margin-left: 10px;
+  }
+  
+  .coach-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .coach-form h2 {
+    margin-bottom: 10px;
+  }
+  
+  .coach-form input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 300px;
+  }
+  
+  .coach-form button {
+    margin-top: 10px;
+    padding: 5px 10px;
+  }
+  
+  .coach-form button:first-child {
+    margin-right: 10px;
+  }
+  
