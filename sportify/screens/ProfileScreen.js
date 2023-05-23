@@ -21,7 +21,7 @@ function ProfileScreen() {
   const isFocused = useIsFocused();
   const [menuVisible, setMenuVisible] = useState(false);
   // Access the email prop
-  
+  const [state,setState]=useState(true);
   const [profile,setProfile]=useState([])
   console.log(profile);
   useEffect(() => {
@@ -35,7 +35,7 @@ function ProfileScreen() {
     };
 
     fetchUserData();
-  }, []);
+  }, [profile.user_img,state]);
 
   useEffect(() => {
     let subscription;
@@ -52,17 +52,23 @@ function ProfileScreen() {
       }
     };
   }, [isFocused]);
-
+const toggle = () => {
+  setState(!state)
+}
   const handleEditProfile = () => {
     setMenuVisible(false);
-    navigation.navigate('SettingsScreen',{profile:profile})
+    navigation.navigate('SettingsScreen',{profile:profile,toggle:toggle})
   };
 
   const handleChat = () => {
     setMenuVisible(false);
     navigation.navigate('ConversationList');
   };
-
+  const  handleChangePassword = () => {
+    setMenuVisible(false);
+    navigation.navigate('ChangePassword',{profile:profile});
+  };
+ 
   const handleLogout1 = () => {
     Alert.alert(
       'Confirm Logout',
@@ -137,37 +143,42 @@ function ProfileScreen() {
        
       </View>
       {menuVisible && (
-        <View style={styles.menu}>
-          <TouchableOpacity style={styles.menuItem} onPress={handleEditProfile}>
-            <Icon name="user-circle" type="font-awesome" color="#fff" size={24} />
-            <Text style={styles.menuText}>Edit Profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={handleChat}>
-            <Icon name="comments" type="font-awesome" color="#fff" size={24} />
-            <Text style={styles.menuText}>Messenger</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
-            <Icon name="sign-out" type="font-awesome" color="#fff" size={24} />
-            <Text style={styles.menuText}>Logout</Text>
-          </TouchableOpacity>
-          <View style={styles.socialMedia}>
-            <TouchableOpacity
-              style={styles.socialMediaIcon}
-              onPress={() => handleSocialMediaLink('https://www.facebook.com/profile.php?id=100085264825545')}
-            >
-              <Icon name="facebook" type="font-awesome" color="#fff" size={24} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialMediaIcon} onPress={() => handleSocialMediaLink('https://www.twitter.com')}>
-              <Icon name="twitter" type="font-awesome" color="#fff" size={24} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.socialMediaIcon}
-              onPress={() => handleSocialMediaLink('https://www.instagram.com/hajrivaliii/')}
-            >
-              <Icon name="instagram" type="font-awesome" color="#fff" size={24} />
-            </TouchableOpacity>
-          </View>
-        </View>
+       <View style={styles.menu}>
+       <TouchableOpacity style={styles.menuItem} onPress={handleEditProfile}>
+         <Icon name="user-circle" type="font-awesome" color="#fff" size={24} />
+         <Text style={styles.menuText}>Edit Profile</Text>
+       </TouchableOpacity>
+       <TouchableOpacity style={styles.menuItem} onPress={handleChat}>
+         <Icon name="comments" type="font-awesome" color="#fff" size={24} />
+         <Text style={styles.menuText}>Messenger</Text>
+       </TouchableOpacity>
+       <TouchableOpacity style={styles.menuItem} onPress={handleChangePassword}>
+         <Icon name="lock" type="font-awesome" color="#fff" size={24} /> 
+         <Text style={styles.menuText}>Change Password</Text>
+       </TouchableOpacity>
+       <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+         <Icon name="sign-out" type="font-awesome" color="#fff" size={24} />
+         <Text style={styles.menuText}>Logout</Text>
+       </TouchableOpacity>
+       <View style={styles.socialMedia}>
+         <TouchableOpacity
+           style={styles.socialMediaIcon}
+           onPress={() => handleSocialMediaLink('https://www.facebook.com/profile.php?id=100085264825545')}
+         >
+           <Icon name="facebook" type="font-awesome" color="#fff" size={24} />
+         </TouchableOpacity>
+         <TouchableOpacity style={styles.socialMediaIcon} onPress={() => handleSocialMediaLink('https://www.twitter.com')}>
+           <Icon name="twitter" type="font-awesome" color="#fff" size={24} />
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.socialMediaIcon}
+           onPress={() => handleSocialMediaLink('https://www.instagram.com/hajrivaliii/')}
+         >
+           <Icon name="instagram" type="font-awesome" color="#fff" size={24} />
+         </TouchableOpacity>
+       </View>
+     </View>
+     
       )}
     </View>
               </ScrollView>

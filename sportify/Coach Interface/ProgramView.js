@@ -47,7 +47,6 @@ const ProgramView = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>ProgramView</Text>
         <Picker
           selectedValue={selectedDay}
           style={styles.picker}

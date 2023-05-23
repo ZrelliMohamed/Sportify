@@ -1,13 +1,22 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { moderateScale } from 'react-native-size-matters';
+import { Picker } from '@react-native-picker/picker';
 
 import API_URL from '../screneens/var';
 import CustomTextInput from '../components/CustomTextInput.js';
@@ -27,15 +36,15 @@ const options = {
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().min(6, 'Password must be at least 6 characters'),
   weight: Yup.number().required('Weight is required'),
   height: Yup.number().required('Height is required'),
-  preferences: Yup.string(),
+  goal: Yup.string(),
 });
 
 const SettingScreen = () => {
   const route = useRoute();
   const profile = route.params.profile;
+  const toggle = route.params.toggle;
   const [profilePicture, setProfilePicture] = useState(profile.user_img);
 
   useEffect(() => {
@@ -74,10 +83,9 @@ const SettingScreen = () => {
       const updatedUser = {
         user_name: values.username,
         user_email: values.email,
-        user_password: values.password,
         user_weight: values.weight,
         user_heigth: values.height,
-        user_preference: values.preferences,
+        user_goal: values.goal,
         user_img: profilePicture,
       };
 
@@ -86,6 +94,7 @@ const SettingScreen = () => {
         .then(response => {
           console.log(response.data);
           // do something with the updated user data
+          toggle();
 
           // Display an alert to indicate successful update
           Alert.alert('Success', 'User information updated successfully!');
@@ -106,10 +115,10 @@ const SettingScreen = () => {
     initialValues: {
       username: profile.user_name,
       email: profile.user_email,
-      password: '',
-      weight: profile.user_weight.toString(),
-      height: profile.user_heigth.toString(),
-      preferences: profile.user_preference,
+      weight: profile.user_weight,
+      height: profile.user_heigth,
+      goal: profile.user_goal,
+      user_img: profilePicture,
     },
     onSubmit: handleUpdateUser,
   });
@@ -146,15 +155,6 @@ const SettingScreen = () => {
             error={touched.email && errors.email}
           />
           <CustomTextInput
-            label="New Password (optional)"
-            placeholder="Enter new password"
-            value={values.password}
-            onChangeText={handleChange('password')}
-            onBlur={handleBlur('password')}
-            secureTextEntry
-            error={touched.password && errors.password}
-          />
-          <CustomTextInput
             label="Weight (kg)"
             placeholder="Enter weight"
             value={values.weight}
@@ -172,14 +172,22 @@ const SettingScreen = () => {
             keyboardType="numeric"
             error={touched.height && errors.height}
           />
-          <CustomTextInput
-            label="Preferences"
-            placeholder="Enter preferences"
-            value={values.preferences}
-            onChangeText={handleChange('preferences')}
-            onBlur={handleBlur('preferences')}
-            error={touched.preferences && errors.preferences}
-          />
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Program Goal:</Text>
+            <Picker
+              selectedValue={values.goal}
+              style={styles.picker}
+              onValueChange={handleChange('goal')}
+            >
+              <Picker.Item label="Select a goal" value="" />
+              <Picker.Item label="Gaining" value="gaining" />
+              <Picker.Item label="Losing" value="losing" />
+              <Picker.Item label="Shredded" value="shredded" />
+              <Picker.Item label="Running" value="running" />
+              <Picker.Item label="Protein" value="protein" />
+            </Picker>
+            {errors.goal && touched.goal && <Text style={styles.error}>{errors.goal}</Text>}
+          </View>
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Save Changes</Text>
           </TouchableOpacity>
@@ -242,6 +250,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: moderateScale(18),
+  },
+  formGroup: {
+    marginVertical: moderateScale(10),
+  },
+  label: {
+    fontSize: moderateScale(16),
+    marginBottom: moderateScale(5),
+    fontWeight: 'bold',
+  },
+  picker: {
+    backgroundColor: '#fff',
+    borderRadius: moderateScale(5),
+    borderWidth: moderateScale(1),
+    borderColor: '#ddd',
+    paddingHorizontal: moderateScale(10),
+  },
+  error: {
+    color: 'red',
+    fontSize: moderateScale(12),
+    marginTop: moderateScale(5),
   },
 });
 

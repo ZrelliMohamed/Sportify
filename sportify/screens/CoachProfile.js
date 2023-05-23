@@ -1,275 +1,85 @@
-// import React, { useState } from 'react';
-// import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-// import { Card } from 'react-native-elements';
-// import {Button} from "native-base";
-// import { useNavigation ,useRoute} from '@react-navigation/native';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-
-// const CoachProfile = () => {
-
-//   const navigation = useNavigation();
-//  const route=useRoute();
-//  const coach=route.params
-// console.log('coach1',coach.coach);
-//   const programs = [
-//     {
-//       id: 1,
-//       title: 'Weight Loss',
-//       description: 'This program is designed to help you lose weight and get in shape',
-//       duration: 12,
-//       image: 'https://source.unsplash.com/random/200x200',
-//     },
-//     {
-//       id: 2,
-//       title: 'Muscle Building',
-//       description: 'This program is designed to help you build muscle mass and get stronger',
-//       duration: 8,
-//       image: 'https://source.unsplash.com/random/201x201',
-//     },
-//     {
-//       id: 3,
-//       title: 'Fitness Challenge',
-//       description: 'This program is designed to push you to your limits and help you achieve your fitness goals',
-//       duration: 6,
-//       image: 'https://source.unsplash.com/random/202x202',
-//     },
-//   ];
-
-//   const renderProgram = (program) => {
-//     return (
-//       <>
-//         <Text style={styles.programTitle}>{program.title}</Text>
-//         <Text style={styles.programDescription}>{program.description}</Text>
-//         <TouchableOpacity style={styles.programButton}>
-//           <Text style={styles.programButtonText}>Enroll</Text>
-//         </TouchableOpacity>
-//       </>
-//     );
-//   };
-
-//   return (
- 
-//     <View style={styles.container}>
-//       <View style={styles.header}>
-//         <Image source={{ uri: route.params.coach.user_img }} style={styles.avatar} />
-//         <Text style={styles.name}>{route.params.coach.user_name}</Text>
-//         <TouchableOpacity
-//           style={styles.settings}
-//           onPress={() => navigation.navigate('Chat',{receiver:coach.coach})}
-//         >
-//           <Icon name="comments" size={24} color="#fff" />
-//         </TouchableOpacity>
-//       </View>
-//       <ScrollView>
-//       <View style={styles.body}>
-//         <Card containerStyle={styles.card}>
-//           <View style={styles.cardHeader}>
-//             <Icon name="trophy" size={24} color="#4286f4" />
-//             <Text style={styles.cardTitle}>Biography</Text>
-//           </View>
-//           <View style={styles.cardBody}>
-//             <View style={styles.achievement}>
-//               <Icon name="check" size={24} color="#4286f4" />
-//               <Text style={styles.achievementText}>Completed 10 workouts</Text>
-//             </View>
-//             <View style={styles.achievement}>
-//               <Icon name="check" size={24} color="#4286f4" />
-//               <Text style={styles.achievementText}>Burned 1000 calories</Text>
-//             </View>
-//             <View style={styles.achievement}>
-//               <Icon name="check" size={24} color="#4286f4" />
-//               <Text style={styles.achievementText}>Reached 10,000 steps in a day</Text>
-//             </View>
-//           </View>
-//         </Card>
-
-//         <Card containerStyle={styles.card}>
-//           <View style={styles.cardHeader}>
-//             <Icon name="heart" size={24} color="#4286f4" />
-//             <Text style={styles.cardTitle}>Favorites</Text>
-//           </View>
-//           <View style={styles.cardBody}>
-//             <TouchableOpacity style={styles.favorite}>
-//             <Icon name="fas fa-dumbbell" size={24} color="#4286f4" />
-//               <Text style={styles.favoriteText}>Full Body Workout</Text>
-//             </TouchableOpacity>
-//             <TouchableOpacity style={styles.favorite}>
-//               <Icon name="heartbeat" size={24} color="#4286f4" />
-//               <Text style={styles.favoriteText}>Cardio Workout</Text>
-//             </TouchableOpacity>
-//           </View>
-//         </Card>
-
-//         <Card containerStyle={[styles.card, styles.programCard]}>
-//           <View style={styles.cardHeader}>
-//             <Icon name="graduation-cap" size={24} color="#4286f4" />
-//             <Text style={styles.cardTitle}>Programs</Text>
-//           </View>
-//           <View style={styles.cardBody}>
-//             {programs.map((program) => (
-//               <TouchableOpacity style={styles.program} key={program.id}>
-//                 <Image source={{ uri: program.image }} style={styles.programImage} />
-//                 <View style={styles.programInfo}>
-//                   <Text style={styles.programTitle}>{program.title}</Text>
-//                   <Text style={styles.programDescription}>{program.description}</Text>
-//                   <Text style={styles.programDuration}>{program.duration} weeks</Text>
-//                 </View>
-//               </TouchableOpacity>
-//             ))}
-//           </View>
-//         </Card>
-//       </View>
-//       </ScrollView>
-
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//   },
-//   header: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     backgroundColor: '#4286f4',
-//     paddingVertical: 30,
-//     paddingHorizontal: 20,
-//   },
-//   avatar: {
-//     width: 70,
-//     height: 70,
-//     borderRadius: 35,
-//     marginRight: 20,
-//   },
-//   name: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     color: '#fff',
-//   },
-//   settings: {
-//     marginLeft: 'auto',
-//   },
-//   body: {
-//     flex: 1,
-//     padding: 20,
-//   },
-//   card: {
-//     borderRadius: 10,
-//     marginBottom: 20,
-//   },
-//   cardHeader: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   cardTitle: {
-//     fontSize: 20,
-//     fontWeight: 'bold',
-//     marginLeft: 10,
-//   },
-//   cardBody: {
-//     marginTop: 20,
-//   },
-//   achievement: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginBottom: 10,
-//   },
-//   achievementText: {
-//     marginLeft: 10,
-//   },
-//   favorite: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginBottom: 10,
-//   },
-//   favoriteText: {
-//     marginLeft: 10,
-//   },
-//   programCard: {
-//     padding: 0,
-//   },
-//   program: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     padding: 20,
-//     borderBottomWidth: 1,
-//     borderBottomColor: '#eee',
-//   },
-//   programImage: {
-//     width: 80,
-//     height: 80,
-//     borderRadius: 40,
-//     marginRight: 20,
-//   },
-//   programInfo: {
-//     flex: 1,
-//   },
-//   programTitle: {
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     marginBottom: 5,
-//   },
-//   programDescription: {
-//     fontSize: 16,
-//     color: '#aaa',
-//     marginBottom: 5,
-//   },
-//   programDuration: {
-//     fontSize: 16,
-//     color: '#aaa',
-//   },
-//   programButton: {
-//     paddingVertical: 10,
-//     paddingHorizontal: 20,
-//     backgroundColor: '#4286f4',
-//     borderRadius: 5,
-//     marginTop: 10,
-//   },
-//   programButtonText: {
-//     color: '#fff',
-//     fontWeight: 'bold',
-//   },
-// });
-
-// export default CoachProfile;
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { Card } from 'react-native-elements';
-import { Button } from "native-base";
+import React, { useState,useEffect, useContext ,useRef} from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Card,Rating as Rate } from 'react-native-elements'
+import { Box, CheckIcon, FormControl, Heading, Select, VStack, TextArea, Button } from 'native-base';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { UserDataContext,CartContext } from '../MainStackNavigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-const CoachProfile = () => {
-
-  const navigation = useNavigation();
-  const route = useRoute();
-  const coach = route.params.coach;
-console.log(coach,"the coach");
-  const programs = [
-    {
-      id: 1,
-      title: 'Weight Loss',
-      description: 'This program is designed to help you lose weight and get in shape',
-      duration: 12,
-      image: 'https://source.unsplash.com/random/200x200',
-    },
-    // Rest of the programs
-  ];
-
-  const renderProgram = (program) => {
-    return (
-      <>
-        <Image source={{ uri: program.image }} style={styles.programImage} />
-        <View style={styles.programInfo}>
-          <Text style={styles.programTitle}>{program.title}</Text>
-          <Text style={styles.programDescription}>{program.description}</Text>
-          <Text style={styles.programDuration}>{program.duration} weeks</Text>
-        </View>
-      </>
-    );
+import API_URL from '../screneens/var'
+import axios from 'axios';
+import Rating from './store/Rating';
+import Messsage from './store/Notification/Messsage';
+const CoachProfile = ({route}) => {
+  const {userData} = useContext(UserDataContext)
+  const {cart, setCart} = useContext(CartContext)
+  const [rating, setRating] = useState(null);
+  const [comment, setComment] = useState('');
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const textAreaRef = useRef(null);
+  const [toggle,setToggle]=useState(false)
+  const handleReview = () => {
+    axios.post(`${API_URL}/reviewC`,{User_Id:userData.User_Id,
+    coach_Id:coach.User_Id,
+    message:comment,
+    rating:rating}).then(res=>{setToggle(!toggle)
+      textAreaRef.current.clear();
+      setIsSubmitEnabled(false)
+    }).catch((err)=>console.log(err))
+   
   };
+  const {setProPurchased} = route.params
+  const [profile,setProfile]=useState([])
+  const navigation = useNavigation();
+  const rout = useRoute();
+  const coach = rout.params.coach;
+  const {func} = route.params;
+console.log(profile,"the coach");
+  const [programes,setprograms]=useState([])
+  useEffect(() => {
+    setIsSubmitEnabled(rating !== null && comment !== '');
+  }, [rating, comment]);
+  useEffect(async () => {
+    const { data } = await axios.get(`${API_URL}/getcoachsProgBy/${coach.User_Id}`)
+    setprograms(data)
+  }
+    ,[])
+    useEffect(() => {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`${API_URL}/users/${userData.User_Id}`);
+          setProfile(response.data);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+  
+      fetchUserData();
+    }, []);
+    const uniquePrograms = [...new Map(programes.map((prog) => [prog.prg_id, prog])).values()];
+    const handlePurchase = (prg_id) => {
+      // Handle purchase of program with prg_id
+      console.log(`Purchase program with ID ${prg_id}`);
+      setProPurchased(prg_id)
+      Alert.alert('Product Added', 'The Programe has been added to the cart.', [
+        {
+          text: 'Purchase',
+          onPress: () => navigation.navigate('CarteScreen'),
+        },
+      ]);
+    };
+    const handleRating = (value) => {
+      setRating(value);
+      console.log('Selected rating:', value);
+    };
+
+    // handling the reviews 
+    const [reviewsuser,setReviwesUser]=useState('')
+    useEffect(()=>{
+      axios.get(`${API_URL}/reviewC`)
+      .then(res=>{setReviwesUser(res.data)
+      })
+      .catch(err=>console.log(err))
+    },[])
 
   return (
     <View style={styles.container}>
@@ -277,37 +87,86 @@ console.log(coach,"the coach");
     <View style={styles.header}>
       <Image source={{ uri: route.params.coach.user_img }} style={styles.profileImage} />
       <View style={styles.nameContainer}>
-        <Text style={styles.name}>{route.params.coach.user_name}</Text>
+        <Text style={styles.name}>{route.params.coach.user_name.toUpperCase()}</Text>
+      </View>
+      <View margin={10}>
+       <Rating value={coach.User_preview}/>
+      </View>
         <TouchableOpacity style={styles.messageButton} onPress={() => { console.log(coach,"rec") , navigation.navigate('Chat', { receiver: coach })}}>
           <Icon name="comments" size={20} color="#fff" />
           <Text style={styles.messageButtonText}>Message</Text>
         </TouchableOpacity>
-      </View>
     </View>
     <View style={styles.body}>
       <View style={styles.descriptionContainer}>
         <Text style={styles.descriptionText}>This is the description of the coach.</Text>
-      </View>
-      <View style={styles.exerciseContainer}>
-        <View style={styles.exerciseItem}>
-          {/* <Image source={require('exercise_image.jpg')} style={styles.exerciseImage} /> */}
-          <Text style={styles.exerciseName}>Exercise 1</Text>
-        </View>
-        {/* Add more exercise items */}
       </View>
       <Card containerStyle={styles.card}>
         <View style={styles.cardHeader}>
           <Icon name="graduation-cap" size={24} color="#4286f4" />
           <Text style={styles.cardTitle}>Programs</Text>
         </View>
-        <View style={styles.cardBody}>
-          {programs.map((program) => (
-            <TouchableOpacity style={styles.program} key={program.id}>
-              {renderProgram(program)}
-            </TouchableOpacity>
-          ))}
+        <View style={styles.container2}>
+      {uniquePrograms.map((prog) => (
+        <View key={prog.prg_id} style={styles.programContainer2}>
+          <Image source={{ uri: prog.prg_img }} style={styles.programImage} />
+          <View style={styles.programInfo}>
+            <Text style={styles.programName2}>{prog.prg_name}</Text>
+            <Text>Goal :{prog.prg_goal}</Text>
+            <Text style={styles.programPrice2}>${prog.prg_price}</Text>
+           {profile.user_type !== "coach"&& <TouchableOpacity style={styles.purchaseButton2} onPress={() => handlePurchase(prog.prg_id)}>
+              <Text style={styles.buttonText2}>Purchase</Text>
+            </TouchableOpacity>}
+          </View>
         </View>
+      ))}
+    </View>
       </Card>
+      {reviewsuser.length ===0 ? (
+        <View margin={10}>
+        <Messsage color="white" bg="#7e9e1e" size={10} children="NO REVIEWS" bold={0} />
+        </View>
+      ) : (
+        reviewsuser.map((review) => (
+          <View style={styles.reviewContainer5} key={review.review_id}>
+            <View style={{ flexDirection: 'row' }}>
+              <Image source={{ uri: review.user_img }} style={{ width: 50, height: 50, borderRadius: 50 }} />
+              <View style={{ marginLeft: 10 }}>
+                <Heading fontSize={15} color="black">
+                  {review.user_name}
+                </Heading>
+                <Rating value={review.rating} />
+                <Messsage color="black" bg="white" size={10} children={review.message} />
+              </View>
+            </View>
+          </View>
+        ))
+      )}
+      {profile.user_type !== "coach"&& <>
+        <Box><Heading style={styles.header1}>
+          REVIEW {route.params.coach.user_name.toUpperCase()}
+        </Heading>
+        <VStack space={6}>
+          <FormControl>
+            <FormControl.Label style={styles.formLabel1}>Rating</FormControl.Label>
+            <Rate onFinishRating={handleRating}/>
+          </FormControl>
+          <FormControl>
+            <FormControl.Label style={styles.formLabel1}>Comment</FormControl.Label>
+            <TextArea
+              style={styles.textArea1}
+              onChangeText={(text) => setComment(text)}
+              value={comment}
+              ref={textAreaRef}
+            />
+            <Button style={styles.submitButton1} onPress={handleReview} isDisabled={!isSubmitEnabled}
+            marginTop={10} 
+            >
+              Submit
+            </Button>
+          </FormControl> 
+        </VStack> </Box></>
+       }
     </View>
   </ScrollView>
 </View>
@@ -317,6 +176,12 @@ console.log(coach,"the coach");
 
 
 const styles = StyleSheet.create({
+  reviewContainer5: {
+    backgroundColor: '#f5f5f5',
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -397,7 +262,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#4286f4',
+    color: 'black',
   },
   program: {
     marginBottom: 16,
@@ -406,6 +271,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 8,
+    marginRight:10
   },
   programInfo: {
     marginTop: 8,
@@ -423,6 +289,61 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: '#888',
   },
+  container2: {
+    flex: 1,
+    padding: 10,
+  },
+  programContainer2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  programImage2: {
+    width: 80,
+    height: 80,
+    marginRight: 10,
+  },
+  programInfo2: {
+    flex: 1,
+  },
+  programName2: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  programPrice2: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  purchaseButton2: {
+    backgroundColor: '#D0FD3E',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText2: {
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  formLabel1: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#7e9e1e'
+  },
+  formControl1: {
+    backgroundColor: '#f5f5f5',
+    borderColor: '#f5f5f5',
+  },
+  header1: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333'
+  },
+  submitButton1: {
+     backgroundColor: '#7e9e1e',
+     tintColor:"red"
+  }
 });
 
 
