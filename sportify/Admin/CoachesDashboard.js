@@ -63,52 +63,6 @@ const handleCoachSubmit = async (values, { resetForm }) => {
   }
 };
 
-// const handleCoachSubmit = async (values, { resetForm }) => {
-//   const image = values.user_img;
-//   const formData = new FormData();
-//   formData.append('file', image);
-//   formData.append('upload_preset', 'aloulou');
-
-
-//   try {
-//     const response = await fetch('https://api.cloudinary.com/v1_1/dqjdflymg/image/upload', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'multipart/form-data',
-//         'X-Requested-With': 'XMLHttpRequest',
-//         'Authorization': 'UnQIrPrmBNNA8ln3-u4ya2L9yuA'
-//       },
-//       body: formData
-//     });
-
-//     const data = await response.json();
-
-//     // Once the image is uploaded, you can use the returned image URL to save the coach data to your server
-//     const coachData = {
-//       ...values,
-//       user_img: data.secure_url
-//     };
-
-//     fetch('http://localhost:3000/coaches', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(coachData)
-//     })
-//       .then(response => response.json())
-//       .then(data => {
-//         console.log('Coach added successfully:', data);
-//         resetForm();
-//         setToggle(!toggle);
-//       })
-//       .catch(error => {
-//         console.error('Error adding coach:', error);
-//       });
-
-//   } catch (error) {
-//     console.error('Error uploading image:', error);
-//   }
-// };
-
   const handleCoachDelete = (coachId) => {
     fetch(`http://localhost:3000/coaches/${coachId}`, {
       method: 'DELETE'
