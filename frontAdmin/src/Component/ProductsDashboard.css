@@ -1,0 +1,159 @@
+.ProductsDashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.ProductForm,
+.AddProductForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.UpdateProductForm {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  width: 400px;
+}
+
+.UpdateProductForm h2 {
+  margin-top: 0;
+}
+
+.UpdateProductForm input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.UpdateProductForm button {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.UpdateProductForm button:hover {
+  background-color: #45a049;
+}
+
+.UpdateProductForm button[type="button"] {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.UpdateProductForm button[type="button"]:hover {
+  color: #666;
+}
+
+.ProductItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.ProductItem > div {
+  cursor: pointer;
+}
+
+.ProductItem h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.ProductItem img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.ProductItem p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.ProductOptions {
+  position: relative;
+  display: inline-block;
+}
+
+.OptionsIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.OptionsIcon:hover {
+  background-color: #bbb;
+}
+
+.OptionsList {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  z-index: 1;
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.OptionsList.show {
+  display: flex;
+}
+
+.Option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.Option:hover {
+  color: blue;
+}
+
+.Option span {
+  margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+  .ProductItem img {
+    width: 150px;
+  }
+}
