@@ -52,23 +52,23 @@ const SportGoalSelector = () => {
       <Text style={styles.title}>Select your sport goal:</Text>
       <View style={styles.iconsContainer}>
         <TouchableOpacity onPress={() => handleGoalPress('gaining')} style={[styles.iconButton, selectedGoal === 'gaining' && styles.selectedIcon]}>
-          <Ionicons name="ios-add" size={60} color="#1E90FF" />
+          <Ionicons name="ios-add" size={60} color="black" />
           <Text style={[styles.iconText, selectedGoal === 'gaining' && styles.selectedIconText]}>Gaining weight</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleGoalPress('losing')} style={[styles.iconButton, selectedGoal === 'losing' && styles.selectedIcon]}>
-          <Ionicons name="ios-remove" size={60} color="#1E90FF" />
+          <Ionicons name="ios-remove" size={60} color="black" />
           <Text style={[styles.iconText, selectedGoal === 'losing' && styles.selectedIconText]}>Losing weight</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleGoalPress('shredded')} style={[styles.iconButton, selectedGoal === 'shredded' && styles.selectedIcon]}>
-          <Ionicons name="ios-barbell" size={60} color="#1E90FF" />
+          <Ionicons name="ios-barbell" size={60} color="black" />
           <Text style={[styles.iconText, selectedGoal === 'shredded' && styles.selectedIconText]}>Weight lifting</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleGoalPress('running')} style={[styles.iconButton, selectedGoal === 'running' && styles.selectedIcon]}>
-          <Ionicons name="ios-walk" size={60} color="#1E90FF" />
+          <Ionicons name="ios-walk" size={60} color="black" />
           <Text style={[styles.iconText, selectedGoal === 'running' && styles.selectedIconText]}>Running</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleGoalPress('protein')} style={[styles.iconButton, selectedGoal === 'protein' && styles.selectedIcon]}>
-          <Ionicons name="ios-nutrition" size={60} color="#1E90FF" />
+          <Ionicons name="ios-nutrition" size={60} color="black" />
           <Text style={[styles.iconText, selectedGoal === 'protein' && styles.selectedIconText]}>Protein</Text>
         </TouchableOpacity>
       </View>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     borderColor: '#1E90FF',
     borderWidth: 2,
     borderRadius: 10,
-    backgroundColor: '#F0F8FF',
+    backgroundColor: '#D0FD3E',
   },
   iconText: {
     fontSize: 16,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     color: '#1E90FF',
   },
   nextButton: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: 'black',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   nextButtonText: {
-    color: 'white',
+    color: '#D0FD3E',
     fontSize: 18,
     fontWeight: 'bold',
   },

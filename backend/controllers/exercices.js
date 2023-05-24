@@ -6,6 +6,12 @@ module.exports = {
       else res.json(results)
     })
   },
+  getAllExercisesProgCmd: function(req, res) {
+    exercise.getAllProgCmd(req.params.id,function(err, results) {
+      if(err) res.status(500).send(err);
+      else res.json(results)
+    })
+  },
   getOneExercise: function(req, res) {
     const exerciseId = req.params.id;
     exercise.getOne(exerciseId, function(err, results) {

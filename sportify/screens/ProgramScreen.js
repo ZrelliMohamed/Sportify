@@ -1,55 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import API_URL from '../screneens/var';
 
-const WorkoutDay = ({ day, programs }) => {
-  const [showPrograms, setShowPrograms] = useState(false);
-
-  const togglePrograms = () => {
-    setShowPrograms(!showPrograms);
-  };
-
+const ProgramScreen = () => {
+  const route = useRoute();
+  const [Prog, setProg] = useState([]);
+  const [days,setday]=useState([])
+  useEffect(() => {
+    axios.get(`${API_URL}/exercice/${route.params.Prog_id}`)
+      .then(res => setProg(res.data))
+      .catch(err => console.log(err));
+  }, []);
 
   const navigation = useNavigation();
 
-  const handleProgramPress = (programId) => {
-    navigation.navigate('ExerciceScreen', { programId });
-  };
-
+  useEffect(()=> {
+  setday(Prog.map(obj => Object.keys(obj)[0]))
+  },[Prog])
   return (
-    <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={togglePrograms}>
-        <Text style={styles.day}>{day}</Text>
-      </TouchableOpacity>
-
-      {showPrograms && (
-        <ScrollView style={styles.programsContainer}>
-          {programs.map((program) => (
-            <TouchableOpacity key={program.id} onPress={() => handleProgramPress(program.id)}>
-              <Text style={styles.program}>{program.name}</Text>
-            </TouchableOpacity>
-          ))}
+    <ScrollView contentContainerStyle={styles.daysContainer}>
+      {Prog.map((day,i) => (
+        <ScrollView
+          key={i}
+          style={[styles.dayContainer, day.name === 'Monday' && styles.mondayContainer]}
+       >
+          <TouchableOpacity onPress={() =>{
+            console.log(Prog[i][days[i]]);
+            navigation.navigate('ExerciceScreen',{data:Prog[i][days[i]]});
+            }}>
+            <Text style={styles.day}>{days[i]}</Text>
+          </TouchableOpacity>
         </ScrollView>
-      )}
-    </ScrollView>
-  );
-};
-
-const DaysWithPrograms = ({ navigation }) => {
-  const days = [
-    { id: 1, name: 'Monday', programs: [{ id: 1, name: 'Program 1' }, { id: 2, name: 'Program 2' }] },
-    { id: 2, name: 'Tuesday', programs: [{ id: 3, name: 'Program 3' }, { id: 4, name: 'Program 4' }] },
-    { id: 3, name: 'Wednesday', programs: [{ id: 5, name: 'Program 5' }, { id: 6, name: 'Program 6' }] },
-    { id: 4, name: 'Thursday', programs: [{ id: 7, name: 'Program 7' }, { id: 8, name: 'Program 8' }] },
-    { id: 5, name: 'Friday', programs: [{ id: 9, name: 'Program 9' }, { id: 10, name: 'Program 10' }] },
-    { id: 6, name: 'Saturday', programs: [{ id: 11, name: 'Program 11' }, { id: 12, name: 'Program 12' }] },
-    { id: 7, name: 'Sunday', programs: [{ id: 13, name: 'Program 13' }, { id: 14, name: 'Program 14' }] },
-  ];
-
-  return (
-    <ScrollView style={styles.daysContainer}>
-      {days.map((day) => (
-        <WorkoutDay key={day.id} day={day.name} programs={day.programs} navigation={navigation} />
       ))}
     </ScrollView>
   );
@@ -58,28 +41,45 @@ const DaysWithPrograms = ({ navigation }) => {
 const styles = StyleSheet.create({
   daysContainer: {
     padding: 20,
+    backgroundColor: '#D4D3DC',
+    marginTop: 40,
   },
-  
-  container: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+  dayContainer: {
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#B8CBD0',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: '#fff',
   },
-  
+  mondayContainer: {
+    marginTop: 10,
+    backgroundColor: '#FFFFFF',
+  },
   day: {
     fontSize: 20,
     fontWeight: 'bold',
     marginVertical: 10,
+    textAlign: 'center',
   },
-  
   programsContainer: {
     marginLeft: 20,
     marginTop: 10,
   },
-  
   program: {
     fontSize: 16,
     marginVertical: 5,
+    padding: 10,
+    backgroundColor: '#B8CBD0',
+    borderRadius: 10,
+    textAlign: 'center',
   },
 });
 
-export default DaysWithPrograms;
+export default ProgramScreen;

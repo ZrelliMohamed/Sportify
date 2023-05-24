@@ -4,6 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { UserDataContext } from '../MainStackNavigator';
 import axios from 'axios';
 import API_URL from '../screneens/var';
+import ProgramCreation from '../Coach Interface/ProgramCreation';
 
 const TodoItem = ({ title, onDelete }) => {
 
@@ -42,8 +43,9 @@ const NewRoutineScreen = () => {
   };
 
   return (
-    user!==null && user.user_type==='user'? <View style={styles.container}>
-      <Text style={styles.title}>HAMA</Text>
+    user!==null && user.user_type==='user'? 
+    <View style={styles.container}>
+    <Text style={styles.title}> My Routine </Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -63,9 +65,9 @@ const NewRoutineScreen = () => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-    </View>: <View>
-    <Text>USer is a coach</Text>
-    </View>
+    </View>: 
+    <ProgramCreation/>
+   
   );
 };
 
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   addButton: {
-    backgroundColor: '#55a3d6',
+    backgroundColor: 'black',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addButtonText: {
-    color: '#fff',
+    color: '#D0FD3E',
     fontWeight: 'bold',
   },
   listContainer: {

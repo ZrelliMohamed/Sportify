@@ -10,8 +10,8 @@ import axios from 'axios'
 const CarteItems = ({ setTotale }) => {
   const [data, setData] = useState([])
   const { cart, setCart } = useContext(CartContext);
+  
   const [updatedCart, setUpdatedCart] = useState(cart)
-
   const handleDelete = (id) => {
     const newData = data.filter((item) => item.product_id !== id)
     const newCart = updatedCart.filter((item) => item[0] !== id)
@@ -57,6 +57,8 @@ const CarteItems = ({ setTotale }) => {
       </Pressable>
     )
   }
+
+ 
 
   useEffect(() => {
     axios.post(`${API_URL}/products/ProductCart`, { cart: updatedCart }).then((res) => {

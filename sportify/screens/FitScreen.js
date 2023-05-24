@@ -7,6 +7,7 @@ import fitnessData from "../data/fitness";
 
 const FitScreen = () => {
   const route = useRoute();
+  const data = route.params.exercises
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
   const [workout, setWorkout] = useState(0);
@@ -16,13 +17,13 @@ const [i,setI]=useState(0)
 
   return (
     <SafeAreaView>
-      <Image style={{ width: "100%", height: 370 }} source={{ uri: fitnessData[0].excersises[i].image }} />
+      <Image style={{ width: "100%", height: 370, marginTop:60 }} source={{ uri: data[i].exercice_image }} />
 
-      <Text style={{ marginLeft: "auto", marginRight: "auto", marginTop: 30, fontSize: 30, fontWeight: "bold" }}>{fitnessData[0].excersises[i].name}</Text>
+      <Text style={{ marginLeft: "auto", marginRight: "auto", marginTop: 30, fontSize: 30, fontWeight: "bold" }}>{data[i].exercice_name}</Text>
 
-      <Text style={{ marginLeft: "auto", marginRight: "auto", marginTop: 30, fontSize: 38, fontWeight: "bold" }}>x{fitnessData[0].excersises[i].sets}</Text>
+      <Text style={{ marginLeft: "auto", marginRight: "auto", marginTop: 40, fontSize: 38, fontWeight: "bold" }}>x{data[i].sets}</Text>
 
-      {index + 1 >= fitnessData[0].excersises.length ? (
+      {index + 1 >= data.length ? (
         <Pressable
           onPress={() => {
             navigation.navigate("Home");
@@ -43,9 +44,9 @@ const [i,setI]=useState(0)
         <Pressable
           onPress={() => {
 
-            console.log(i,fitnessData[0].excersises.length-2);
-            if(i+1>=fitnessData[0].excersises.length){
-              
+            console.log(i,data.length-2);
+            if(i+1>=data.length){
+              navigation.navigate('ProgramScreen')
             }else{
               navigation.navigate('Rest')
               setI(i+1)
@@ -59,7 +60,7 @@ const [i,setI]=useState(0)
             }, 25000);
           }}
           style={{
-            backgroundColor: "blue",
+            backgroundColor: "black",
             marginLeft: "auto",
             marginRight: "auto",
             marginTop: 30,
@@ -68,7 +69,7 @@ const [i,setI]=useState(0)
             width: 150,
           }}
         >
-          <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, color: "white" }}>DONE</Text>
+          <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, color: "#D0FD3E" }}>DONE</Text>
         </Pressable>
       )}
 
@@ -91,19 +92,19 @@ const [i,setI]=useState(0)
             }, 25000);
           }}
           style={{
-            backgroundColor: "green",
+            backgroundColor: "black",
             padding: 10,
             borderRadius: 20,
             marginHorizontal: 20,
             width: 100,
           }}
         >
-          <Text style={{ color: "white", fontWeight: "bold", textAlign: "center" }}>PREV</Text>
+          <Text style={{ color: "#D0FD3E", fontWeight: "bold", textAlign: "center" }}>PREV</Text>
         </Pressable>
-        {index + 1 >= fitnessData[0].excersises.length ? (
+        {index + 1 >= data.length ? (
           <Pressable
             onPress={() => {
-              if(i+1>=fitnessData[0].excersises.length){
+              if(i+1>=data.length){
                 navigation.navigate('ProgramScreen')
               }else{
   
@@ -111,19 +112,19 @@ const [i,setI]=useState(0)
               }
             }}
             style={{
-              backgroundColor: "green",
+              backgroundColor: "black",
               padding: 10,
               borderRadius: 20,
               marginHorizontal: 20,
               width: 100,
             }}
           >
-            <Text style={{ color: "white", fontWeight: "bold", textAlign: "center" }}>SKIP</Text>
+            <Text style={{ color: "#D0FD3E", fontWeight: "bold", textAlign: "center" }}>SKIP</Text>
           </Pressable>
         ) : (
           <Pressable
             onPress={() => {
-              if(i+1>=fitnessData[0].excersises.length){
+              if(i+1>=data.length){
                 navigation.navigate('ProgramScreen')
               }else{
                 navigation.navigate('Rest')
@@ -134,14 +135,14 @@ const [i,setI]=useState(0)
               }, 25000);
             }}
             style={{
-              backgroundColor: "green",
+              backgroundColor: "black",
               padding: 10,
               borderRadius: 20,
               marginHorizontal: 20,
               width: 100,
             }}
           >
-            <Text style={{ color: "white", fontWeight: "bold", textAlign: "center" }}>SKIP</Text>
+            <Text style={{ color: "#D0FD3E", fontWeight: "bold", textAlign: "center" }}>SKIP</Text>
           </Pressable>
         )}
       </Pressable>

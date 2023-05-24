@@ -13,8 +13,8 @@ const SingleProduct = () => {
     const [product,setProduct] = useState({})
     const [value,setValue] = useState(1)
     const route = useRoute();
+    const {func} = route.params;
   const { productId } = route.params;
-  const {func} = route.params;
   const URL =`${API_URL}/products/${productId}`
   const SPtoggle=()=>{
     setToggle(!toggle)

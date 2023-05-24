@@ -20,9 +20,10 @@ getOneProgramExercise : function(req, res) {
 addExerciseToProgram: function(req, res) {
     const programId = req.body.prg_id;
     const exerciseId = req.body.exercice_id;
-    const dayId=req.body.day;
-    const data = { prg_id: programId, exercice_id: exerciseId, day:dayId };
-
+    const sets = req.body.sets;
+    const day = req.body.day
+    console.log(day);
+    const data = { prg_id: programId, exercice_id: exerciseId,sets:sets,day:day};
   programExercises.add(data, function(err, result) {
     if (err) {
       console.error(err);
@@ -59,6 +60,18 @@ res.status(404).send('Program exercise not found');
 res.json(results);
 }
 });
+},
+progCmd : function(req,res){
+  programExercises.prgc(req.body,function(err,result){
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      console.log(result);
+      res.status(200).json(result);
+    }
+  })
+  
+
 }
 };
 

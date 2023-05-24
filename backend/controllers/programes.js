@@ -4,15 +4,25 @@ module.exports = {
     program.getAll(function(err, results) {
       if (err) res.status(500).send(err);
       else res.json(results)
-    })
+    },req.params.user_id)
   },
   getOneProgram: function(req, res) {
     const programId = req.params.id;
     program.getOne(programId, function(err, results) {
       if (err) {
-        res.status(500).send(err);
+        res.status(500).json(err);
       } else if (!results) {
-        res.status(404).send('Program not found');
+        res.status(404).json('Program not found');
+      } else {
+        res.json(results);
+      }
+    });
+  },
+  getOneUserProgrames: function(req, res) {
+    const programId = req.params.user_id;
+    program.getAllUserProgrames(programId, function(err, results) {
+      if (err) {
+        res.status(500).json(err);
       } else {
         res.json(results);
       }
@@ -52,5 +62,15 @@ module.exports = {
         res.json(results);
       }
     });
-  }
+  },
+  createProgramforCommande:function(req, res) {
+    const programData = req.body;
+    program.addCmd(programData, function(err, results) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json(results);
+      }
+    });
+  },
 };

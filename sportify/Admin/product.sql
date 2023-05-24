@@ -11,6 +11,31 @@ INSERT INTO product (product_name, product_price, product_desc, product_image, c
 
 
 
-UPDATE product SET num_reviews = 0 , rating = 0 WHERE product_id = 10;
 
+INSERT INTO `spotify`.`exercices` (`exercice_image`, `exercice_name`, `exercice_description`, `exercice_sets`, `exercice_calories`)
+VALUES 
+('https://sworkit.com/wp-content/uploads/2020/06/sworkit-jumping-jack.gif', 'JUMPING JACKS', '', 12, 0),
+('https://media.self.com/photos/57f3dee9861f10622c6d3609/master/w_1600%2Cc_limit/Elevated_Push_Up.gif', 'INCLINE PUSH-UPS', '', 10, 0),
+('https://media.self.com/photos/583c641ca8746f6e65a60c7e/master/w_1600%2Cc_limit/DIAMOND_PUSHUP_MOTIFIED.gif', 'INCLINED PUSH-UPS', '', 10, 0),
+('https://cdn.prod.openfit.com/uploads/2020/03/10162714/wide-arm-push-up.gif', 'WIDE ARM PUSH-UPS', '', 12, 0),
+('https://www.yogajournal.com/wp-content/uploads/2021/12/Cobra.gif?width=730', 'COBRA STRETCH', '', 10, 0),
+('https://www.vissco.com/wp-content/uploads/animation/sub/double-knee-to-chest-stretch.gif', 'CHEST STRETCH', '', 10, 0),
+('https://media1.popsugar-assets.com/files/thumbor/f2sbzQY1h1zqiGEV9Mhr1IAcFMU/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2017/03/13/796/n/1922729/19cf2a4428446429_EXAMPLE.crossjacks.gif', 'JUMPING JACKS', '', 12, 0),
+('https://i.pinimg.com/originals/18/27/be/1827be178c019b1dc6f8a8d8b4a7b0b8.gif', 'MOUNTAIN CLIMBERS', '', 10, 0),
+('https://i.pinimg.com/originals/64/c5/05/64c505d6adafda76b8522d66a73d7763.gif', 'HEEL TOUCH', '', 20, 0),
+('https://i.pinimg.com/originals/cf/b5/67/cfb5677a755fe7288b608a4fec6f09a0.gif', 'PLANK', '', 10, 0),
+('https://www.gymguider.com/wp-content/uploads/2017/10/straight-leg-raise.gif', 'LEG RAISES', '', 14, 0),
+('https://post.healthline.com/wp-content/uploads/2020/06/400x400_How_to_do_Zac_Efrons_Baywatch_Workout_Dumbbell_Lateral_Raise.gif', 'ARM RAISES', '', 8, 0),
+('https://thumbs.gfycat.com/CompleteZigzagFossa-max-1mb.gif', 'TRICEP DIPS', '', 10, 0),
+('https://thumbs.gfycat.com/MisguidedAridAlaskanmalamute-max-1mb.gif', 'DIAMOND_PUSHUP', '', 10, 0),
+('https://c.tenor.com/gI-8qCUEko8AAAAC/pushup.gif', 'PUSH-UPS', '', 10, 0),
+('https://i.pinimg.com/originals/8c/53/27/8c532774e4e1c524576bf1fb829ad895.gif', 'DUMBELL CURL', '', 11, 0),
+('https://www.vissco.com/wp-content/uploads/animation/sub/inch-worm.gif', 'INCH WORMS', '', 5, 0),
+('https://c.tenor.com/jqwaOmRs-7gAAAAC/tricep-kick-back-tricep.gif', 'TRICEP LIFT', '', 8, 0),
+('https://i.pinimg.com/originals/ff/cf/40/ffcf40474f0758dfedebc823f5532aa1.gif', 'DECLINE PUSH-UPS', '', 9, 0),
+('https://image.2bstronger.com/article/fitness/the-14-toughest-do-anywhere-workout-moves-56348/1006.gif', 'HINDU PUSH-UPS', '', 10, 0),
+('https://thumbs.gfycat.com/TheseRigidBorer-size_restricted.gif', 'SHOULDER STRETCH', '', 5, 0),
+('https://thumbs.gfycat.com/AlertAfraidAldabratortoise-max-1mb.gif', 'COBRA STRETCH', '', 4, 0),
+('https://media4.popsugar-assets.com/files/thumbor/BaWEAcCjtJEjiwf3PqJHnZ_S23A/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2016/08/10/766/n/1922729/1eae2dcf3d395379_PushUpTwist.gif', 'PUSH-UP & ROTATION', '', 12, 0),
+('https://media3.popsugar-assets.com/files/thumbor/0Xiqpo7pxrKz5CKcRl7XYrKegko/fit-in/1024x1024/filters:format_auto-!!-:strip_icc-!!-/2014/02/27/847/n/1922729/1baf9ec0f5ce4ea9_burpee.3.gif', 'BURPEES', '', 10, 0);
 

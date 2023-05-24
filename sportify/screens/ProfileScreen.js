@@ -2,24 +2,25 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useNavigation ,useRoute} from '@react-navigation/native';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused} from '@react-navigation/native';
 import { UserDataContext } from '../MainStackNavigator';
 import { Accelerometer } from 'expo-sensors';
 import API_URL from '../screneens/var'
 import axios from 'axios';
 import StepTracker from './useLocationAndSteps';
-
+import { ScrollView } from 'native-base';
+import PrgCoach from './PrgCoach';
 function ProfileScreen() {
+  const { userData, setUserData } = useContext(UserDataContext);
   const { steps, calories } = StepTracker();
   const route = useRoute();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [menuVisible, setMenuVisible] = useState(false);
-  const [profile,setProfile]=useState([])
   // Access the email prop
-
-  const { userData, setUserData } = useContext(UserDataContext);
-
+  const [state,setState]=useState(true);
+  const [profile,setProfile]=useState([])
+ 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -31,7 +32,7 @@ function ProfileScreen() {
     };
 
     fetchUserData();
-  }, [profile]);
+  }, [profile.user_img,state]);
 
   useEffect(() => {
     let subscription;
@@ -48,17 +49,23 @@ function ProfileScreen() {
       }
     };
   }, [isFocused]);
-
+const toggle = () => {
+  setState(!state)
+}
   const handleEditProfile = () => {
     setMenuVisible(false);
-    navigation.navigate('SettingsScreen',{profile:profile})
+    navigation.navigate('SettingsScreen',{profile:profile,toggle:toggle})
   };
 
   const handleChat = () => {
     setMenuVisible(false);
     navigation.navigate('ConversationList');
   };
-
+  const  handleChangePassword = () => {
+    setMenuVisible(false);
+    navigation.navigate('ChangePassword',{profile:profile});
+  };
+ 
   const handleLogout1 = () => {
     Alert.alert(
       'Confirm Logout',
@@ -98,12 +105,17 @@ function ProfileScreen() {
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
-
+  const handleOrder = () => {
+   navigation.navigate('Orders')
+  };
+ 
   return (
+    <ScrollView>
+
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={toggleMenu}>
-          <Icon name="menu" type="material" color="#fff" size={30} />
+          <Icon name="menu" type="material" color="#D0FD3E" size={30} />
         </TouchableOpacity>
         <Text style={styles.title}>Profile</Text>
         <View style={{ width: 30 }} />
@@ -113,52 +125,66 @@ function ProfileScreen() {
         <Image source={{ uri: profile.user_img }} style={styles.profilePicture} />
         <View style={styles.card}>
           <Text style={styles.profileName}>{profile.user_name}</Text>
-          <Text style={styles.program}>Fitness Program: {profile.user_preference}</Text>
         </View>
         <View style={styles.card}>
           <Text style={styles.steps}>Steps Today: {steps}</Text>
           <Text style={styles.calories}>Calories Burned: {calories} kcal</Text>
         </View>
-        <View style={styles.card}>
+        {profile.user_type !== "coach" &&<View style={styles.card}>
           <Text style={styles.info}>Height: {profile.user_height}</Text>
           <Text style={styles.info}>Weight: {profile.user_weight}</Text>
           <Text style={styles.info}>Goal: {profile.user_goal}</Text>
-        </View>
+        </View>}
+        {profile.user_type === "coach" &&<View style={styles.card}>
+          <Text>Programes</Text>
+          <PrgCoach />
+        </View>}
+       
       </View>
       {menuVisible && (
-        <View style={styles.menu}>
-          <TouchableOpacity style={styles.menuItem} onPress={handleEditProfile}>
-            <Icon name="user-circle" type="font-awesome" color="#fff" size={24} />
-            <Text style={styles.menuText}>Edit Profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={handleChat}>
-            <Icon name="comments" type="font-awesome" color="#fff" size={24} />
-            <Text style={styles.menuText}>Messenger</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
-            <Icon name="sign-out" type="font-awesome" color="#fff" size={24} />
-            <Text style={styles.menuText}>Logout</Text>
-          </TouchableOpacity>
-          <View style={styles.socialMedia}>
-            <TouchableOpacity
-              style={styles.socialMediaIcon}
-              onPress={() => handleSocialMediaLink('https://www.facebook.com/profile.php?id=100085264825545')}
-            >
-              <Icon name="facebook" type="font-awesome" color="#fff" size={24} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialMediaIcon} onPress={() => handleSocialMediaLink('https://www.twitter.com')}>
-              <Icon name="twitter" type="font-awesome" color="#fff" size={24} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.socialMediaIcon}
-              onPress={() => handleSocialMediaLink('https://www.instagram.com/hajrivaliii/')}
-            >
-              <Icon name="instagram" type="font-awesome" color="#fff" size={24} />
-            </TouchableOpacity>
-          </View>
-        </View>
+       <View style={styles.menu}>
+       <TouchableOpacity style={styles.menuItem} onPress={handleEditProfile}>
+         <Icon name="user-circle" type="font-awesome" color="#fff" size={24} />
+         <Text style={styles.menuText}>Edit Profile</Text>
+       </TouchableOpacity>
+       <TouchableOpacity style={styles.menuItem} onPress={handleChat}>
+         <Icon name="comments" type="font-awesome" color="#fff" size={24} />
+         <Text style={styles.menuText}>Messenger</Text>
+       </TouchableOpacity>
+       <TouchableOpacity style={styles.menuItem} onPress={handleChangePassword}>
+         <Icon name="lock" type="font-awesome" color="#fff" size={24} /> 
+         <Text style={styles.menuText}>Change Password</Text>
+       </TouchableOpacity>
+       <TouchableOpacity style={styles.menuItem} onPress={handleOrder}>
+         <Icon name="shopping-cart" type="font-awesome" color="#fff" size={24} />
+         <Text style={styles.menuText}>Orders</Text>
+       </TouchableOpacity>
+       <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+         <Icon name="sign-out" type="font-awesome" color="#fff" size={24} />
+         <Text style={styles.menuText}>Logout</Text>
+       </TouchableOpacity>
+       <View style={styles.socialMedia}>
+         <TouchableOpacity
+           style={styles.socialMediaIcon}
+           onPress={() => handleSocialMediaLink('https://www.facebook.com/profile.php?id=100085264825545')}
+         >
+           <Icon name="facebook" type="font-awesome" color="#fff" size={24} />
+         </TouchableOpacity>
+         <TouchableOpacity style={styles.socialMediaIcon} onPress={() => handleSocialMediaLink('https://www.twitter.com')}>
+           <Icon name="twitter" type="font-awesome" color="#fff" size={24} />
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.socialMediaIcon}
+           onPress={() => handleSocialMediaLink('https://www.instagram.com/hajrivaliii/')}
+         >
+           <Icon name="instagram" type="font-awesome" color="#fff" size={24} />
+         </TouchableOpacity>
+       </View>
+     </View>
+     
       )}
     </View>
+              </ScrollView>
   );
 }
 
@@ -166,6 +192,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginBottom:90
   },
   header: {
     flexDirection: 'row',

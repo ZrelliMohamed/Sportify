@@ -6,8 +6,8 @@ import { TouchableOpacity } from 'react-native';
 // Import your components or screens here
 import HomeScreen from './screens/HomeScreen';
 import WorkoutScreen from './screens/WorkoutScreen';
-import ProgressScreen from './screens/CoachList';
-import SettingsScreen from './screens/ProfileScreen';
+import CoachList from './screens/CoachList';
+import ProfileScreen from './screens/ProfileScreen';
 import NewRoutineScreen from './screens/NewRoutineScreen.js';
 
 const Tab = createBottomTabNavigator();
@@ -87,7 +87,7 @@ const BottomTabNavigator = () => {
         />
         <Tab.Screen
           name="Coachs"
-          component={ProgressScreen}
+          component={CoachList}
           options={{
             tabBarIcon: ({ color }) => (
               <FontAwesome name="users" size={24} color="black" />
@@ -97,7 +97,7 @@ const BottomTabNavigator = () => {
         />
         <Tab.Screen
           name="profile"
-          component={SettingsScreen}
+          component={ProfileScreen}
           options={{
             tabBarIcon: ({ color }) => (
               <FontAwesome name="user" size={24} color="black" />

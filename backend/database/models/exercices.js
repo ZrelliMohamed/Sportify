@@ -14,6 +14,32 @@ module.exports = {
           callBack(error, result);
         });
       },
+      getAllProgCmd: function(id,callBack) {
+        const sql = `select p.sets,p.day,e.exercice_image,e.exercice_name from programes_has_exercices p
+        inner join exercices e
+        where p.prg_id=? and p.exercice_id=e.exercice_id`;
+        conn.query(sql,[id], function(error, result) {
+          if(error) callBack(error,null)
+          else{
+            const newResult = {};
+for (const exercise of result) {
+  const { day, ...rest } = exercise;
+  if (day in newResult) {
+    newResult[day].push(rest);
+  } else {
+    newResult[day] = [rest];
+  }
+}
+
+const finalResult = [];
+for (const day in newResult) {
+  const dayExercises = { [day]: newResult[day] };
+  finalResult.push(dayExercises);
+}
+callBack(null,finalResult)
+          }
+        });
+      },
       
       add: function(exerciseData, callBack) {
         const sql = 'INSERT INTO spotify.exercices (exercice_image, exercice_name, exercice_description, exercice_sets, exercice_calories) VALUES (?, ?, ?, ?, ?)';
