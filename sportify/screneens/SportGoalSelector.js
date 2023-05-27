@@ -32,17 +32,15 @@ const SportGoalSelector = () => {
         email: email,
         goal: selectedGoal
       })
-    })
-    .then(response => {
-      if (response.status === 200) {
-        alert('cong');
-        navigation.navigate('MainStackNavigator',{email: email});
-      } else {
-        console.error('Error updating user goal: ' + response.statusText);
-      }
-    })
+    }) 
+        .then(response => response.json())
+        .then(res=>{
+           alert('cong');
+        navigation.navigate('MainStackNavigator',{userData: {User_Id:res}});
+
+        })
     .catch(error => {
-      console.error('Error updating user goal: ' + error);
+      console.log('Error updating user goal: ' + error);
     });
   };
   

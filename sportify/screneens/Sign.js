@@ -167,8 +167,12 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
+    backgroundColor: '#000',
     color: '#D0FD3E',
     textTransform: 'uppercase',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
   }
 });
 

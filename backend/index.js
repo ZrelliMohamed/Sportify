@@ -377,14 +377,34 @@ app.post('/weight', (req, res) => {
 });
 app.post('/goal', (req, res) => {
   const { email, goal } = req.body;
+  const query = 'SELECT * FROM users WHERE user_email = ?';
+  connection.query(query, [email], (e, rows) => {
+    if (e) {
+      res.sendStatus(e);
+      return;
+    }
+    if (rows.length > 0) {
+      console.log(rows[0]);
   const updateQuery = 'UPDATE Users SET user_goal = ? WHERE user_email = ?';
   connection.query(updateQuery, [goal, email], (err, result) => {
     if (err) {
       res.sendStatus(err);
     } else {
-      res.json(result);
+      res.json(rows[0].User_Id)
+   
     }
   });
+    }
+    else {
+      res.json('User Not Found')
+    }
+  
+  })
+
+
+
+
+
 });
 app.post('/register', (req, res) => {
   const { username, password, email, type } = req.body;
@@ -486,7 +506,7 @@ app.post('/loginn', (req, res) => {
 });
 
 
- const CLIENT_ID = "515417945974-qhnj4ngj9oo8745477ktvpgespokuov0.apps.googleusercontent.com"
+const CLIENT_ID = "515417945974-qhnj4ngj9oo8745477ktvpgespokuov0.apps.googleusercontent.com"
 const CLIENT_SECRET = "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";
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
 const REFRESH_TOKEN = "1//04d15_357ndA5CgYIARAAGAQSNwF-L9IrQhc4I05iBMtDB7ydx5V73BuPupS_BYDb-O27a7_KZRVjsIglYz3B_k6E4T-NLJCQuRQ";

@@ -131,7 +131,7 @@ const toggle = () => {
           <Text style={styles.calories}>Calories Burned: {calories} kcal</Text>
         </View>
         {profile.user_type !== "coach" &&<View style={styles.card}>
-          <Text style={styles.info}>Height: {profile.user_height}</Text>
+          <Text style={styles.info}>Height: {profile.user_heigth}</Text>
           <Text style={styles.info}>Weight: {profile.user_weight}</Text>
           <Text style={styles.info}>Goal: {profile.user_goal}</Text>
         </View>}

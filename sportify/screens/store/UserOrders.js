@@ -40,7 +40,7 @@ const UserOrders = () => {
     console.log(orders);
   }, [orders]);
 
-  const formatDate = (dateString) => {
+  const formatDate =(dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -53,75 +53,92 @@ const UserOrders = () => {
     return `${formattedDay}-${formattedMonth}-${year}`;
   };
   
-
   return (
-    <ScrollView>
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {orders.map(order => (
         <View key={order.commande_id} style={styles.orderContainer}>
-          <Text style={styles.orderId}>CMD: {order.commande_id}</Text>
-          <Text style={styles.total}>Total: ${order.total}</Text>
+          <View style={styles.orderHeader}>
+            <Text style={styles.orderId}>CMD: {order.commande_id}</Text>
+            <Text style={styles.total}>Total: ${order.total}</Text>
+          </View>
           <Text style={styles.date}>Date: {formatDate(order.date)}</Text>
-          <Text style={styles.itemsTitle}>Items:</Text>
-          {order.item.map(item => (
-            <View key={item.commande_id} style={styles.itemContainer}>
-              {item.product_name && (
-                <Text style={styles.itemText}>
-                  {item.Qantite_commande}*{item.product_name} : ${item.product_price}
-                </Text>
-              )}
-              {item.prg_name && (
-                <Text style={styles.itemText}>
-                  {1}*{item.prg_name} : ${item.prg_price}
-                </Text>
-              )}
-            </View>
-          ))}
+          <View style={styles.itemsContainer}>
+            <Text style={styles.itemsTitle}>Items:</Text>
+            {order.item.map(item => (
+              <View key={item.commande_id} style={styles.itemContainer}>
+                {item.product_name && (
+                  <Text style={styles.itemText}>
+                    {item.Qantite_commande}*{item.product_name} : ${item.product_price}
+                  </Text>
+                )}
+                {item.prg_name &&(
+                  <Text style={styles.itemText}>
+                    {1}*{item.prg_name} : ${item.prg_price}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </View>
         </View>
       ))}
-    </View>
-</ScrollView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    flexGrow: 1,
+    backgroundColor: '#f5f5f5',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
   },
   orderContainer: {
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#ccc',
+    backgroundColor: '#fff',
+    borderRadius: 10,
     padding: 10,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  orderHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
   orderId: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   total: {
-    fontSize: 14,
-    marginBottom: 5,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   date: {
     fontSize: 14,
     marginBottom: 5,
+    color: '#666',
+  },
+  itemsContainer: {
+    marginTop: 10,
   },
   itemsTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
   },
-  itemContainer: {
+ itemContainer: {
     marginLeft: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 5,
   },
   itemText: {
     fontSize: 14,
+    color: '#666',
   },
 });
 

@@ -107,7 +107,7 @@ const Exercises = ({route}) => {
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={[styles.button, currentIndex === 0 && styles.disabledButton]} onPress={handlePrevPress} disabled={currentIndex === 0}>
-            <Text style={styles.buttonText}>{'Prev'}</Text>
+            <Text style={styles.buttonText}>{'Pres'}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.button, currentIndex === days.length - 1 && styles.disabledButton]} onPress={handleNextPress} disabled={currentIndex === days.length - 1}>
             <Text style={styles.buttonText}>{'Next'}</Text>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: 'black',
     borderRadius: 4,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -185,8 +185,8 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    color: '#D0FD3E',
+    fontWeight: 'bold', 
   },
 });
 
